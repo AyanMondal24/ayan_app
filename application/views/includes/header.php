@@ -61,11 +61,11 @@
                     </button>
                     <div class="collapse navbar-collapse bg-white" id="navbarCollapse">
                         <div class="navbar-nav mx-auto">
-                            <a href="home.php" class="nav-item nav-link active">Home</a>
-                            <a href="shop.html" class="nav-item nav-link">Shop</a>
-                            <a href="cart.html" class="nav-item nav-link">Shop Cart</a>
-                            <a href="chackout.html" class="nav-item nav-link">Chackout</a>
-                            <a href="contact.html" class="nav-item nav-link">Contact</a>
+                            <a href="<?= base_url() ?>" class="nav-item nav-link active">Home</a>
+                            <a href="<?= site_url('shop')?>" class="nav-item nav-link">Shop</a>
+                            <a href="<?= site_url('cart')?>" class="nav-item nav-link">Shop Cart</a>
+                            <a href="<?= site_url('checkout')?>" class="nav-item nav-link">Checkout</a>
+                            <a href="<?= site_url('contact') ?>" class="nav-item nav-link">Contact</a>
                         </div>
                         <div class="d-flex m-3 me-0">
                             <button class="btn-search btn border border-secondary btn-md-square rounded-circle bg-white me-4" data-bs-toggle="modal" data-bs-target="#searchModal"><i class="fas fa-search text-primary"></i></button>
