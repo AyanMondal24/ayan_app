@@ -50,6 +50,7 @@
     <!--begin::Required Plugin(AdminLTE)-->
     <link rel="stylesheet" href="<?= base_url('assets/admin/css/adminlte.css') ?>" />
     <!--end::Required Plugin(AdminLTE)-->
+    <link rel="stylesheet" href="<?= base_url('assets/admin/css/style.css') ?>">
     <!-- apexcharts -->
     <link
         rel="stylesheet"
