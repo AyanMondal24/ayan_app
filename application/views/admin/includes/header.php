@@ -330,7 +330,7 @@
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="<?= site_url('assets/admin')?>/widgets/info-box.html" class="nav-link">
+                                    <a href="<?= site_url('admin/view-products')?>" class="nav-link">
                                         <i class="nav-icon bi bi-circle"></i>
                                         <p>View Products</p>
                                     </a>
