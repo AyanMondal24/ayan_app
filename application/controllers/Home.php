@@ -10,27 +10,31 @@ class Home extends CI_Controller
 	}
 	public function index()
 	{
-	
+
 		$this->load->view('includes/header');
 		$this->load->view('home');
 		$this->load->view('includes/footer');
 	}
-	public function contact(){
+	public function contact()
+	{
 		$this->load->view('includes/header');
 		$this->load->view('contact');
 		$this->load->view('includes/footer');
 	}
-	public function shop(){
+	public function shop()
+	{
 		$this->load->view('includes/header');
 		$this->load->view('shop');
 		$this->load->view('includes/footer');
 	}
-	public function cart(){
+	public function cart()
+	{
 		$this->load->view('includes/header');
 		$this->load->view('cart');
 		$this->load->view('includes/footer');
 	}
-	public function checkout(){
+	public function checkout()
+	{
 		$this->load->view('includes/header');
 		$this->load->view('checkout');
 		$this->load->view('includes/footer');
