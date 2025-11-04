@@ -20,10 +20,13 @@ class Products extends CI_Controller
 
     public function saveProducts()
     {
-        $config['upload_path'] = './assets/upload';
-        $config['allowed_type'] = 'jpeg|jpg|png|gif';
+        $prefix='product_';
+        $unique_id=uniqid();
+        $config['upload_path'] = FCPATH .'assets/uploads';
+        $config['allowed_types'] = 'jpeg|jpg|png|gif';
         $config['max_size'] = 2048;
-        $config['encrypt_name']  = TRUE;
+        $config['encrypt_name']  = FALSE;
+        $config['file_name']  = $prefix . $unique_id;
         $this->load->library('upload', $config);
 
         $imageName = null;
@@ -48,10 +51,15 @@ class Products extends CI_Controller
             'status' => $this->input->post('status'),
             'is_available' => $this->input->post('is_available'),
             'description' => $this->input->post('description'),
-            'image' => $imageName
+            'img' => $imageName
         ];
-        $this->product_model->setProducts($data);
-        echo "Successfully submitted";
+     
+        if($this->product_model->setProducts($data) == true){
+            echo 0;
+        }else{
+            echo 1;
+        }
+        // echo "Successfully submitted";
     }
     public function viewProducts()
     {

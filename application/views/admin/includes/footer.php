@@ -30,6 +30,9 @@
     <!--end::Required Plugin(Bootstrap 5)--><!--begin::Required Plugin(AdminLTE)-->
     <script src="<?= base_url('assets/admin/js/adminlte.js') ?>"></script>
     <!--end::Required Plugin(AdminLTE)--><!--begin::OverlayScrollbars Configure-->
+
+    <!-- jquery  -->
+     <script src="<?= base_url('assets/admin/js/jquery.js') ?>"></script>
     <script>
         const SELECTOR_SIDEBAR_WRAPPER = '.sidebar-wrapper';
         const Default = {

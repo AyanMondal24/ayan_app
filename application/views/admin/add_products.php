@@ -1,7 +1,7 @@
 <div class="container add-products">
   <h2 class="text-center">Adding Products</h2>
   <hr>
-  <form action="<?= site_url('/admin/save-product') ?>" method="post" enctype="multipart/form-data">
+  <form action="<?= site_url('/admin/save-product') ?>" method="post" enctype="multipart/form-data" id="add-product" class=" p-2 ">
     <div class="row">
       <div class="col-12 col-md-6 col-lg-4">
         <label for="name" class="form-label">Name</label>
