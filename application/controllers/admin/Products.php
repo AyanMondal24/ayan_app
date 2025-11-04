@@ -30,7 +30,7 @@ class Products extends CI_Controller
 
         // Check if file is selected
         if (!empty($_FILES['image']['name'])) {
-            if ($this->upload->do_upload('image')) {
+            if ($this->upload->do_upload('image')) { 
                 // File upload successful
                 $uploadData = $this->upload->data();
                 $imageName = $uploadData['file_name']; // get uploaded file name
