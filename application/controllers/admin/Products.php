@@ -87,7 +87,7 @@ class Products extends CI_Controller
             ];
 
             if ($this->product_model->setProducts($data) == true) {
-                
+
                 echo  json_encode(["status" => "success"]);
             }
         }
@@ -95,7 +95,7 @@ class Products extends CI_Controller
         // echo "Successfully submitted";
     }
 
-    // Callback for form_validation
+    // Callback for form_validation for image
     public function file_check()
     {
         if (empty($_FILES['image']['name'])) {
