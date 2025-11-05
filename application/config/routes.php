@@ -60,8 +60,8 @@ $route['admin'] = 'admin/Home';
 $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;
 
-$route['admin/add-products'] = 'admin/Products/addProducts';
+$route['admin/add-products'] = 'admin/Products/addProductsForm';
 $route['admin/view-products']='admin/Products/viewProducts';
 
-$route['admin/save-product'] = 'admin/Products/saveProducts';
+$route['admin/save-product'] = 'admin/Products/addProductsDB';
 // $route['admin/view-products'] = 'admin/Products/Products';

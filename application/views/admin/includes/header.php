@@ -24,7 +24,7 @@
     <!--begin::Accessibility Features-->
     <!-- Skip links will be dynamically added by accessibility.js -->
     <meta name="supported-color-schemes" content="light dark" />
-    <link rel="preload" href="./css/adminlte.css" as="style" />
+    <link rel="preload" href="<?=base_url('assets/admin/css/adminlte.css')?>" as="style" />
     <!--end::Accessibility Features-->
     <!--begin::Fonts-->
     <link
@@ -63,7 +63,7 @@
     <!--begin::App Wrapper-->
     <div class="app-wrapper">
         <!--begin::Header-->
-        <nav class="app-header navbar navbar-expand bg-body">
+        <nav class="app-header navbar navbar-expand  bg-body-secondary shadow" data-bs-theme="dark">
             <!--begin::Container-->
             <div class="container-fluid">
                 <!--begin::Start Navbar Links-->
@@ -98,7 +98,7 @@
                                 <div class="d-flex">
                                     <div class="flex-shrink-0">
                                         <img
-                                            src="./assets/img/user1-128x128.jpg"
+                                            src="<?=base_url('assets/admin/')?>img/user1-128x128.jpg"
                                             alt="User Avatar"
                                             class="img-size-50 rounded-circle me-3" />
                                     </div>
@@ -121,7 +121,7 @@
                                 <div class="d-flex">
                                     <div class="flex-shrink-0">
                                         <img
-                                            src="./assets/img/user8-128x128.jpg"
+                                            src="<?=base_url('assets/admin/')?>img/user8-128x128.jpg"
                                             alt="User Avatar"
                                             class="img-size-50 rounded-circle me-3" />
                                     </div>
@@ -146,7 +146,7 @@
                                 <div class="d-flex">
                                     <div class="flex-shrink-0">
                                         <img
-                                            src="./assets/img/user3-128x128.jpg"
+                                            src="<?=base_url('assets/admin/')?>img/user3-128x128.jpg"
                                             alt="User Avatar"
                                             class="img-size-50 rounded-circle me-3" />
                                     </div>
@@ -210,7 +210,7 @@
                     <li class="nav-item dropdown user-menu">
                         <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
                             <img
-                                src="./assets/img/user2-160x160.jpg"
+                                src="<?=base_url('assets/admin/')?>img/user2-160x160.jpg"
                                 class="user-image rounded-circle shadow"
                                 alt="User Image" />
                             <span class="d-none d-md-inline">Alexander Pierce</span>
@@ -219,7 +219,7 @@
                             <!--begin::User Image-->
                             <li class="user-header text-bg-primary">
                                 <img
-                                    src="./assets/img/user2-160x160.jpg"
+                                    src="<?=base_url('assets/admin/')?>img/user2-160x160.jpg"
                                     class="rounded-circle shadow"
                                     alt="User Image" />
                                 <p>
@@ -262,7 +262,7 @@
                 <a href="<?= site_url('assets/admin')?>/index.html" class="brand-link">
                     <!--begin::Brand Image-->
                     <img
-                        src="./assets/img/AdminLTELogo.png"
+                        src="<?=base_url('assets/admin/')?>img/AdminLTELogo.png"
                         alt="AdminLTE Logo"
                         class="brand-image opacity-75 shadow" />
                     <!--end::Brand Image-->

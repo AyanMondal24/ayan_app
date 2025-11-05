@@ -266,7 +266,7 @@
                                                     <!-- /.direct-chat-infos -->
                                                     <img
                                                         class="direct-chat-img"
-                                                        src="./assets/img/user1-128x128.jpg"
+                                                        src="<?= base_url('assets/admin/')?>img/user1-128x128.jpg"
                                                         alt="message user image" />
                                                     <!-- /.direct-chat-img -->
                                                     <div class="direct-chat-text">
@@ -286,7 +286,7 @@
                                                     <!-- /.direct-chat-infos -->
                                                     <img
                                                         class="direct-chat-img"
-                                                        src="./assets/img/user3-128x128.jpg"
+                                                        src="<?= base_url('assets/admin/')?>img/user3-128x128.jpg"
                                                         alt="message user image" />
                                                     <!-- /.direct-chat-img -->
                                                     <div class="direct-chat-text">You better believe it!</div>
@@ -302,7 +302,7 @@
                                                     <!-- /.direct-chat-infos -->
                                                     <img
                                                         class="direct-chat-img"
-                                                        src="./assets/img/user1-128x128.jpg"
+                                                        src="<?= base_url('assets/admin/')?>img/user1-128x128.jpg"
                                                         alt="message user image" />
                                                     <!-- /.direct-chat-img -->
                                                     <div class="direct-chat-text">
@@ -322,7 +322,7 @@
                                                     <!-- /.direct-chat-infos -->
                                                     <img
                                                         class="direct-chat-img"
-                                                        src="./assets/img/user3-128x128.jpg"
+                                                        src="<?= base_url('assets/admin/')?>img/user3-128x128.jpg"
                                                         alt="message user image" />
                                                     <!-- /.direct-chat-img -->
                                                     <div class="direct-chat-text">I would love to.</div>
@@ -338,7 +338,7 @@
                                                         <a href="#">
                                                             <img
                                                                 class="contacts-list-img"
-                                                                src="./assets/img/user1-128x128.jpg"
+                                                                src="<?= base_url('assets/admin/')?>img/user1-128x128.jpg"
                                                                 alt="User Avatar" />
                                                             <div class="contacts-list-info">
                                                                 <span class="contacts-list-name">
@@ -357,7 +357,7 @@
                                                         <a href="#">
                                                             <img
                                                                 class="contacts-list-img"
-                                                                src="./assets/img/user7-128x128.jpg"
+                                                                src="<?= base_url('assets/admin/')?>img/user7-128x128.jpg"
                                                                 alt="User Avatar" />
                                                             <div class="contacts-list-info">
                                                                 <span class="contacts-list-name">
@@ -374,7 +374,7 @@
                                                         <a href="#">
                                                             <img
                                                                 class="contacts-list-img"
-                                                                src="./assets/img/user3-128x128.jpg"
+                                                                src="<?= base_url('assets/admin/')?>img/user3-128x128.jpg"
                                                                 alt="User Avatar" />
                                                             <div class="contacts-list-info">
                                                                 <span class="contacts-list-name">
@@ -391,7 +391,7 @@
                                                         <a href="#">
                                                             <img
                                                                 class="contacts-list-img"
-                                                                src="./assets/img/user5-128x128.jpg"
+                                                                src="<?= base_url('assets/admin/')?>img/user5-128x128.jpg"
                                                                 alt="User Avatar" />
                                                             <div class="contacts-list-info">
                                                                 <span class="contacts-list-name">
@@ -408,7 +408,7 @@
                                                         <a href="#">
                                                             <img
                                                                 class="contacts-list-img"
-                                                                src="./assets/img/user6-128x128.jpg"
+                                                                src="<?= base_url('assets/admin/')?>img/user6-128x128.jpg"
                                                                 alt="User Avatar" />
                                                             <div class="contacts-list-info">
                                                                 <span class="contacts-list-name">
@@ -425,7 +425,7 @@
                                                         <a href="#">
                                                             <img
                                                                 class="contacts-list-img"
-                                                                src="./assets/img/user8-128x128.jpg"
+                                                                src="<?= base_url('assets/admin/')?>img/user8-128x128.jpg"
                                                                 alt="User Avatar" />
                                                             <div class="contacts-list-info">
                                                                 <span class="contacts-list-name">
@@ -488,7 +488,7 @@
                                                 <div class="col-3 p-2">
                                                     <img
                                                         class="img-fluid rounded-circle"
-                                                        src="./assets/img/user1-128x128.jpg"
+                                                        src="<?= base_url('assets/admin/')?>img/user1-128x128.jpg"
                                                         alt="User Image" />
                                                     <a
                                                         class="btn fw-bold fs-7 text-secondary text-truncate w-100 p-0"
@@ -500,7 +500,7 @@
                                                 <div class="col-3 p-2">
                                                     <img
                                                         class="img-fluid rounded-circle"
-                                                        src="./assets/img/user1-128x128.jpg"
+                                                        src="<?= base_url('assets/admin/')?>img/user1-128x128.jpg"
                                                         alt="User Image" />
                                                     <a
                                                         class="btn fw-bold fs-7 text-secondary text-truncate w-100 p-0"
@@ -512,7 +512,7 @@
                                                 <div class="col-3 p-2">
                                                     <img
                                                         class="img-fluid rounded-circle"
-                                                        src="./assets/img/user7-128x128.jpg"
+                                                        src="<?= base_url('assets/admin/')?>img/user7-128x128.jpg"
                                                         alt="User Image" />
                                                     <a
                                                         class="btn fw-bold fs-7 text-secondary text-truncate w-100 p-0"
@@ -524,7 +524,7 @@
                                                 <div class="col-3 p-2">
                                                     <img
                                                         class="img-fluid rounded-circle"
-                                                        src="./assets/img/user6-128x128.jpg"
+                                                        src="<?= base_url('assets/admin/')?>img/user6-128x128.jpg"
                                                         alt="User Image" />
                                                     <a
                                                         class="btn fw-bold fs-7 text-secondary text-truncate w-100 p-0"
@@ -536,7 +536,7 @@
                                                 <div class="col-3 p-2">
                                                     <img
                                                         class="img-fluid rounded-circle"
-                                                        src="./assets/img/user2-160x160.jpg"
+                                                        src="<?= base_url('assets/admin/')?>img/user2-160x160.jpg"
                                                         alt="User Image" />
                                                     <a
                                                         class="btn fw-bold fs-7 text-secondary text-truncate w-100 p-0"
@@ -548,7 +548,7 @@
                                                 <div class="col-3 p-2">
                                                     <img
                                                         class="img-fluid rounded-circle"
-                                                        src="./assets/img/user5-128x128.jpg"
+                                                        src="<?= base_url('assets/admin/')?>img/user5-128x128.jpg"
                                                         alt="User Image" />
                                                     <a
                                                         class="btn fw-bold fs-7 text-secondary text-truncate w-100 p-0"
@@ -560,7 +560,7 @@
                                                 <div class="col-3 p-2">
                                                     <img
                                                         class="img-fluid rounded-circle"
-                                                        src="./assets/img/user4-128x128.jpg"
+                                                        src="<?= base_url('assets/admin/')?>img/user4-128x128.jpg"
                                                         alt="User Image" />
                                                     <a
                                                         class="btn fw-bold fs-7 text-secondary text-truncate w-100 p-0"
@@ -572,7 +572,7 @@
                                                 <div class="col-3 p-2">
                                                     <img
                                                         class="img-fluid rounded-circle"
-                                                        src="./assets/img/user3-128x128.jpg"
+                                                        src="<?= base_url('assets/admin/')?>img/user3-128x128.jpg"
                                                         alt="User Image" />
                                                     <a
                                                         class="btn fw-bold fs-7 text-secondary text-truncate w-100 p-0"
@@ -842,7 +842,7 @@
                                         <div class="d-flex border-top py-2 px-1">
                                             <div class="col-2">
                                                 <img
-                                                    src="./assets/img/default-150x150.png"
+                                                    src="<?= base_url('assets/admin/')?>img/default-150x150.png"
                                                     alt="Product Image"
                                                     class="img-size-50" />
                                             </div>
@@ -858,7 +858,7 @@
                                         <div class="d-flex border-top py-2 px-1">
                                             <div class="col-2">
                                                 <img
-                                                    src="./assets/img/default-150x150.png"
+                                                    src="<?= base_url('assets/admin/')?>img/default-150x150.png"
                                                     alt="Product Image"
                                                     class="img-size-50" />
                                             </div>
@@ -876,7 +876,7 @@
                                         <div class="d-flex border-top py-2 px-1">
                                             <div class="col-2">
                                                 <img
-                                                    src="./assets/img/default-150x150.png"
+                                                    src="<?= base_url('assets/admin/')?>img/default-150x150.png"
                                                     alt="Product Image"
                                                     class="img-size-50" />
                                             </div>
@@ -894,7 +894,7 @@
                                         <div class="d-flex border-top py-2 px-1">
                                             <div class="col-2">
                                                 <img
-                                                    src="./assets/img/default-150x150.png"
+                                                    src="<?= base_url('assets/admin/')?>img/default-150x150.png"
                                                     alt="Product Image"
                                                     class="img-size-50" />
                                             </div>
