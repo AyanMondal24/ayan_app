@@ -6,23 +6,23 @@
       <div class="col-12 col-md-6 col-lg-4">
         <label for="name" class="form-label">Name <sup>*</sup></label>
         <input type="text" class="form-control" id="name" name="name" />
-        <span style="color:#ff3030; font-size:16px;letter-spacing:0.7px;font-weight:lighter!important;"><?php echo form_error('name'); ?></span>
+        <span style="color:#ff3030; font-size:16px;letter-spacing:0.7px;font-weight:lighter!important;" class="error-text"><?php echo form_error('name'); ?></span>
       </div>
 
       <div class="col-12 col-md-6 col-lg-4">
         <label for="price" class="form-label">Price Per Unit<sup>*</sup></label>
         <input type="text" class="form-control" id="price" name="price" />
-        <span style="color:#ff3030; font-size:16px;letter-spacing:0.7px;font-weight:lighter!important;"><?php echo form_error('price'); ?></span>
+        <span class="error-text" style="color:#ff3030; font-size:16px;letter-spacing:0.7px;font-weight:lighter!important;"><?php echo form_error('price'); ?></span>
       </div>
       <div class="col-12 col-md-6 col-lg-4">
         <label for="quantity" class="form-label">Quantity <sup>*</sup></label>
         <input type="text" class="form-control" id="quantity" name="quantity" />
-        <span style="color:#ff3030; font-size:16px;letter-spacing:0.7px;font-weight:lighter!important;"><?php echo form_error('quantity'); ?></span>
+        <span class="error-text" style="color:#ff3030; font-size:16px;letter-spacing:0.7px;font-weight:lighter!important;"><?php echo form_error('quantity'); ?></span>
       </div>
       <div class="col-12 col-md-6 col-lg-4">
         <label for="image" class="form-label">Image <sup>*</sup></label>
         <input type="file" class="form-control" id="image" name="image" />
-        <span style="color:#ff3030; font-size:16px;letter-spacing:0.7px;font-weight:lighter!important;"><?php echo form_error('image'); ?></span>
+        <span class="error-text" style="color:#ff3030; font-size:16px;letter-spacing:0.7px;font-weight:lighter!important;"><?php echo form_error('image'); ?></span>
       </div>
       <div class="col-12 col-md-6 col-lg-4">
         <label for="category" class="form-label">Category <sup>*</sup></label>
@@ -32,7 +32,7 @@
           <option value="2">Two</option>
           <option value="3">Three</option>
         </select>
-        <span style="color:#ff3030; font-size:16px;letter-spacing:0.7px;font-weight:lighter!important;"><?php echo form_error('category'); ?></span>
+        <span class="error-text" style="color:#ff3030; font-size:16px;letter-spacing:0.7px;font-weight:lighter!important;"><?php echo form_error('category'); ?></span>
       </div>
       <div class="col-12 col-md-6 col-lg-4">
         <label for="status" class="form-label">Active Or Deactive <sup>*</sup></label>
@@ -41,7 +41,7 @@
           <option value="0">Active</option>
           <option value="1">Deactive</option>
         </select>
-        <span style="color:#ff3030; font-size:16px;letter-spacing:0.7px;font-weight:lighter!important;"><?php echo form_error('status'); ?></span>
+        <span class="error-text" style="color:#ff3030; font-size:16px;letter-spacing:0.7px;font-weight:lighter!important;"><?php echo form_error('status'); ?></span>
       </div>
       <div class="col-12 col-md-6 col-lg-4">
         <label for="status" class="form-label">Available Or Not <sup>*</sup></label>
@@ -50,12 +50,12 @@
           <option value="0">Available</option>
           <option value="1">Not Available</option>
         </select>
-        <span style="color:#ff3030; font-size:16px;letter-spacing:0.7px;font-weight:lighter!important;"><?php echo form_error('is_available'); ?></span>
+        <span class="error-text" style="color:#ff3030; font-size:16px;letter-spacing:0.7px;font-weight:lighter!important;"><?php echo form_error('is_available'); ?></span>
       </div>
       <div class="col-12 col-md-6 col-lg-8">
         <label for="description" class="form-label">Description <sup>*</sup></label>
         <textarea class="form-control" aria-label="With textarea" name="description" rows="3"></textarea>
-        <span style="color:#ff3030; font-size:16px;letter-spacing:0.7px;font-weight:lighter!important;"><?php echo form_error('description'); ?></span>
+        <span class="error-text" style="color:#ff3030; font-size:16px;letter-spacing:0.7px;font-weight:lighter!important;"><?php echo form_error('description'); ?></span>
       </div>
     </div>
     <!-- <input type="file" name="testimg" id="" accept="image/*"> -->
@@ -69,57 +69,70 @@
 
 <script>
   document.addEventListener('DOMContentLoaded', function() {
-        $('#add-product').on('submit', function(e) {
-          e.preventDefault();
+    $('#add-product').on('submit', function(e) {
+      e.preventDefault();
 
-          const form = new FormData(this);
+      const form = new FormData(this);
 
-          $.ajax({
-            url: $(this).attr('action'),
-            type: 'POST',
-            data: form,
-            dataType: 'JSON',
-            processData: false, // ✅ important
-            contentType: false, // ✅ important
-            success: function(response) {
-              // const res = typeof response === 'string' ? JSON.parse(response) : response;
-              // // Extract error messages
-              // const errors = Array.from(res.errors.matchAll(/<p>(.*?)<\/p>/g)).map(m => m[1]);
-              // // Clear previous errors
-              // $('.error-text').remove();
+      $.ajax({
+        url: $(this).attr('action'),
+        type: 'POST',
+        data: form,
+        dataType: 'JSON',
+        processData: false, // ✅ important
+        contentType: false, // ✅ important
+        success: function(response) {
+          $('span.error-text').html('');
+          if (response.status === 'error') {
+            $.each(response.errors, function(field, message) {
+              $(`[name="${field}"]`)
+                .closest('.col-12, .col-md-6, .col-lg-4, .col-lg-8')
+                .find('span')
+                .html(message);
+            });
+          } else if (response.status === 'success') {
+            $("#add-product")[0].reset();
+            $("#response-msg")
+              .addClass('success-msg')
+              .removeClass('error-msg')
+              .html("Data Successfully Submitted.")
+              .fadeIn(500)
+              .delay(5000)
+              .fadeOut(500);
 
-              // // Field order map (match your input names here)
-              // const fields = ['name', 'price', 'quantity', 'category', 'status', 'availability', 'description'];
+          } else {
+            $("#response-msg")
+              .addClass('error-msg')
+              .removeClass('success-msg')
+              .html("Data Not Submitted.")
+              .fadeIn(500)
+              .delay(5000)
+              .fadeOut(500)
+          }
 
-              // // Attach errors below inputs
-              // fields.forEach((field, index) => {
-              //     if (errors[index]) {
-              //       $(`[name="${field}"]`).after(`<small class="error-text text-danger">${errors[index]}</small>`);
-              //     }
-
-                  if (response == 0) {
-                    $("#add-product").trigger('reset');
-                    $("#response-msg").addClass('success-msg').removeClass('error-msg').html("Data Successfully Submitted.").fadeIn(500);
-                    setTimeout(() => {
-                      $("#response-msg").removeClass('success-msg error-msg').html("").fadeOut(500);
-                    }, 5000);
-                  } else if (response == 1) {
-                    $("#response-msg").addClass('error-msg').removeClass('success-msg').html("Data Not Submitted.").fadeIn(500);
-                    setTimeout(() => {
-                      $("#response-msg").removeClass('success-msg error-msg').html("").fadeOut(500);
-                    }, 5000);
-                  } else {
-                    //  $("#response-msg").addClass('error-msg').removeClass('success-msg').html(response).fadeIn(500);
-                    console.log(response)
-                    // setTimeout(() => {
-                    // $("#response-msg").removeClass('success-msg error-msg').html("").fadeOut(500);
-                    // }, 5000);
-                  }
-                },
-                error: function(xhr) {
-                  console.error('Error:', xhr.responseText);
-                }
-              });
-          });
-        });
+          // if (response == 0) {
+          //   $("#add-product").trigger('reset');
+          //   $("#response-msg").addClass('success-msg').removeClass('error-msg').html("Data Successfully Submitted.").fadeIn(500);
+          //   setTimeout(() => {
+          //     $("#response-msg").removeClass('success-msg error-msg').html("").fadeOut(500);
+          //   }, 5000);
+          // } else if (response == 1) {
+          //   $("#response-msg").addClass('error-msg').removeClass('success-msg').html("Data Not Submitted.").fadeIn(500);
+          //   setTimeout(() => {
+          //     $("#response-msg").removeClass('success-msg error-msg').html("").fadeOut(500);
+          //   }, 5000);
+          // } else {
+          //   //  $("#response-msg").addClass('error-msg').removeClass('success-msg').html(response).fadeIn(500);
+          //   console.log(response)
+          //   // setTimeout(() => {
+          //   // $("#response-msg").removeClass('success-msg error-msg').html("").fadeOut(500);
+          //   // }, 5000);
+          // }
+        },
+        error: function(xhr) {
+          console.error('Error:', xhr.responseText);
+        }
+      });
+    });
+  });
 </script>
