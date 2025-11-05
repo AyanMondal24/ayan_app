@@ -32,12 +32,12 @@ class Products extends CI_Controller
         $this->form_validation->set_rules('description', 'Description', 'required');
 
         if ($this->form_validation->run() == FALSE) {
-            
-            $this->load->view('admin/includes/header');
-            $this->load->view('admin/add_products');
-            $this->load->view('admin/includes/footer');
+            $errors=validation_errors();
+            echo json_encode([
+                "status"=>"Ok",
+                "errors"=>$errors
+            ]);
         } else {
-
             $prefix = 'product_';
             $unique_id = uniqid();
             $config['upload_path'] = FCPATH . 'assets/uploads';
@@ -50,7 +50,7 @@ class Products extends CI_Controller
             $imageName = null;
 
             // Check if file is selected
-            if (!empty($_FILES['image']['name'])) {
+            if (!empty($_FILES['image']['name'])) { 
                 if ($this->upload->do_upload('image')) {
                     // File upload successful
                     $uploadData = $this->upload->data();
@@ -61,6 +61,9 @@ class Products extends CI_Controller
                     return;
                 }
             }
+            // else{
+            //     var_dump($_FILES); 
+            // }
             $data = [
                 'name' => $this->input->post('name'),
                 'price' => $this->input->post('price'),

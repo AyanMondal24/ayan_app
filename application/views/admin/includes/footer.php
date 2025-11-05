@@ -31,6 +31,8 @@
  <script src="<?= base_url('assets/admin/js/adminlte.js') ?>"></script>
  <!--end::Required Plugin(AdminLTE)--><!--begin::OverlayScrollbars Configure-->
 
+ <!-- jquery  -->
+ <script src="<?= base_url('assets/admin/js/jquery.js') ?>"></script>
  
  <script>
      const SELECTOR_SIDEBAR_WRAPPER = '.sidebar-wrapper';
@@ -211,23 +213,8 @@
      //-----------------
  </script>
  <!--end::Script-->
-<!-- jquery  -->
- <!-- <script src="<?= base_url('assets/admin/js/jquery.js') ?>"></script>
- <script>
-     $(document).ready(function() {
-         $(document).on('submit', '#add-product', function(e) {
-             e.preventDefault();
-            $.ajax({
-                url: '<?= site_url('admin/Products/addProductsDB');?>',
-                type:'POST',
-                data:$('#add-product').serialize(),
-                success: function(response){
-                    console.log(response)
-                }
-            });
-         });
-     });
- </script> -->
+
+
  </body>
  <!--end::Body-->
 

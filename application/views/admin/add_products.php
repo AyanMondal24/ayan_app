@@ -8,7 +8,7 @@
         <input type="text" class="form-control" id="name" name="name" />
         <span style="color:#ff3030; font-size:16px;letter-spacing:0.7px;font-weight:lighter!important;"><?php echo form_error('name'); ?></span>
       </div>
-      
+
       <div class="col-12 col-md-6 col-lg-4">
         <label for="price" class="form-label">Price Per Unit<sup>*</sup></label>
         <input type="text" class="form-control" id="price" name="price" />
@@ -55,12 +55,71 @@
       <div class="col-12 col-md-6 col-lg-8">
         <label for="description" class="form-label">Description <sup>*</sup></label>
         <textarea class="form-control" aria-label="With textarea" name="description" rows="3"></textarea>
-            <span style="color:#ff3030; font-size:16px;letter-spacing:0.7px;font-weight:lighter!important;"><?php echo form_error('description'); ?></span>
+        <span style="color:#ff3030; font-size:16px;letter-spacing:0.7px;font-weight:lighter!important;"><?php echo form_error('description'); ?></span>
       </div>
     </div>
+    <!-- <input type="file" name="testimg" id="" accept="image/*"> -->
     <div class="mt-2 mb-2 col-12">
       <input type="submit" name="submit" value="Submit" class="form-control btn btn-primary w-25 text-light">
     </div>
   </form>
+
+  <div id="response-msg"> </div>
 </div>
 
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+        $('#add-product').on('submit', function(e) {
+          e.preventDefault();
+
+          const form = new FormData(this);
+
+          $.ajax({
+            url: $(this).attr('action'),
+            type: 'POST',
+            data: form,
+            dataType: 'JSON',
+            processData: false, // ✅ important
+            contentType: false, // ✅ important
+            success: function(response) {
+              // const res = typeof response === 'string' ? JSON.parse(response) : response;
+              // // Extract error messages
+              // const errors = Array.from(res.errors.matchAll(/<p>(.*?)<\/p>/g)).map(m => m[1]);
+              // // Clear previous errors
+              // $('.error-text').remove();
+
+              // // Field order map (match your input names here)
+              // const fields = ['name', 'price', 'quantity', 'category', 'status', 'availability', 'description'];
+
+              // // Attach errors below inputs
+              // fields.forEach((field, index) => {
+              //     if (errors[index]) {
+              //       $(`[name="${field}"]`).after(`<small class="error-text text-danger">${errors[index]}</small>`);
+              //     }
+
+                  if (response == 0) {
+                    $("#add-product").trigger('reset');
+                    $("#response-msg").addClass('success-msg').removeClass('error-msg').html("Data Successfully Submitted.").fadeIn(500);
+                    setTimeout(() => {
+                      $("#response-msg").removeClass('success-msg error-msg').html("").fadeOut(500);
+                    }, 5000);
+                  } else if (response == 1) {
+                    $("#response-msg").addClass('error-msg').removeClass('success-msg').html("Data Not Submitted.").fadeIn(500);
+                    setTimeout(() => {
+                      $("#response-msg").removeClass('success-msg error-msg').html("").fadeOut(500);
+                    }, 5000);
+                  } else {
+                    //  $("#response-msg").addClass('error-msg').removeClass('success-msg').html(response).fadeIn(500);
+                    console.log(response)
+                    // setTimeout(() => {
+                    // $("#response-msg").removeClass('success-msg error-msg').html("").fadeOut(500);
+                    // }, 5000);
+                  }
+                },
+                error: function(xhr) {
+                  console.error('Error:', xhr.responseText);
+                }
+              });
+          });
+        });
+</script>
