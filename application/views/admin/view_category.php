@@ -11,7 +11,7 @@
                         <thead>
                             <tr>
                                 <th width="5%">#</th>
-                                <th width="15%">Image</th>
+                                <th width="6%">Image</th>
                                 <th width="20%">Name</th>
                                 <th width="15%">Action</th>
                             </tr>
@@ -29,9 +29,9 @@
                                 <tr class='align-middle'>   
                                     <td><?= $id ?></td>
                                     <td>
-                                        <div class='mt-3'>
+                                        <div class='d-block '>
                                             <img src='<?= base_url('assets/uploads/category/'. $image)?>' alt='Preview' class='img-thumbnail rounded shadow-sm d-block'
-                                                style='width:150px; height:150px; object-fit:cover;'>
+                                                style='width:150px; height:100px; object-fit:cover;'>
                                         </div>
                                     </td>
                                     <td><?= $name ?></td>

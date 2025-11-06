@@ -64,3 +64,13 @@
 .product-view table tbody tr td{
   text-align: center;
 }
+
+/* category view  */
+.category-view table thead tr th{
+  background-color: #343a40;
+  color: #fff;
+  text-align: center;
+}
+.category-view table tbody tr td{
+  text-align: center;
+}

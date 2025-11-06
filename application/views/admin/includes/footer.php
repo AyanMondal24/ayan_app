@@ -33,7 +33,8 @@
  <!--end::Required Plugin(AdminLTE)--><!--begin::OverlayScrollbars Configure-->
 
  <!-- jquery  -->
- <script src="<?= base_url('assets/admin/js/jquery.js') ?>"></script>
+ <!-- <script src="<?= base_url('assets/admin/js/jquery.js') ?>"></script> -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
  
  <script>
      const SELECTOR_SIDEBAR_WRAPPER = '.sidebar-wrapper';

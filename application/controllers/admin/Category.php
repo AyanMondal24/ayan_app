@@ -25,6 +25,9 @@ class Category extends CI_Controller
         $this->form_validation->set_rules('name', 'Name', 'required|trim');
         $this->form_validation->set_rules('image', 'Category Image', 'callback_file_check');
         if ($this->form_validation->run() == FALSE) {
+            // $this->load->view('admin/includes/header');
+            // $this->load->view('admin/add_category');
+            // $this->load->view('admin/includes/footer');
             $errors = [];
             $fields_name = ['name', 'image'];
             foreach ($fields_name as $field) {
