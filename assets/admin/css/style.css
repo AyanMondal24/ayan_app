@@ -1,13 +1,13 @@
-.add-products h2 {
+.add-form h2 {
   font-size: 34px !important;
 }
 
 
-.add-products form {
+.add-form form {
   background-color: #343a40;
 }
 
-.add-products form label {
+.add-form form label {
   font-size: 16px !important;
   font-weight: bold;
   /* color: rgb(229, 48, 48); */
@@ -16,7 +16,7 @@
   margin-bottom: 0px !important;
 }
 
-.add-products form label sup {
+.add-form form label sup {
   color: #ff3030;
   font-size: 22px;
   font-weight: bold;
@@ -25,7 +25,7 @@
   margin-top: 4px !important;
 }
 
-.add-products form input {
+.add-form form input {
   color: black;
   letter-spacing: 0.3px;
   font-size: 16px !important;

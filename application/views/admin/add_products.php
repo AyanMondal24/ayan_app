@@ -1,4 +1,4 @@
-<div class="container add-products">
+<div class="container add-products add-form">
   <h2 class="text-center">Adding Products</h2>
   <hr>
   <form action="<?= site_url('/admin/save-product') ?>" method="post" enctype="multipart/form-data" id="add-product" class=" p-2 rounded">
@@ -60,7 +60,7 @@
     </div>
     <!-- <input type="file" name="testimg" id="" accept="image/*"> -->
     <div class="mt-2 mb-2 col-12">
-      <input type="submit" name="submit" value="Submit" class="form-control btn btn-primary w-25 text-light">
+      <input type="submit" name="submit" value="Submit" class="btn btn-primary w-25 text-light">
     </div>
   </form>
 
@@ -109,25 +109,6 @@
               .delay(5000)
               .fadeOut(500)
           }
-
-          // if (response == 0) {
-          //   $("#add-product").trigger('reset');
-          //   $("#response-msg").addClass('success-msg').removeClass('error-msg').html("Data Successfully Submitted.").fadeIn(500);
-          //   setTimeout(() => {
-          //     $("#response-msg").removeClass('success-msg error-msg').html("").fadeOut(500);
-          //   }, 5000);
-          // } else if (response == 1) {
-          //   $("#response-msg").addClass('error-msg').removeClass('success-msg').html("Data Not Submitted.").fadeIn(500);
-          //   setTimeout(() => {
-          //     $("#response-msg").removeClass('success-msg error-msg').html("").fadeOut(500);
-          //   }, 5000);
-          // } else {
-          //   //  $("#response-msg").addClass('error-msg').removeClass('success-msg').html(response).fadeIn(500);
-          //   console.log(response)
-          //   // setTimeout(() => {
-          //   // $("#response-msg").removeClass('success-msg error-msg').html("").fadeOut(500);
-          //   // }, 5000);
-          // }
         },
         error: function(xhr) {
           console.error('Error:', xhr.responseText);

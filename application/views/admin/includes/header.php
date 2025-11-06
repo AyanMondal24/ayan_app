@@ -360,13 +360,13 @@
                                 </a>
                                 <ul class="nav nav-treeview">
                                     <li class="nav-item">
-                                        <a href="<?= site_url('assets/admin') ?>/widgets/small-box.html" class="nav-link">
+                                        <a href="<?= site_url('admin/add-category') ?>" class="nav-link">
                                             <i class="nav-icon bi bi-circle"></i>
                                             <p>Add Catgeory</p>
                                         </a>
                                     </li>
                                     <li class="nav-item">
-                                        <a href="<?= site_url('assets/admin') ?>/widgets/info-box.html" class="nav-link">
+                                        <a href="<?= site_url('admin/view-category') ?>" class="nav-link">
                                             <i class="nav-icon bi bi-circle"></i>
                                             <p>View Category</p>
                                         </a>

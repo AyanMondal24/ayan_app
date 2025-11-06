@@ -15,6 +15,7 @@
  </div>
  <!--end::App Wrapper-->
  <!--begin::Script-->
+ <!-- bootstrap 5.3.7 -->
  <script
      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.min.js"
      crossorigin="anonymous"></script>

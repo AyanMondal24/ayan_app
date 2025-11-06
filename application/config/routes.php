@@ -64,4 +64,8 @@ $route['admin/add-products'] = 'admin/Products/addProductsForm';
 $route['admin/view-products']='admin/Products/viewProducts';
 
 $route['admin/save-product'] = 'admin/Products/addProductsDB';
+
+$route['admin/add-category'] = 'admin/Category/addCategoryForm';
+$route['admin/save-category']='admin/Category/addCategoryDB';
+$route['admin/view-category']='admin/Category/viewCategory';
 // $route['admin/view-products'] = 'admin/Products/Products';
