@@ -1,12 +1,11 @@
-<div class="container-fluid">
-    <div class="row">
-        <div class="col-12">
-            <div class="card mb-4">
-                <div class="card-header">
-                    <h3 class="card-title">Bordered Table</h3>
-                </div>
-                <!-- /.card-header -->
-                <div class="card-body product-view">
+<div class="row">
+    <div class="col-12">
+        <div class="card mb-4">
+            <div class="card-header">
+                <h3 class="card-title">Bordered Table</h3>
+            </div>
+            <!-- /.card-header -->
+            <div class="card-body product-view bg-danger">
                     <table class="table table-bordered table-responsive">
                         <thead>
                             <tr>
@@ -28,15 +27,16 @@
                                 // $status=(int) $product->status;
                                 // $is_available=(int) $product->is_available;
                                 $combine_status = $product->status_combine;
-                                
-                                // 0/0 means first 0 (active/deactive) and the second 0 (available/unavailable)
-                                if ($combine_status === "0/0") {
+
+                                if($combine_status === "0/0"){
                                     $store_status .= "<span class='badge bg-success'>Active / Available</span>";
-                                } else if ($combine_status === "1/1") {
+                                }
+                                else if($combine_status === "1/1"){
                                     $store_status .= "<span class='badge bg-danger'>Inactive / Unavailable</span>";
-                                } else if ($combine_status === "1/0") {
+                                }
+                                else if($combine_status === "1/0"){
                                     $store_status .= "<span class='badge bg-secondary'>Inactive / Available</span>";
-                                } else if ($combine_status ===  "0/1") {
+                                }else if($combine_status ===  "0/1"){
                                     $store_status .= "<span class='badge bg-warning'>Active / Unavailable</span>";
                                 }
                                 $output .= "
@@ -73,11 +73,10 @@
                         <li class="page-item"><a class="page-link" href="#">&raquo;</a></li>
                     </ul>
                 </div> -->
-
-                </div>
+                
             </div>
-
         </div>
 
     </div>
+
 </div>

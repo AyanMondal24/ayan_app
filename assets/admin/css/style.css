@@ -10,7 +10,7 @@
 .add-products form label {
   font-size: 16px !important;
   font-weight: bold;
-  color: rgb(229, 48, 48);
+  /* color: rgb(229, 48, 48); */
   letter-spacing: 0.7px;
   color: #fff;
   margin-bottom: 0px !important;
@@ -52,4 +52,15 @@
   .form-label {
     font-size: 14px;
   }
+}
+
+/* product view start  */
+
+.product-view table thead tr th{
+  background-color: #343a40;
+  color: #fff;
+  text-align: center;
+}
+.product-view table tbody tr td{
+  text-align: center;
 }

@@ -1,5 +1,5 @@
  <!--begin::Footer-->
- <footer class="app-footer">
+ <!-- <footer class="app-footer"> -->
      <!--begin::To the end-->
      <!-- <div class="float-end d-none d-sm-inline">Anything you want</div> -->
      <!--end::To the end-->
@@ -10,11 +10,15 @@
             </strong> -->
      <!-- All rights reserved. -->
      <!--end::Copyright-->
- </footer>
+ <!-- </footer> -->
  <!--end::Footer-->
  </div>
  <!--end::App Wrapper-->
  <!--begin::Script-->
+ <script
+     src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.min.js"
+     crossorigin="anonymous"></script>
+ <!--end::Required Plugin(Bootstrap 5)--><!--begin::Required Plugin(AdminLTE)-->
  <!--begin::Third Party Plugin(OverlayScrollbars)-->
  <script
      src="https://cdn.jsdelivr.net/npm/overlayscrollbars@2.11.0/browser/overlayscrollbars.browser.es6.min.js"
@@ -24,10 +28,6 @@
      src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
      crossorigin="anonymous"></script>
  <!--end::Required Plugin(popperjs for Bootstrap 5)--><!--begin::Required Plugin(Bootstrap 5)-->
- <script
-     src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.min.js"
-     crossorigin="anonymous"></script>
- <!--end::Required Plugin(Bootstrap 5)--><!--begin::Required Plugin(AdminLTE)-->
  <script src="<?= base_url('assets/admin/js/adminlte.js') ?>"></script>
  <!--end::Required Plugin(AdminLTE)--><!--begin::OverlayScrollbars Configure-->
 
