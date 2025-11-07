@@ -62,8 +62,9 @@ $route['translate_uri_dashes'] = FALSE;
 
 $route['admin/add-products'] = 'admin/Products/addProductsForm';
 $route['admin/view-products']='admin/Products/viewProducts';
-
 $route['admin/save-product'] = 'admin/Products/addProductsDB';
+$route['admin/single-view/(:any)'] = 'admin/Products/singleView/$1';
+
 
 $route['admin/add-category'] = 'admin/Category/addCategoryForm';
 $route['admin/save-category']='admin/Category/addCategoryDB';

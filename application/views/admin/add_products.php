@@ -28,7 +28,12 @@
         <label for="category" class="form-label">Category <sup>*</sup></label>
         <select class="form-select" aria-label="Default select example" name="category">
           <option value="">Choose Category</option>
-          <option value="1">One</option>
+          <?php
+          foreach($category as $cat){
+            echo  "<option value='".$cat->id."'>".$cat->name."</option>";
+          }
+          ?>
+        
           <option value="2">Two</option>
           <option value="3">Three</option>
         </select>

@@ -8,14 +8,17 @@ class Products extends CI_Controller
     {
         parent::__construct();
         $this->load->model('product_model');
+        $this->load->model('category_model');
         $this->load->helper('form', 'url');
         $this->load->library('pagination');
+        $this->load->library('encryption');
     }
 
     public function addProductsForm()
     {
+        $data['category']=$this->category_model->getAllCategory();
         $this->load->view('admin/includes/header');
-        $this->load->view('admin/add_products');
+        $this->load->view('admin/add_products',$data);
         $this->load->view('admin/includes/footer');
     }
 
@@ -168,11 +171,24 @@ class Products extends CI_Controller
 
         // 🔹 Get data
         $data['products'] = $this->product_model->getProducts($config['per_page'], $page);
+        $data['offset'] = $page;
         $data['links'] = $this->pagination->create_links();
 
         // $data['products'] = $this->product_model->getProducts();
         $this->load->view('admin/includes/header');
         $this->load->view('admin/view_products', $data);
+        $this->load->view('admin/includes/footer');
+    }
+
+    public function singleView($enc_id){
+         $id = $this->encryption->decrypt(urldecode($enc_id));
+        // if(!$id){
+        //     show_error('Invalid product link or ID');
+        //     return;
+        // }
+       $data['product'] = $this->product_model->singleView($id);
+        $this->load->view('admin/includes/header');
+        $this->load->view('admin/single_view',$data);
         $this->load->view('admin/includes/footer');
     }
 }
