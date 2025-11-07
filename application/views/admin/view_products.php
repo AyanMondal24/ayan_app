@@ -28,7 +28,7 @@
                                 // $status=(int) $product->status;
                                 // $is_available=(int) $product->is_available;
                                 $combine_status = $product->status_combine;
-                                
+
                                 // 0/0 means first 0 (active/deactive) and the second 0 (available/unavailable)
                                 if ($combine_status === "0/0") {
                                     $store_status .= "<span class='badge bg-success'>Active / Available</span>";
@@ -63,6 +63,10 @@
 
                         </tbody>
                     </table>
+
+                    <div>
+                        <?= $links ?>
+                    </div>
                     <!-- /.card-body -->
                     <!-- <div class="card-footer clearfix">
                     <ul class="pagination pagination-sm m-0 float-end">

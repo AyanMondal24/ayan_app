@@ -8,8 +8,8 @@ class Products extends CI_Controller
     {
         parent::__construct();
         $this->load->model('product_model');
-        // $this->load->helper('url', 'form');
         $this->load->helper('form', 'url');
+        $this->load->library('pagination');
     }
 
     public function addProductsForm()
@@ -139,7 +139,38 @@ class Products extends CI_Controller
 
     public function viewProducts()
     {
-        $data['products'] = $this->product_model->getProducts();
+
+        $config = [];
+        $config['base_url'] = base_url('admin/Products/viewProducts');
+        $config['total_rows'] = $this->product_model->totalProducts(); //total records
+        $config['per_page'] = 3;
+        $config['uri_segment'] = 4;
+
+        $config['full_tag_open'] = '<ul class="pagination">';
+        $config['full_tag_close'] = '</ul>';
+        $config['attributes'] = ['class' => 'page-link'];
+        $config['first_tag_open'] = '<li class="page-item">';
+        $config['first_tag_close'] = '</li>';
+        $config['last_tag_open'] = '<li class="page-item">';
+        $config['last_tag_close'] = '</li>';
+        $config['next_tag_open'] = '<li class="page-item">';
+        $config['next_tag_close'] = '</li>';
+        $config['prev_tag_open'] = '<li class="page-item">';
+        $config['prev_tag_close'] = '</li>';
+        $config['cur_tag_open'] = '<li class="page-item active"><span class="page-link">';
+        $config['cur_tag_close'] = '</span></li>';
+        $config['num_tag_open'] = '<li class="page-item">';
+        $config['num_tag_close'] = '</li>';
+
+        $this->pagination->initialize($config);
+        // 🔹 Determine current page
+        $page = ($this->uri->segment(4)) ? $this->uri->segment(4) : 0;
+
+        // 🔹 Get data
+        $data['products'] = $this->product_model->getProducts($config['per_page'], $page);
+        $data['links'] = $this->pagination->create_links();
+
+        // $data['products'] = $this->product_model->getProducts();
         $this->load->view('admin/includes/header');
         $this->load->view('admin/view_products', $data);
         $this->load->view('admin/includes/footer');
