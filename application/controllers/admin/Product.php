@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
 
-class Products extends CI_Controller
+class Product extends CI_Controller
 {
 
     function __construct()
@@ -12,17 +12,18 @@ class Products extends CI_Controller
         $this->load->helper('form', 'url');
         $this->load->library('pagination');
         $this->load->library('encryption');
+        $this->load->helper('common');
     }
 
-    public function addProductsForm()
+    public function add()
     {
-        $data['category']=$this->category_model->getAllCategory();
+        $data['category'] = $this->category_model->getAllCategory();
         $this->load->view('admin/includes/header');
-        $this->load->view('admin/add_products',$data);
+        $this->load->view('admin/add_products', $data);
         $this->load->view('admin/includes/footer');
     }
 
-    public function addProductsDB()
+    public function store()
     {
         $this->load->library('form_validation');
 
@@ -140,14 +141,16 @@ class Products extends CI_Controller
         return TRUE;
     }
 
-    public function viewProducts()
+    public function index($page = 0)
     {
+        // echo $page;
+        // die();
 
         $config = [];
-        $config['base_url'] = base_url('admin/Products/viewProducts');
+        $config['base_url'] = site_url('admin/Product');
         $config['total_rows'] = $this->product_model->totalProducts(); //total records
         $config['per_page'] = 3;
-        $config['uri_segment'] = 4;
+        $config['uri_segment'] = 3;
 
         $config['full_tag_open'] = '<ul class="pagination">';
         $config['full_tag_close'] = '</ul>';
@@ -167,12 +170,12 @@ class Products extends CI_Controller
 
         $this->pagination->initialize($config);
         // 🔹 Determine current page
-        $page = ($this->uri->segment(4)) ? $this->uri->segment(4) : 0;
+        $page = ($this->uri->segment(3)) ? $this->uri->segment(3) : 0;
 
         // 🔹 Get data
         $data['products'] = $this->product_model->getProducts($config['per_page'], $page);
-        $data['offset'] = $page;
         $data['links'] = $this->pagination->create_links();
+        $data['offset'] = $page;
 
         // $data['products'] = $this->product_model->getProducts();
         $this->load->view('admin/includes/header');
@@ -180,15 +183,22 @@ class Products extends CI_Controller
         $this->load->view('admin/includes/footer');
     }
 
-    public function singleView($enc_id){
-         $id = $this->encryption->decrypt(urldecode($enc_id));
-        // if(!$id){
-        //     show_error('Invalid product link or ID');
-        //     return;
-        // }
-       $data['product'] = $this->product_model->singleView($id);
+    public function view($enc_id)
+    {
+        var_dump($enc_id);
+        echo "<br>";
+        // $decrypt_url_id = decrypt_url($enc_id);
+        $id =  $this->encryption->decrypt(base64_decode(urldecode($enc_id)));
+        var_dump($id);
+
+        if (!$id) {
+            // show_error('Invalid product link or ID');
+            show_404();
+            return;
+        }
+        $data['product'] = $this->product_model->singleView($id);
         $this->load->view('admin/includes/header');
-        $this->load->view('admin/single_view',$data);
+        $this->load->view('admin/single_view', $data);
         $this->load->view('admin/includes/footer');
     }
 }

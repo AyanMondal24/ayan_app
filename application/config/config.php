@@ -328,6 +328,8 @@ $config['cache_query_string'] = FALSE;
 */
 $config['encryption_key'] = 'Ayan@2025_SecretKey!#123';
 
+$config['encryption_driver'] = 'openssl';
+
 /*
 |--------------------------------------------------------------------------
 | Session Variables

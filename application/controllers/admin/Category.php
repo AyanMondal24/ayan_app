@@ -11,7 +11,7 @@ class Category extends CI_Controller
         $this->load->helper('form', 'url');
     }
 
-    public function addCategoryForm()
+    public function add()
     {
 
         $this->load->view('admin/includes/header');
@@ -19,7 +19,7 @@ class Category extends CI_Controller
         $this->load->view('admin/includes/footer');
     }
 
-    public function addCategoryDB()
+    public function store()
     {
         // if (isset($_POST['submit'])) {
         $this->load->library('form_validation');
@@ -117,7 +117,7 @@ class Category extends CI_Controller
         return TRUE;
     }
 
-    public function viewCategory(){
+    public function index(){
         $data['category']=$this->category_model->getCategory();
         $this->load->view('admin/includes/header');
         $this->load->view('admin/view_category',$data);

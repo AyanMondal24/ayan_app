@@ -22,10 +22,11 @@
                             <?php
 
                             $i = $offset + 1;
+                            
                             foreach ($products as $product) {
 
                                 $store_status = "";
-                                $enc_id = urlencode($this->encryption->encrypt($product->id));
+                                $enc_id =base64_encode($this->encryption->encrypt($product->id));
                                 $name = ucfirst($product->name);
                                 // $status=(int) $product->status;
                                 // $is_available=(int) $product->is_available;
@@ -50,7 +51,7 @@
                             <td> <?= $product->quantity ?></td>
                             <td> <?= $store_status ?></td>
                             <td class='d-flex align-items-center justify-content-center'>
-                                <a href="<?= site_url('admin/single-view/' . $enc_id); ?>" role='button' class='btn btn-primary btn-sm me-1'><i class='fa-solid fa-eye'></i>
+                                <a href="<?= base_url('admin/Product/view/' .urlencode($enc_id)) ?>" role='button' class='btn btn-primary btn-sm me-1'><i class='fa-solid fa-eye'></i>
                                 </a>
                                 <a href='<?= site_url('admin/update/'.$product->id) ?>' role='button' class='btn-sm btn btn-warning text-light me-1'><i class='fa-solid fa-edit'></i>
                                 </a>

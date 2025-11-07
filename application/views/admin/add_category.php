@@ -2,7 +2,7 @@
     <h2 class="text-center">Adding Category</h2>
     <hr>
 
-    <form action="<?= site_url('/admin/save-category') ?>" method="post" enctype="multipart/form-data" id="add-category" class=" p-2 rounded">
+    <form action="<?= site_url('/admin/Category/store') ?>" method="post" enctype="multipart/form-data" id="add-category" class=" p-2 rounded">
         <div class="row">
             <div class="col-12 col-md-6 col-lg-6">
                 <label for="name" class="form-label">Name <sup>*</sup></label>

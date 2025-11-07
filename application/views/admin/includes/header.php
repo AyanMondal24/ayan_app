@@ -333,13 +333,13 @@
                             </a>
                             <ul class="nav nav-treeview">
                                 <li class="nav-item">
-                                    <a href="<?= site_url('admin/add-products') ?>" class="nav-link">
+                                    <a href="<?= site_url('admin/Product/add') ?>" class="nav-link">
                                         <i class="nav-icon bi bi-circle"></i>
                                         <p>Add Products</p>
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="<?= site_url('admin/view-products') ?>" class="nav-link">
+                                    <a href="<?= site_url('admin/Product') ?>" class="nav-link">
                                         <i class="nav-icon bi bi-circle"></i>
                                         <p>View Products</p>
                                     </a>
@@ -360,13 +360,13 @@
                                 </a>
                                 <ul class="nav nav-treeview">
                                     <li class="nav-item">
-                                        <a href="<?= site_url('admin/add-category') ?>" class="nav-link">
+                                        <a href="<?= site_url('admin/Category/add') ?>" class="nav-link">
                                             <i class="nav-icon bi bi-circle"></i>
                                             <p>Add Catgeory</p>
                                         </a>
                                     </li>
                                     <li class="nav-item">
-                                        <a href="<?= site_url('admin/view-category') ?>" class="nav-link">
+                                        <a href="<?= site_url('admin/Category') ?>" class="nav-link">
                                             <i class="nav-icon bi bi-circle"></i>
                                             <p>View Category</p>
                                         </a>
