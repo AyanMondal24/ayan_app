@@ -13,14 +13,14 @@ class Product extends CI_Controller
         $this->load->library('pagination');
         $this->load->library('encryption');
         $this->load->helper('common');
+        $this->load->helper('view');
     }
 
     public function add()
     {
         $data['category'] = $this->category_model->getAllCategory();
-        $this->load->view('admin/includes/header');
-        $this->load->view('admin/add_products', $data);
-        $this->load->view('admin/includes/footer');
+        
+        load_admin_views('add_products',$data);
     }
 
     public function store()
@@ -141,16 +141,16 @@ class Product extends CI_Controller
         return TRUE;
     }
 
-    public function index($page = 0)
+    public function index()
     {
         // echo $page;
         // die();
 
         $config = [];
-        $config['base_url'] = site_url('admin/Product');
+        $config['base_url'] = site_url('admin/Product/index');
         $config['total_rows'] = $this->product_model->totalProducts(); //total records
         $config['per_page'] = 3;
-        $config['uri_segment'] = 3;
+        $config['uri_segment'] = 4;
 
         $config['full_tag_open'] = '<ul class="pagination">';
         $config['full_tag_close'] = '</ul>';
@@ -170,35 +170,46 @@ class Product extends CI_Controller
 
         $this->pagination->initialize($config);
         // 🔹 Determine current page
-        $page = ($this->uri->segment(3)) ? $this->uri->segment(3) : 0;
-
+        $offset = ($this->uri->segment(4)) ? $this->uri->segment(4) : 0;
+        // $offset = $this->uri->segment(4, 0);
         // 🔹 Get data
-        $data['products'] = $this->product_model->getProducts($config['per_page'], $page);
+        $data['products'] = $this->product_model->getProducts($config['per_page'], $offset);
         $data['links'] = $this->pagination->create_links();
-        $data['offset'] = $page;
+        $data['offset'] = $offset;
 
         // $data['products'] = $this->product_model->getProducts();
-        $this->load->view('admin/includes/header');
-        $this->load->view('admin/view_products', $data);
-        $this->load->view('admin/includes/footer');
+        // $this->load->view('admin/includes/header');
+        // $this->load->view('admin/view_products', $data);
+        // $this->load->view('admin/includes/footer');
+        load_admin_views('view_products',$data);
     }
 
     public function view($enc_id)
     {
-        var_dump($enc_id);
-        echo "<br>";
-        // $decrypt_url_id = decrypt_url($enc_id);
+     
         $id =  $this->encryption->decrypt(base64_decode(urldecode($enc_id)));
-        var_dump($id);
 
         if (!$id) {
             // show_error('Invalid product link or ID');
             show_404();
             return;
         }
+        // var_dump($data);
         $data['product'] = $this->product_model->singleView($id);
-        $this->load->view('admin/includes/header');
-        $this->load->view('admin/single_view', $data);
-        $this->load->view('admin/includes/footer');
+        // $this->load->view('admin/includes/header');
+        // $this->load->view('admin/single_view', $data);
+        // $this->load->view('admin/includes/footer');
+        load_admin_views('single_view',$data);
+    }
+
+    public function edit($enc_id){
+        $id=$this->encryption->decrypt(base64_decode(urldecode($enc_id)));
+        var_dump($id);
+            // Check if decryption succeeded (returns false on failure)
+    if ($id === false) {
+        show_error('Invalid or corrupted ID.', 400);
+        return;
+    }
+
     }
 }

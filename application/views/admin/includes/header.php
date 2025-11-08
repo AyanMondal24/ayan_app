@@ -1,7 +1,5 @@
 <!doctype html>
 <html lang="en">
-<!--begin::Head-->
-
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>Organic Veggies & Fruits</title>
@@ -24,7 +22,9 @@
     <!--begin::Accessibility Features-->
     <!-- Skip links will be dynamically added by accessibility.js -->
     <meta name="supported-color-schemes" content="light dark" />
-    <!-- bootstrap cdn  -->
+     <!-- ==========================
+     1️⃣ CORE FRAMEWORKS
+========================== -->
     <link
         href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css"
         rel="stylesheet"
@@ -40,7 +40,7 @@
         crossorigin="anonymous"
         media="print"
         onload="this.media='all'" />
-    <!-- fontawesome  -->
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css">
     <!--end::Fonts-->
     <!--begin::Third Party Plugin(OverlayScrollbars)-->
@@ -59,6 +59,7 @@
     <link rel="stylesheet" href="<?= base_url('assets/admin/css/adminlte.css') ?>" />
     <!--end::Required Plugin(AdminLTE)-->
     <link rel="stylesheet" href="<?= base_url('assets/admin/css/style.css') ?>">
+    <!-- my css  -->
     <!-- apexcharts -->
     <link
         rel="stylesheet"

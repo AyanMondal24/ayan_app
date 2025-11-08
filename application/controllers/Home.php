@@ -6,7 +6,7 @@ class Home extends CI_Controller
 	function __construct()
 	{
 		parent::__construct();
-		$this->load->model('Product');
+		// $this->load->model('Product');
 	}
 	public function index()
 	{

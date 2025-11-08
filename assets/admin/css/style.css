@@ -32,7 +32,8 @@
   padding: 5px 7px;
   margin-bottom: 8px;
 }
-#response-msg{
+
+#response-msg {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -40,14 +41,17 @@
   width: 100%;
   padding: 10px 8px;
 }
-.success-msg{
+
+.success-msg {
   color: #fff;
   background-color: green;
 }
-.error-msg{
+
+.error-msg {
   color: #fff;
   background-color: red;
 }
+
 @media (max-width: 768px) {
   .form-label {
     font-size: 14px;
@@ -56,21 +60,52 @@
 
 /* product view start  */
 
-.product-view table thead tr th{
+.product-view table thead tr th {
   background-color: #343a40;
   color: #fff;
-  text-align: center;
-}
-.product-view table tbody tr td{
   text-align: center;
 }
 
+.product-view table tbody tr td {
+  text-align: center;
+}
+
+/* product single view start  */
+.single-view {
+  background-color: #f8f9fa;
+  font-family: 'Poppins', sans-serif;
+}
+
+.single-view .product-card {
+  background: #fff !important;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  transition: 0.3s ease;
+}
+
+.single-view .product-card:hover {
+  transform: scale(1.01);
+}
+
+.single-view .product-img {
+  width: 100%;
+  height: 300px;
+  object-fit: cover;
+}
+
+.badge-status {
+  font-size: 0.9rem;
+  padding: 0.4rem 0.8rem;
+}
+
 /* category view  */
-.category-view table thead tr th{
+.category-view table thead tr th {
   background-color: #343a40;
   color: #fff;
   text-align: center;
 }
-.category-view table tbody tr td{
+
+.category-view table tbody tr td {
   text-align: center;
 }
