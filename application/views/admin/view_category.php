@@ -18,8 +18,10 @@
                         </thead>
                         <tbody>
                             <?php
+                            $serial_no =$offset + 1;
                             $output = "";
                             foreach ($category as $cat) {
+                                $enc_id=urlencode(base64_encode($this->encryption->encrypt($cat->id)));
 
                                 $id = $cat->id;
                                 $name = ucfirst($cat->name);
@@ -27,7 +29,7 @@
                                 // $output .= "
                             ?>
                                 <tr class='align-middle'>   
-                                    <td><?= $id ?></td>
+                                    <td><?= $serial_no++ ?></td>
                                     <td>
                                         <div class='d-block '>
                                             <img src='<?= base_url('assets/uploads/category/'. $image)?>' alt='Preview' class='img-thumbnail rounded shadow-sm d-block'
@@ -36,10 +38,10 @@
                                     </td>
                                     <td><?= $name ?></td>
 
-                                    <td class='d-flex align-items-center justify-content-center'>
-                                        <a href='<?= site_url('admin/view/') ?>' role='button' class='btn btn-primary btn-sm me-1'><i class='fa-solid fa-eye'></i>
+                                    <td class='align-middle text-center'>
+                                        <a href='<?= site_url('admin/Category/view/'. $enc_id) ?>' role='button' class='btn btn-primary btn-sm me-1'><i class='fa-solid fa-eye'></i>
                                         </a>
-                                        <a href='<?= site_url('admin/view/') ?>' role='button' class='btn-sm btn btn-warning text-light me-1'><i class='fa-solid fa-edit'></i>
+                                        <a href='<?= site_url('admin/Category/add/' . $enc_id) ?>' role='button' class='btn-sm btn btn-warning text-light me-1'><i class='fa-solid fa-edit'></i>
                                         </a>
                                         <a href='<?= site_url('admin/view/') ?>' role='button' class='btn-sm btn btn-danger text-light'><i class='fa-solid fa-trash'></i>
                                         </a>
@@ -53,16 +55,8 @@
 
                         </tbody>
                     </table>
-                    <!-- /.card-body -->
-                    <!-- <div class="card-footer clearfix">
-                    <ul class="pagination pagination-sm m-0 float-end">
-                        <li class="page-item"><a class="page-link" href="#">&laquo;</a></li>
-                        <li class="page-item"><a class="page-link" href="#">1</a></li>
-                        <li class="page-item"><a class="page-link" href="#">2</a></li>
-                        <li class="page-item"><a class="page-link" href="#">3</a></li>
-                        <li class="page-item"><a class="page-link" href="#">&raquo;</a></li>
-                    </ul>
-                </div> -->
+
+                    <?= $links ?>
 
                 </div>
             </div>

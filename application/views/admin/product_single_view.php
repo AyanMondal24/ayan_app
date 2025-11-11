@@ -25,7 +25,7 @@
                         <h6><strong>Quantity:</strong> <?= $product->quantity ?></h6>
                     </div>
                     <div class="col-md-6">
-                        <h6><strong>Status:</strong> <?= $product->status ?></h6>
+                        <h6><strong>Created On:</strong> <?=date('d M Y, h:i A',strtotime($product->created_at)) ?></h6>
                     </div>
                 </div>
 

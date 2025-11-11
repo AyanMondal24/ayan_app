@@ -324,7 +324,7 @@
                         </li>
 
                         <!-- product section start  -->
-                        <i class="nav-item">
+                        <li class="nav-item">
                             <a href="#" class="nav-link">
                                 <i class="nav-icon bi bi-box-seam-fill"></i>
                                 <p>
@@ -351,7 +351,7 @@
                             <!-- product section end  -->
 
                             <!-- product CATEGORY section start  -->
-                            <i class="nav-item">
+                            <li class="nav-item">
                                 <a href="#" class="nav-link">
                                     <i class="nav-icon bi bi-box-seam-fill"></i>
                                     <p>
@@ -370,6 +370,30 @@
                                         <a href="<?= site_url('admin/Category') ?>" class="nav-link">
                                             <i class="nav-icon bi bi-circle"></i>
                                             <p>View Category</p>
+                                        </a>
+                                    </li>
+                                </ul>
+                                </li>
+
+                            <li class="nav-item">
+                                <a href="#" class="nav-link">
+                                    <i class="nav-icon bi bi-box-seam-fill"></i>
+                                    <p>
+                                        Products Unit
+                                        <i class="nav-arrow bi bi-chevron-right"></i>
+                                    </p>
+                                </a>
+                                <ul class="nav nav-treeview">
+                                    <li class="nav-item">
+                                        <a href="<?= site_url('admin/Category/add') ?>" class="nav-link">
+                                            <i class="nav-icon bi bi-circle"></i>
+                                            <p>Add Product Unit</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="<?= site_url('admin/Category') ?>" class="nav-link">
+                                            <i class="nav-icon bi bi-circle"></i>
+                                            <p>View Product Unit</p>
                                         </a>
                                     </li>
                                 </ul>

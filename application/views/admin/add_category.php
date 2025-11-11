@@ -1,12 +1,16 @@
 <div class="container-fluid add-form">
-    <h2 class="text-center">Adding Category</h2>
+    <h2 class="text-center"><?= $title ?></h2>
     <hr>
 
     <form action="<?= site_url('/admin/Category/store') ?>" method="post" enctype="multipart/form-data" id="add-category" class=" p-2 rounded">
         <div class="row">
             <div class="col-12 col-md-6 col-lg-6">
+                <?php if(!empty($category)){ ?>
+                    <input type="hidden" name="id" value="<?= $category->id ?>">
+                    <input type="hidden" name="old_img" value="<?= $category->image ?>">
+               <?php } ?>
                 <label for="name" class="form-label">Name <sup>*</sup></label>
-                <input type="text" class="form-control" id="name" name="name" />
+                <input type="text" class="form-control" id="name" name="name" value="<?= set_value('name',@$category->name) ?>" />
                 <span style="color:#ff3030; font-size:16px;letter-spacing:0.7px;font-weight:lighter!important;" class="error-text"><?php echo form_error('name'); ?></span>
 
             </div>
@@ -59,7 +63,18 @@
                             .delay(5000)
                             .fadeOut(500);
 
-                    } else {
+                    }else if(response.status === 'update'){
+                         $("#response-msg")
+                            .addClass('success-msg')
+                            .removeClass('error-msg')
+                            .html("Data Successfully Updated.")
+                            .fadeIn(500)
+                            .delay(5000)
+                            .fadeOut(500);
+
+                            
+                    }
+                     else {
                         $("#response-msg")
                             .addClass('error-msg')
                             .removeClass('success-msg')

@@ -9,27 +9,41 @@ class Category extends CI_Controller
         parent::__construct();
         $this->load->model('category_model');
         $this->load->helper('form', 'url');
+        $this->load->helper('view');
+        $this->load->library('pagination');
+        $this->load->library('encryption');
+        $this->load->library('form_validation');
     }
 
-    public function add()
+    public function add($enc_id = null)
     {
-
-        $this->load->view('admin/includes/header');
-        $this->load->view('admin/add_category');
-        $this->load->view('admin/includes/footer');
+        $id = $this->encryption->decrypt(base64_decode(urldecode($enc_id)));
+        if (!empty($id)) {
+            $data['category'] = $this->category_model->getSingleCategory($id);
+            $data['title'] = 'Updating Category';
+            // load_admin_views('add_category', $data);
+        } else {
+            $data['category'] = null;
+            $data['title'] = 'Adding Category';
+        }
+        load_admin_views('add_category', $data);
     }
 
     public function store()
     {
         // if (isset($_POST['submit'])) {
-        $this->load->library('form_validation');
 
         $this->form_validation->set_rules('name', 'Name', 'required|trim');
-        $this->form_validation->set_rules('image', 'Category Image', 'callback_file_check');
+
+        if (empty($this->input->post('id'))) {
+            $this->form_validation->set_rules('image', 'Category Image', 'callback_file_check');
+        } else {
+            if (!empty($_FILES['image']['name'])) {
+                $this->form_validation->set_rules('image', 'Category Image', 'callback_file_check');
+            }
+        }
+
         if ($this->form_validation->run() == FALSE) {
-            // $this->load->view('admin/includes/header');
-            // $this->load->view('admin/add_category');
-            // $this->load->view('admin/includes/footer');
             $errors = [];
             $fields_name = ['name', 'image'];
             foreach ($fields_name as $field) {
@@ -44,17 +58,16 @@ class Category extends CI_Controller
             ]);
             return;
         } else {
-            $prefix = 'cat_';
-            $unique_id = uniqid();
-            $config['upload_path'] = FCPATH . 'assets/uploads/category';
-            $config['allowed_types'] = 'jpeg|jpg|png|gif';
-            $config['max_size'] = 2048;
-            $config['encrypt_name']  = FALSE;
-            $config['file_name']  = $prefix . $unique_id;
-            $this->load->library('upload', $config);
-
-            $imageName = null;
+            $imageName = $this->input->post('old_img');
             if (!empty($_FILES['image']['name'])) {
+                $prefix = 'cat_';
+                $unique_id = uniqid();
+                $config['upload_path'] = FCPATH . 'assets/uploads/category';
+                $config['allowed_types'] = 'jpeg|jpg|png|gif';
+                $config['max_size'] = 2048;
+                $config['encrypt_name']  = FALSE;
+                $config['file_name']  = $prefix . $unique_id;
+                $this->load->library('upload', $config);
                 if ($this->upload->do_upload('image')) {
                     $uploadData = $this->upload->data();
                     $imageName = $uploadData['file_name'];
@@ -64,14 +77,25 @@ class Category extends CI_Controller
                     return;
                 }
             }
+
+
             $data = [
                 'name' => $this->input->post('name'),
                 'image' => $imageName,
             ];
 
-            if ($this->category_model->setCategory($data) == true) {
-                echo  json_encode(["status" => "success"]);
-            } 
+            if (empty($this->input->post('id'))) {
+                // add 
+                if ($this->category_model->setCategory($data) == true) {
+                    echo  json_encode(["status" => "success"]);
+                }
+            }else{
+                // update 
+                $id=$this->input->post('id');
+                 if ($this->category_model->updateCategory($id,$data) == true) {
+                    echo  json_encode(["status" => "update"]);
+                }
+            }
         }
         // }
     }
@@ -117,10 +141,45 @@ class Category extends CI_Controller
         return TRUE;
     }
 
-    public function index(){
-        $data['category']=$this->category_model->getCategory();
-        $this->load->view('admin/includes/header');
-        $this->load->view('admin/view_category',$data);
-        $this->load->view('admin/includes/footer');
+    public function index()
+    {
+        $config = [];
+        $config['base_url'] = base_url('admin/Category/index');
+        $config['total_rows'] = $this->category_model->getTotalCategory();
+        $config['per_page'] = 3;
+        $config['uri_segment'] = 4;
+
+        $config['full_tag_open'] = '<ul class="pagination">';
+        $config['full_tag_close'] = '</ul>';
+        $config['attributes'] = ['class' => 'page-link'];
+        $config['first_tag_open'] = '<li class="page-item">';
+        $config['first_tag_close'] = '</li>';
+        $config['last_tag_open'] = '<li class="page-item">';
+        $config['last_tag_close'] = '</li>';
+        $config['next_tag_open'] = '<li class="page-item">';
+        $config['next_tag_close'] = '</li>';
+        $config['prev_tag_open'] = '<li class="page-item">';
+        $config['prev_tag_close'] = '</li>';
+        $config['cur_tag_open'] = '<li class="page-item active"><span class="page-link">';
+        $config['cur_tag_close'] = '</span></li>';
+        $config['num_tag_open'] = '<li class="page-item">';
+        $config['num_tag_close'] = '</li>';
+        $this->pagination->initialize($config);
+
+        $offset = ($this->uri->segment(4)) ? $this->uri->segment(4) : 0;
+
+        $data['category'] = $this->category_model->getCategory($config['per_page'], $offset);
+        $data['links'] = $this->pagination->create_links();
+        $data['offset'] = $offset;
+
+        load_admin_views('view_category', $data);
+    }
+
+    public function view($enc_id)
+    {
+        $id = $this->encryption->decrypt(base64_decode(urldecode($enc_id)));
+        $data['category'] = $this->category_model->getSingleCategory($id);
+
+        load_admin_views('category_single_view', $data);
     }
 }
