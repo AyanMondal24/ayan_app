@@ -23,7 +23,8 @@
                             <?php
 
                             $i = $offset + 1;
-
+                            print_r($products);
+                            die();
                             foreach ($products as $product) {
 
                                 $store_status = "";

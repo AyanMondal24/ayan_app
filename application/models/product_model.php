@@ -45,25 +45,26 @@ class product_model extends CI_Model
     {
         return $this->db->get_where('products', ['id' => $id])->row();
     }
-    //update query
+    //update query pass
     public function updateProduct($id, $data)
     {
         $this->db->where('id', $id);
         return $this->db->update('products', $data);
     }
 
-    // delete query 
+    // delete query pass
     public function delete($id)
     {
         $this->db->where('id', $id);
         return $this->db->delete('products');
     }
 
-    // for uploading image  into product image
+    // for uploading image  into product image pass
     public  function SetProductImages($data)
     {
         return $this->db->insert('product_image', $data);
     }
+    //show image details on update form pass
     public function getProductImages($id)
     {
         $this->db->select('*');
@@ -71,28 +72,33 @@ class product_model extends CI_Model
         return $this->db->where('product_id', $id)->get()->result();
     }
 
-    // this is primarily checking if there are exist same image name then run update query if does not exists then run insert query it will check in update query section
-    public function checkImageExists($product_id, $image_name)
-    {
-        return $this->db->where('product_id', $product_id)
-            ->where('image_name', $image_name)
-            ->get('product_image')
-            ->num_rows() > 0;
-    }
-
-    public function updateProductImage($data, $image_name)
-    {
-        $this->db->where('image_name', $image_name);
-        return $this->db->update('product_image', $data);
-    }
-
+    // in ptoduct update page only image table update pass
     public function insertProductImage($data)
     {
         return $this->db->insert('product_image', $data);
     }
+    // in ptoduct update page when user click cross button delete image table  pass
     public function deleteProductImage($image_file_name)
     {
         $this->db->where('image_name', $image_file_name);
         return $this->db->delete('product_image');
+    }
+
+    // update only single field in image table pass
+    public function updateProductImageData($id, $image_data)
+    {
+        $this->db->where('id', $id);
+        return $this->db->update('product_image', $image_data);
+    }
+
+    // get old image from image table for unline from parmanent folder products/ 
+    public function getOldImage($image_id)
+    {
+        return $this->db
+            ->select('*')
+            ->from('product_image')
+            ->where('id', $image_id)
+            ->get()
+            ->row(); // returns a single object (use ->row_array() for array)
     }
 }

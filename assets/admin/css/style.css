@@ -1,6 +1,6 @@
 .add-form h2 {
   font-size: 34px !important;
-  margin: 20px 0px  !important;
+  margin: 20px 0px !important;
 }
 
 
@@ -51,6 +51,14 @@
 .error-msg {
   color: #fff;
   background-color: red;
+}
+
+/* validation error  */
+.error-text {
+  color: #ff3030 !important;
+  font-size: 16px;
+  letter-spacing: 0.7px;
+  font-weight: lighter !important;
 }
 
 @media (max-width: 768px) {
@@ -109,4 +117,23 @@
 
 .category-view table tbody tr td {
   text-align: center;
+}
+
+/* edit image  */
+.image-box:hover .change-btn {
+  opacity: 1 !important;
+  /* position: relative;
+  top: 50px !important; */
+}
+
+.product-img:hover .change-btn {
+  display: block !important;
+}
+
+.product-img {
+  transition: opacity 0.3s !important;
+}
+
+.image-box:hover .product-img {
+  opacity: 0.7 !important;
 }

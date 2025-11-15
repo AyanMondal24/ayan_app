@@ -74,9 +74,9 @@
         </select>
         <span class="error-text" style="color:#ff3030; font-size:16px;letter-spacing:0.7px;font-weight:lighter!important;"><?php echo form_error('is_available'); ?></span>
       </div>
-      <div class="col-12 col-md-6 col-lg-8 error-show">
+      <div class="col-12 error-show mt-2 mb-2">
         <label for="description" class="form-label">Description <sup>*</sup></label>
-        <textarea class="form-control" aria-label="With textarea" name="description" rows="3"><?= set_value('description', @$product->description) ?></textarea>
+        <textarea class="form-control" aria-label="With textarea" name="description" rows="3" id="description"><?= set_value('description', @$product->description) ?></textarea>
         <span class="error-text" style="color:#ff3030; font-size:16px;letter-spacing:0.7px;font-weight:lighter!important;"><?php echo form_error('description'); ?></span>
       </div>
     </div>
@@ -86,37 +86,60 @@
       <div id="image-wrapper" class="d-flex flex-wrap gap-3">
         <!-- The "+" box -->
         <div class="image-upload-box ">
-         
-          <div class="d-flex ">
-          <?php if (!empty($product->id)) {
-            foreach ($images as $img) { ?>
-              <div class="position-relative d-inline-block mt-2 me-2" style="width:100px;">
-                <img src="<?= base_url('assets/uploads/products/' . $img->image_name) ?>" class="img-thumbnail" style="width:100px;height:100px;object-fit:cover;">
-                <button type="button" class="btn btn-sm btn-danger position-absolute top-0 end-0 remove-image" data-file="<?= $img->image_name ?>" style="border-radius:50%;">×</button>
-                <input type="hidden" name="uploaded_temp[]" value="<?= $img->image_name ?>">
-                <div class="error-show">
-                  <input type="text" name="alt_text[]" class="form-control mt-2" placeholder="Enter alt text for SEO" value="<?= $img->alt_text ?>">
-                  <span class="error-text" style="color:#ff3030; font-size:16px;letter-spacing:0.7px;font-weight:lighter!important;"><?php echo form_error('alt_text'); ?></span>
+
+          <div class="d-flex">
+            <?php if (!empty($product->id)) {
+              foreach ($images as $img) { ?>
+                <!-- IMAGE  -->
+                <div class="image-box position-relative d-inline-block mt-2 me-2" style="width:100px;">
+                  <div class="product-img">
+                    <img src="<?= base_url('assets/uploads/products/' . $img->image_name) ?>" class="img-thumbnail" style="width:100px;height:100px;object-fit:cover;">
+                  </div>
+                  <!-- CHANGE BUTTON (Shown on Hover) -->
+                  <label class="change-btn translate-middle text-white bg-dark bg-opacity-75 px-2 py-1 rounded"
+                    for="updateImageInput_<?= $img->id ?>"
+                    style="position:absolute;top:50px; left:50px; font-size:12px;cursor:pointer;opacity:0;transition:opacity 0.3s;z-index:2;">
+                    Change
+                  </label>
+                  <input type="file" class="updateImageInput d-none" data-id="<?= $img->id ?>" id="updateImageInput_<?= $img->id ?>" name="uploadchangeimage[]">
+
+
+                  <!-- REMOVE BUTTON  -->
+                  <button type="button" class="btn btn-sm btn-danger position-absolute top-0 end-0 remove-image" data-file="<?= $img->image_name ?>" data-id="<?= $img->id ?>" style="border-radius:50%;">×</button>
+
+                  <!-- HIDDEN FIELD STORE IMAGE AND IMAGE ID -->
+                  <input type="hidden" name="uploaded_temp[]" value="<?= $img->image_name ?>">
+                  <input type="hidden" name="image_id[]" value="<?= $img->id ?>">
+                  <!-- IMAGE ALT TEXT  -->
+                  <div class="error-show">
+                    <input type="text" name="alt_text[]" class="form-control mt-2" placeholder="Enter alt text for SEO" value="<?= $img->alt_text ?>">
+                    <span class="error-text" style="color:#ff3030; font-size:16px;letter-spacing:0.7px;font-weight:lighter!important;"><?php echo form_error('alt_text'); ?></span>
+                  </div>
+                  <!-- IMAGE TYPES  -->
+                  <div class="error-show">
+                    <select class="form-select" aria-label="Default select example" name="image_type[]">
+                      <option value="">Choose Types</option>
+                      <option value="main" <?= set_select('image_type',  'main', (@$img->image_type == 'main')) ?>>Main</option>
+                      <option value="gallery" <?= set_select('image_type',  'gallery', (@$img->image_type == 'gallery')) ?>>Gallery</option>
+                      <option value="thumb" <?= set_select('image_type',  'thumb', (@$img->image_type == 'thumb')) ?>>Thumb</option>
+                    </select>
+                    <span class="error-text" style="color:#ff3030; font-size:16px;letter-spacing:0.7px;font-weight:lighter!important;"><?php echo form_error('image_type'); ?></span>
+                  </div>
                 </div>
-              </div>
-          <?php }
-          } ?>
+            <?php }
+            } ?>
           </div>
-           <label for="imageInput" class="upload-box">
-            <div class="upload-box border rounded d-flex align-items-center justify-content-center" style="width:100px;height:100px;cursor:pointer;">
+          <label for="imageInput" class="upload-box">
+            <div class="upload-box mt-4 border rounded d-flex align-items-center justify-content-center" style="width:100px;height:100px;cursor:pointer;">
               <i class="bi bi-plus-lg fs-3 text-primary"></i>
             </div>
           </label>
           <div class="error-show">
-            <input type="file" id="imageInput" name="images[]" class="d-none" multiple >
+            <input type="file" id="imageInput" name="images[]" class="d-none" multiple>
             <span class="error-text" style="color:#ff3030; font-size:16px;letter-spacing:0.7px;font-weight:lighter!important;"><?php echo form_error('images'); ?></span>
           </div>
-      
 
-          <!-- <input type="hidden" name="uploaded_temp[]" value=""> -->
-          <div id="hidden-files"></div>
         </div>
-
       </div>
 
     </div>
@@ -131,12 +154,236 @@
 
     <a href="<?= base_url('admin/Product') ?>" class="btn btn-outline-primary float-end mt-2">Back to List</a>
   <?php }
-   
+
   ?>
 </div>
 
 <script>
+  function initCKEditor() {
+    if (CKEDITOR.instances['description']) {
+      CKEDITOR.instances['description'].destroy(true);
+    }
+    CKEDITOR.replace('description');
+  }
   document.addEventListener('DOMContentLoaded', function() {
+    // Destroy existing instance if already created (prevents duplicate init)
+    $(function() {
+      initCKEditor();
+      // Disable security warning
+      window.CKEDITOR && (CKEDITOR.config.versionCheck = false);
+      CKEDITOR.replace('description');
+    });
+    
+    $('#add-product').on('submit', function(e) {
+      e.preventDefault();
+      
+      // ✅ Sync CKEditor data to textarea
+      for (const instance in CKEDITOR.instances) {
+        CKEDITOR.instances[instance].updateElement();
+      }
+
+      const form = new FormData(this);
+
+      $.ajax({
+        url: $(this).attr('action'),
+        method: 'POST',
+        data: form,
+        dataType: 'json',
+        contentType: false,
+        processData: false,
+        success: function(response) {
+          console.log('Server Response:', response);
+
+          // Clear old errors
+          $('span.error-text').html('');
+
+          if (response.status === 'error') {
+            if (response.errors) {
+              $.each(response.errors, function(field, msg) {
+                $(`[name="${field}"]`).closest('.error-show').find('span.error-text').html(msg);
+              });
+            }
+
+            $("#response-msg")
+              .addClass('error-msg')
+              .removeClass('success-msg')
+              .html(response.message || "Validation failed.")
+              .fadeIn(300)
+              .delay(3000)
+              .fadeOut(500);
+
+            //Re-init CKEditor after error (in case it disappears)
+            setTimeout(() => {
+              if (!CKEDITOR.instances['description']) {
+                initCKEditor();
+              }
+            }, 200);
+          } else if (response.status === 'success' || response.status === 'update') {
+            $("#add-product")[0].reset();
+            if (CKEDITOR.instances['description']) {
+              CKEDITOR.instances['description'].setData('');
+            }
+
+            $("#response-msg")
+              .addClass('success-msg')
+              .removeClass('error-msg')
+              .html(response.message || "Saved successfully!")
+              .fadeIn(300)
+              .delay(2000)
+              .fadeOut(500, function() {
+                location.reload(true);
+              });
+          }
+        },
+        error: function(xhr, status, error) {
+          console.error('AJAX Error:', status, error);
+          console.log(xhr.responseText);
+          $("#response-msg")
+            .addClass('error-msg')
+            .removeClass('success-msg')
+            .html("AJAX failed. Check console.")
+            .fadeIn(300)
+            .delay(4000)
+            .fadeOut(500);
+        }
+      });
+    });
+
+
+    // $('#add-product').on('submit', function(e) {
+    //   e.preventDefault();
+
+     
+    //   const form = new FormData(this);
+     
+    //   // Optional: Log form data for debugging
+    //   // for (let [key, value] of form.entries()) { console.log(key, value); }
+
+    //   $.ajax({
+    //     url: $(this).attr('action'),
+    //     type: 'POST',
+    //     data: form,
+    //     dataType: 'JSON', // Expects JSON response
+    //     processData: false,
+    //     contentType: false,
+    //     success: function(response) {
+    //       console.log('Success triggered. Response:', response); // Debugging
+    //       $('span.error-text').html(''); // Clear previous errors
+
+    //       if (response.status === 'error') {
+    //         // Handle validation or other errors
+    //         if (response.errors) {
+    //           $.each(response.errors, function(field, message) {
+    //             $(`[name="${field}"]`)
+    //               .closest('.error-show')
+    //               .find('span')
+    //               .html(message);
+    //           });
+    //         }
+    //         $("#response-msg")
+    //           .addClass('error-msg')
+    //           .removeClass('success-msg')
+    //           .html(response.message || "An error occurred.")
+    //           .fadeIn(500)
+    //           .delay(5000)
+    //           .fadeOut(500);
+    //       } else if (response.status === 'success') {
+    //         // Success: Reset form, show message, then reload
+    //         $("#add-product")[0].reset();
+
+    //         $("#response-msg")
+    //           .addClass('success-msg')
+    //           .removeClass('error-msg')
+    //           .html(response.message || "Data Successfully Submitted.")
+    //           .fadeIn(500)
+    //           .delay(2000) // Shorter delay before reload
+    //           .fadeOut(500, function() {
+    //             location.reload(true); // Hard reload after fade-out
+    //           });
+    //       } else if (response.status === 'update') {
+    //         // Update: Same as success
+    //         $("#add-product")[0].reset();
+    //         $("#response-msg")
+    //           .addClass('success-msg')
+    //           .removeClass('error-msg')
+    //           .html(response.message || "Data Successfully Updated.")
+    //           .fadeIn(500)
+    //           .delay(2000)
+    //           .fadeOut(500, function() {
+    //             location.reload(true);
+    //           });
+    //       } else {
+    //         // Fallback for unexpected status
+    //         $("#response-msg")
+    //           .addClass('error-msg')
+    //           .removeClass('success-msg')
+    //           .html("Unexpected response.")
+    //           .fadeIn(500)
+    //           .delay(5000)
+    //           .fadeOut(500);
+    //       }
+    //     },
+    //     error: function(xhr, status, error) {
+    //       console.error('AJAX Error:', status, error);
+    //       console.log('Raw Response:', xhr.responseText); // Key for debugging
+    //       $("#response-msg")
+    //         .addClass('error-msg')
+    //         .removeClass('success-msg')
+    //         .html("Submission failed. Check console for details.")
+    //         .fadeIn(500)
+    //         .delay(5000)
+    //         .fadeOut(500);
+    //     }
+    //   });
+    // });
+
+    // update page 
+    $(document).on('change', '.updateImageInput', function(e) {
+      const file = e.target.files[0];
+      // let id=$(this).data('id');
+      if (!file) return;
+
+      const input = $(this);
+      const imageBox = input.closest('.image-box');
+      const formData = new FormData();
+      formData.append('uploadchangeimage', file);
+      // formData.append('id', id);
+
+      $.ajax({
+        url: '<?= base_url("admin/Product/upload_temp_image_update"); ?>',
+        type: 'POST',
+        data: formData,
+        contentType: false,
+        processData: false,
+        success: function(response) {
+          // console.log(response);
+          let res;
+          try {
+            res = JSON.parse(response);
+          } catch (e) {
+            console.error('Invalid JSON:', response);
+            return;
+          }
+
+          if (res.status === 'success') {
+            // console.log(res.id)
+            // ✅ Replace the image src directly
+            imageBox.find('.product-img img').attr('src', res.url);
+
+            // imageBox.append(`<input type="hidden" name="image_unique_id[]" value="${res.id}">`);
+            // ✅ Optionally update hidden field
+            imageBox.find('input[name="uploaded_temp[]"]').val(res.file);
+
+          } else {
+            alert(res.message);
+          }
+        },
+        error: function(xhr, status, error) {
+          console.error('AJAX Error:', error);
+        }
+      });
+    });
+
 
     // When user selects images
     $('#imageInput').on('change', function(e) {
@@ -166,6 +413,15 @@
                   <input type="text" name="alt_text[]" class="form-control mt-2" placeholder="Enter alt text for SEO" >
                   <span class="error-text" style="color:#ff3030; font-size:16px;letter-spacing:0.7px;font-weight:lighter!important;"><?php echo form_error('alt_text'); ?></span>
                 </div>
+                <div class="error-show">
+                  <select class="form-select" aria-label="Default select example" name="image_type[]">
+                    <option value="">Choose Types</option>
+                    <option value="main">Main</option>
+                    <option value="gallery">gallery</option>
+                    <option value="thumb">Thumb</option>
+                  </select>
+                  <span class="error-text" style="color:#ff3030; font-size:16px;letter-spacing:0.7px;font-weight:lighter!important;"><?php echo form_error('image_type'); ?></span>
+                </div>
               </div>`;
               $('#image-wrapper').prepend(imgHtml);
             } else {
@@ -179,13 +435,15 @@
     // When user clicks × to remove an image
     $(document).on('click', '.remove-image', function() {
       let filename = $(this).data('file');
+      let id = $(this).data('id');
       let parentDiv = $(this).closest('div');
 
       $.ajax({
         url: '<?= base_url("admin/Product/delete_temp_image"); ?>',
         type: 'POST',
         data: {
-          filename: filename
+          filename: filename,
+          id: id
         },
         success: function(response) {
           let res = JSON.parse(response);
@@ -201,65 +459,6 @@
 
 
 
-    $('#add-product').on('submit', function(e) {
-      e.preventDefault();
 
-      const form = new FormData(this);
-
-      $.ajax({
-        url: $(this).attr('action'),
-        type: 'POST',
-        data: form,
-        dataType: 'JSON',
-        processData: false, // ✅ important
-        contentType: false, // ✅ important
-        success: function(response) {
-          console.log(response);
-          // console.log(response)
-          $('span.error-text').html('');
-          if (response.status === 'error') {
-            $.each(response.errors, function(field, message) {
-              $(`[name="${field}"]`)
-                .closest('.error-show')
-                .find('span')
-                .html(message);
-            });
-          } else if (response.status === 'success') {
-            $("#add-product")[0].reset();
-            location.reload(true);
-            $("#response-msg")
-              .addClass('success-msg')
-              .removeClass('error-msg')
-              .html("Data Successfully Submitted.")
-              .fadeIn(500)
-              .delay(5000)
-              .fadeOut(500);
-
-          } else if (response.status === 'update') {
-            $("#add-product")[0].reset();
-            location.reload(true);
-            $("#response-msg")
-              .addClass('success-msg')
-              .removeClass('error-msg')
-              .html("Data Successfully Updated.")
-              .fadeIn(500)
-              .delay(5000)
-              .fadeOut(500);
-
-          } else {
-            $("#response-msg")
-              .addClass('error-msg')
-              .removeClass('success-msg')
-              .html("Data Not Submitted.")
-              .fadeIn(500)
-              .delay(5000)
-              .fadeOut(500)
-          }
-        },
-        error: function(xhr) {
-          console.error('Error:', xhr.responseText);
-        }
-      });
-    });
   });
 </script>

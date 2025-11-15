@@ -16,7 +16,51 @@ class Product extends CI_Controller
         $this->load->helper('common');
     }
 
+    public function index()
+    {
+        // echo $page;
+        // die();
 
+        $config = [];
+        $config['base_url'] = site_url('admin/Product/index');
+        $config['total_rows'] = $this->product_model->totalProducts(); //total records
+   
+        $config['per_page'] = 5;
+        $config['uri_segment'] = 4;
+
+        $config['full_tag_open'] = '<ul class="pagination">';
+        $config['full_tag_close'] = '</ul>';
+        $config['attributes'] = ['class' => 'page-link'];
+        $config['first_tag_open'] = '<li class="page-item">';
+        $config['first_tag_close'] = '</li>';
+        $config['last_tag_open'] = '<li class="page-item">';
+        $config['last_tag_close'] = '</li>';
+        $config['next_tag_open'] = '<li class="page-item">';
+        $config['next_tag_close'] = '</li>';
+        $config['prev_tag_open'] = '<li class="page-item">';
+        $config['prev_tag_close'] = '</li>';
+        $config['cur_tag_open'] = '<li class="page-item active"><span class="page-link">';
+        $config['cur_tag_close'] = '</span></li>';
+        $config['num_tag_open'] = '<li class="page-item">';
+        $config['num_tag_close'] = '</li>';
+
+        $this->pagination->initialize($config);
+        // 🔹 Determine current page
+        $offset = ($this->uri->segment(4)) ? $this->uri->segment(4) : 0;
+        // $offset = $this->uri->segment(4, 0);
+        // 🔹 Get data
+        $data['products'] = $this->product_model->getProducts($config['per_page'], $offset);
+        print_r($data['products']);
+        die();
+        $data['links'] = $this->pagination->create_links();
+        $data['offset'] = $offset;
+
+        // $data['products'] = $this->product_model->getProducts();
+        // $this->load->view('admin/includes/header');
+        // $this->load->view('admin/view_products', $data);
+        // $this->load->view('admin/includes/footer');
+        load_admin_views('view_products', $data);
+    }
 
     public function add($enc_id = null)
     {
@@ -54,6 +98,7 @@ class Product extends CI_Controller
         $this->form_validation->set_rules('is_available', 'Available Or Not', 'required');
         $this->form_validation->set_rules('description', 'Description', 'required');
         $this->form_validation->set_rules('alt_text[]', 'Alt', 'required');
+        $this->form_validation->set_rules('image_type[]', 'Image Type', 'required');
 
         // 🔹 File validation logic (now checks temp uploads)
         if (empty($this->input->post('id'))) {
@@ -79,7 +124,8 @@ class Product extends CI_Controller
                 'is_available',
                 'description',
                 'images[]',
-                'alt_text[]'
+                'alt_text[]',
+                'image_type[]'
             ];
             foreach ($fields_name as $field) {
                 $error = form_error($field);
@@ -106,13 +152,11 @@ class Product extends CI_Controller
         if (empty($this->input->post('id'))) {
             // ADD MODE
             $product_instant_id = $this->product_model->setProducts($data);
-            // var_dump($product_instant_id);
-            // die();
-            // return;
 
             if (!empty($product_instant_id)) {
                 // Get temp images from hidden inputs
                 $alt_texts = $this->input->post('alt_text');
+                $image_types = $this->input->post('image_type');
                 $remove_sapce = str_replace(' ', '_', $_FILES['images']['name']);
                 $rowImages = $remove_sapce;
 
@@ -139,10 +183,12 @@ class Product extends CI_Controller
                         }
                         // Use the matching alt text if it exists
                         $alt_text = isset($alt_texts[$index]) ? $alt_texts[$index] : '';
+                        $image_type = isset($image_types[$index]) ? $image_types[$index] : '';
                         $image_data = [
                             'product_id' => $product_instant_id,
                             'image_name' => $new_file,
-                            'alt_text'   => $alt_text
+                            'alt_text'   => $alt_text,
+                            'image_type'   => $image_type
                         ];
                         $this->product_model->SetProductImages($image_data);
                     }
@@ -154,66 +200,208 @@ class Product extends CI_Controller
             }
         } else {
             // UPDATE MODE
-            $product_id = $this->input->post('id');
-            $uploaded_temp = $this->input->post('uploaded_temp');
-            // $old_alt_text = $this->input->post('old_alt_text');
+            $update_status = false;
+            $insert_status = false;
+            $product_status = false;
+            $errors = [];
 
             $alt_texts = $this->input->post('alt_text');
+            $image_types = $this->input->post('image_type');
+            $product_id = $this->input->post('id');
+            $image_ids = $this->input->post('image_id');
+            $uploaded_temps = $this->input->post('uploaded_temp');
 
-            $rowImages = str_replace(' ', '_', $_FILES['images']['name']);
             $perm_folder = FCPATH . 'assets/uploads/products/';
 
             if (!is_dir($perm_folder)) {
                 mkdir($perm_folder, 0755, true);
             }
 
-            if (!empty(array_filter($rowImages))) {
+            // update page newly insert 
+            $insertedImages = str_replace(' ', '_', $_FILES['images']['name']); // Array of filenames (spaces replaced)
+            // $alt_texts = $this->input->post('alt_text');
+            $image_types = $this->input->post('image_type');
 
-                foreach ($rowImages as $index => $image) {
+            if (!empty(array_filter($insertedImages))) {
+                foreach ($insertedImages as $index => $insert_image) {
+                    // Corrected condition: Check $insert_image (not undefined $image)
+                    if (empty($insert_image) || $_FILES['images']['error'][$index] !== UPLOAD_ERR_OK) {
+                        $errors[] = "Skipped image at index $index: No file or upload error.";
+                        continue; // Skip invalid uploads
+                    }
 
+                    $alt_text = isset($alt_texts[$index]) ? $alt_texts[$index] : '';
+                    $type = isset($image_types[$index]) ? $image_types[$index] : 'gallery';
+
+                    // Generate new filename
+                    $prefix = 'product_';
+                    $unique_file = uniqid();
+                    $ext = pathinfo($insert_image, PATHINFO_EXTENSION);
+                    $new_file = $prefix . $unique_file . "." . $ext;
+
+                    $perm_path = $perm_folder . $new_file;
+
+                    $temp_path = FCPATH . 'assets/uploads/temp/' . $insert_image;
+
+                    if (file_exists($temp_path)) {
+                        rename($temp_path, $perm_path);
+                    } else {
+                        // log_message('error', 'Temp file not found: ' . $temp_path);
+                        $errors[] = "Temp file not found:  $temp_path";
+                    }
+
+                    // Prepare data for DB insert
+                    $image_data = [
+                        'product_id' => $product_id,
+                        'image_name' => $new_file,
+                        'alt_text' => $alt_text,
+                        'image_type' => $type
+                    ];
+
+                    // Corrected: Use the right model method
+                    if ($this->product_model->insertProductImage($image_data)) {
+                        $insert_status = true;
+                    } else {
+
+                        if (file_exists($perm_path)) {
+                            unlink($perm_path);
+                        }
+                        $errors[] = "DB insert failed for image: $new_file";
+                    }
+                }
+            } else {
+                if (!empty($image_ids)) {
+                    foreach ($image_ids as $index => $img_id) {
+                        $alt_text = isset($alt_texts[$index]) ? $alt_texts[$index] : '';
+                        $type = isset($image_types[$index]) ? $image_types[$index] : 'gallery';
+
+                        $image_data = [
+                            'alt_text' => $alt_text,
+                            'image_type' => $type
+                        ];
+
+                        $insert_atld_type = $this->product_model->updateProductImageData($img_id, $image_data);
+                        if ($insert_atld_type) {
+                            $update_status = true;
+                        } else {
+                            $errors[] = "Failed to update ALT TEXT $alt_text . Faild to update. $type. ";
+                        }
+                    }
+                }
+            }
+
+
+            // update page change image and alt text and type 
+            $update_images = str_replace(' ', '_', $_FILES['uploadchangeimage']['name']); //new update image
+
+            if (!empty(array_filter($update_images))) {
+
+                foreach ($update_images as $index => $image) {
+                    if (empty($image) || $_FILES['uploadchangeimage']['error'][$index] !== UPLOAD_ERR_OK) {
+                        continue; // No new file, skip to next
+                    }
+                    $image_id = isset($image_ids[$index]) ? $image_ids[$index] : null;
+                    $alt_text = isset($alt_texts[$index]) ? $alt_texts[$index] : '';
+                    $type = isset($image_types[$index]) ? $image_types[$index] : 'gallery';
+                    // $current_filename = isset($uploaded_temps[$index]) ? $uploaded_temps[$index] : '';
 
                     $prefix = 'product_';
                     $unique_file = uniqid();
                     $ext = pathinfo($image, PATHINFO_EXTENSION);
                     $new_file = $prefix . $unique_file . "." . $ext;
 
-                    $temp_path = FCPATH . 'assets/uploads/temp/' . $image;
                     $perm_path = $perm_folder . $new_file;
+
+                    $temp_path = FCPATH . 'assets/uploads/temp/' . $image;
 
                     if (file_exists($temp_path)) {
                         rename($temp_path, $perm_path);
                     } else {
-                        log_message('error', 'Temp file not found: ' . $temp_path);
+                        // log_message('error', 'Temp file not found: ' . $temp_path);
+                        $errors[] = "Temp file not found:  $temp_path";
                     }
-                    $alt_text = isset($alt_texts[$index]) ? $alt_texts[$index] : '';
 
+                    // Prepare data for DB update
                     $image_data = [
-                        'product_id' => $product_id,
-                        'image_name' => $new_file,
-                        'alt_text'   => $alt_text
+                        'image_name' => $new_file, // New filename
+                        'alt_text' => $alt_text,
+                        'image_type' => $type
                     ];
-
-                    // Check if image already exists for product
-                    $exists = $this->product_model->checkImageExists($product_id, $new_file);
-
-                    if ($exists) {
-                        $this->product_model->updateProductImage($image_data, $new_file);
-                    } else {
-                        $this->product_model->insertProductImage($image_data);
+                    // Update the existing image record (assuming $image_id is valid)
+                    if ($image_id) {
+                        $old_image = $this->product_model->getOldImage($image_id);
+                        if ($old_image) {
+                            unlink($perm_folder . $old_image->image_name);
+                        }
+                        if ($this->product_model->updateProductImageData($image_id, $image_data)) {
+                            // echo json_encode(["status" => "update"]);
+                            $update_status = true;
+                        } else {
+                            // echo json_encode(['status' => 'error', 'message' => 'Failed to update product.']);
+                            $errors[] = "Failed to update image for index {$index}.";
+                        }
                     }
-                    // if ($this->product_model->updateProductImages($image_data, $product_id) == FALSE) {
-                    //     echo json_encode(['status' => 'error', 'message' => 'Failed to update product image.']);
-
-                    //     return;
-                    // }
                 }
             }
+            // $alt_texts = $this->input->post('alt_text');
+            // $image_types = $this->input->post('image_type');
+            // if (!empty(array_filter($alt_texts)) || !empty(array_filter($image_types))) {
+            //     if (!empty($image_ids)) {
+            //         foreach ($image_ids as $index => $img_id) {
+            //             $alt_text = isset($alt_texts[$index]) ? $alt_texts[$index] : '';
+            //             $type = isset($image_types[$index]) ? $image_types[$index] : 'gallery';
 
+            //             $image_data = [
+            //                 'alt_text' => $alt_text,
+            //                 'image_type' => $type
+            //             ];
+
+            //             $insert_atld_type = $this->product_model->updateProductImageData($img_id, $image_data);
+            //             if ($insert_atld_type) {
+            //                 $update_status = true;
+            //             } else {
+            //                 $errors[] = "Failed to update ALT TEXT $alt_text . Faild to update. $type. ";
+            //             }
+            //         }
+            //     }
+            // }
+
+
+            // Update main product info
             if ($this->product_model->updateProduct($product_id, $data)) {
-                echo json_encode(["status" => "update"]);
+
+                $product_status = true;
             } else {
-                echo json_encode(['status' => 'error', 'message' => 'Failed to update product.']);
+                $errors[] = "Failed to update main product.";
             }
+
+            $response = [];
+
+            if (!empty($errors)) {
+                $response = [
+                    'status' => 'error',
+                    'message' => 'Some operations failed.',
+                    'errors' => $errors
+                ];
+            } elseif ($insert_status) {
+                $response = [
+                    'status' => 'success',
+                    'message' => 'Images inserted successfully.'
+                ];
+            } elseif ($update_status || $product_status) {
+                $response = [
+                    'status' => 'update',
+                    'message' => 'Product updated successfully.'
+                ];
+            } else {
+                $response = [
+                    'status' => 'error',
+                    'message' => 'No operation performed.'
+                ];
+            }
+
+            echo json_encode($response);
+            exit;
         }
     }
 
@@ -312,48 +500,7 @@ class Product extends CI_Controller
     //     return TRUE;
     // }
 
-    public function index()
-    {
-        // echo $page;
-        // die();
 
-        $config = [];
-        $config['base_url'] = site_url('admin/Product/index');
-        $config['total_rows'] = $this->product_model->totalProducts(); //total records
-        $config['per_page'] = 5;
-        $config['uri_segment'] = 4;
-
-        $config['full_tag_open'] = '<ul class="pagination">';
-        $config['full_tag_close'] = '</ul>';
-        $config['attributes'] = ['class' => 'page-link'];
-        $config['first_tag_open'] = '<li class="page-item">';
-        $config['first_tag_close'] = '</li>';
-        $config['last_tag_open'] = '<li class="page-item">';
-        $config['last_tag_close'] = '</li>';
-        $config['next_tag_open'] = '<li class="page-item">';
-        $config['next_tag_close'] = '</li>';
-        $config['prev_tag_open'] = '<li class="page-item">';
-        $config['prev_tag_close'] = '</li>';
-        $config['cur_tag_open'] = '<li class="page-item active"><span class="page-link">';
-        $config['cur_tag_close'] = '</span></li>';
-        $config['num_tag_open'] = '<li class="page-item">';
-        $config['num_tag_close'] = '</li>';
-
-        $this->pagination->initialize($config);
-        // 🔹 Determine current page
-        $offset = ($this->uri->segment(4)) ? $this->uri->segment(4) : 0;
-        // $offset = $this->uri->segment(4, 0);
-        // 🔹 Get data
-        $data['products'] = $this->product_model->getProducts($config['per_page'], $offset);
-        $data['links'] = $this->pagination->create_links();
-        $data['offset'] = $offset;
-
-        // $data['products'] = $this->product_model->getProducts();
-        // $this->load->view('admin/includes/header');
-        // $this->load->view('admin/view_products', $data);
-        // $this->load->view('admin/includes/footer');
-        load_admin_views('view_products', $data);
-    }
 
     public function view($enc_id)
     {
@@ -399,16 +546,51 @@ class Product extends CI_Controller
                 'status' => 'error'
             ]);
         }
-
-        // if($delete){
-        //     $this->session->set_flashdata('success', 'Product deleted successfully.');
-        // }else{
-        //     $this->session->set_flashdata('error', 'Faild to deleted product.');
-        // }
-
-        // redirect('admin/Product');
     }
 
+    // update image add btn 
+    public function upload_temp_image_update()
+    {
+        $targetDir = FCPATH . 'assets/uploads/temp/';
+
+        if (!is_dir($targetDir)) {
+            mkdir($targetDir, 0777, true);
+        }
+
+        // $id = $this->input->post('id');
+        $file = $_FILES['uploadchangeimage']['name'];
+
+        // echo json_encode(['status' => 'error', 'message' => $file]);
+        // die();
+        if (!empty($file)) {
+            // $prefix = 'product_';
+            $fileName = str_replace(' ', '_', $file);
+            $image_name = $fileName;
+            $config['upload_path'] = FCPATH . 'assets/uploads/temp';
+            $config['allowed_types'] = 'jpeg|jpg|png|gif';
+            $config['max_size'] = 2048;
+            $config['encrypt_name']  = FALSE;
+            $config['file_name']  = $image_name;
+
+
+            $this->load->library('upload', $config);
+            if ($this->upload->do_upload('uploadchangeimage')) {
+                $uploadData = $this->upload->data();
+                $imageName = $uploadData['file_name'];
+                echo json_encode([
+                    'status' => 'success',
+                    'filename' => $imageName,
+                    // 'id' => $id,
+                    'url' => base_url('assets/uploads/temp/' . $imageName)
+                ]);
+            } else {
+                echo json_encode(['status' => 'error', 'message' => 'Failed to move uploaded file']);
+                return;
+            }
+        } else {
+            echo json_encode(['status' => 'error', 'message' => 'No file received']);
+        }
+    }
     // for client side show image
     public function upload_temp_image()
     {
@@ -451,8 +633,11 @@ class Product extends CI_Controller
     {
         $filename = $this->input->post('filename');
         // when user click cross btn the delete from database also 
-        $this->product_model->deleteProductImage($filename);
-        
+        $id = $this->input->post('id');
+        if (!empty($id)) {
+            $this->product_model->deleteProductImage($filename);
+        }
+
         $targetDir = FCPATH . 'assets/uploads/temp/';
 
         $targetDirProducts = FCPATH . 'assets/uploads/products/';

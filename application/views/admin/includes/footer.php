@@ -34,7 +34,10 @@
 
  <!-- jquery  -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
- 
+
+  <!-- ckeditor  -->
+   <script src="<?= base_url('assets/ckeditor/ckeditor.js') ?>"></script>
+
  <script>
      const SELECTOR_SIDEBAR_WRAPPER = '.sidebar-wrapper';
      const Default = {

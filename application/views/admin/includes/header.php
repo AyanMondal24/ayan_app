@@ -66,6 +66,8 @@
         href="https://cdn.jsdelivr.net/npm/apexcharts@3.37.1/dist/apexcharts.css"
         integrity="sha256-4MX+61mt9NVvvuPjUWdUdyfZfxSB1/Rf9WtqRHgG5S0="
         crossorigin="anonymous" />
+
+ 
 </head>
 
 <body class="layout-fixed sidebar-expand-lg sidebar-open bg-body-tertiary">
@@ -301,27 +303,7 @@
                                     <!-- <i class="nav-arrow bi bi-chevron-right"></i> -->
                                 </p>
                             </a>
-                            <!-- <ul class="nav nav-treeview">
-                  <li class="nav-item">
-                    <a href="<?= site_url('assets/admin') ?>/index.html" class="nav-link">
-                      <i class="nav-icon bi bi-circle"></i>
-                      <p>Dashboard v1</p>
-                    </a>
-                  </li>
-                  <li class="nav-item">
-                    <a href="<?= site_url('assets/admin') ?>/index2.html" class="nav-link active">
-                      <i class="nav-icon bi bi-circle"></i>
-                      <p>Dashboard v2</p>
-                    </a>
-                  </li>
-                  <li class="nav-item">
-                    <a href="<?= site_url('assets/admin') ?>/index3.html" class="nav-link">
-                      <i class="nav-icon bi bi-circle"></i>
-                      <p>Dashboard v3</p>
-                    </a>
-                  </li>
-                </ul> -->
-                        </li>
+                     
 
                         <!-- product section start  -->
                         <li class="nav-item">
@@ -385,13 +367,13 @@
                                 </a>
                                 <ul class="nav nav-treeview">
                                     <li class="nav-item">
-                                        <a href="<?= site_url('admin/Category/add') ?>" class="nav-link">
+                                        <a href="<?= site_url('admin/Units/add') ?>" class="nav-link">
                                             <i class="nav-icon bi bi-circle"></i>
                                             <p>Add Product Unit</p>
                                         </a>
                                     </li>
                                     <li class="nav-item">
-                                        <a href="<?= site_url('admin/Category') ?>" class="nav-link">
+                                        <a href="<?= site_url('admin/Units') ?>" class="nav-link">
                                             <i class="nav-icon bi bi-circle"></i>
                                             <p>View Product Unit</p>
                                         </a>
