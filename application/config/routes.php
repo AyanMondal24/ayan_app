@@ -54,20 +54,10 @@ $route['contact'] = 'Home/contact';
 $route['shop'] = 'Home/shop';
 $route['cart'] = 'Home/cart';
 $route['checkout'] = 'Home/checkout';
+
 $route['admin'] = 'admin/Home';
 
 
 $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;
 
-// $route['admin/add-products'] = 'admin/Products/addProductsForm';
-// $route['admin/view-products']='admin/Products/viewProducts';
-// $route['admin/save-product'] = 'admin/Products/addProductsDB';
-// $route['admin/single-view/(:any)'] = 'admin/Products/singleView/$1';
-// $route['admin/Product/(:num)'] = 'admin/Product/index/$1'; //for product pagination
-
-
-// $route['admin/add-category'] = 'admin/Category/addCategoryForm';
-// $route['admin/save-category']='admin/Category/addCategoryDB';
-// $route['admin/view-category']='admin/Category/viewCategory';
-// $route['admin/view-products'] = 'admin/Products/Products';

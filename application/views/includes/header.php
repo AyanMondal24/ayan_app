@@ -27,6 +27,8 @@
 
         <!-- Template Stylesheet -->
         <link href="<?=base_url('assets/css/style.css')?>" rel="stylesheet">
+        <!-- my css  -->
+        <link href="<?=base_url('assets/css/myStyle.css')?>" rel="stylesheet">
     </head>
 
     <body>

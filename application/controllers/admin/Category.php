@@ -9,7 +9,7 @@ class Category extends CI_Controller
         parent::__construct();
         $this->load->model('category_model');
         $this->load->helper('form', 'url');
-        $this->load->helper('view');
+        // $this->load->helper('view');
         $this->load->library('pagination');
         $this->load->library('encryption');
         $this->load->library('form_validation');

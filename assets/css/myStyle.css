@@ -1,0 +1,16 @@
+.pagination .page-item {
+    display: inline-block;
+    margin: 0 4px;
+}
+
+.pagination .page-link {
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+}
+
+.pagination .active .page-link {
+    background: #80C400;  /* green */
+    color: #fff;
+    border-color: #80C400;
+}

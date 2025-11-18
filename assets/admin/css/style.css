@@ -97,16 +97,97 @@
   transform: scale(1.01);
 }
 
-.single-view .product-img {
+.product-container {
+  display: flex;
+  gap: 20px;
+  align-items: flex-start;
+}
+
+.thumb-column {
+  width: 100px !important;
+  display: flex;
+  flex-direction: column !important;
+  /* <-- THIS MAKES IT VERTICAL */
+  gap: 12px;
+}
+
+.thumb-column img {
   width: 100%;
-  height: 300px;
+  height: 90px;
   object-fit: cover;
+  border-radius: 6px;
+  border: 2px solid transparent;
+  cursor: pointer;
+  transition: .3s ease;
+}
+
+.thumb-column img.active,
+.thumb-column img:hover {
+  border-color: #0095ff;
+}
+
+/* .thumb-gallery {
+    width: 120px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.thumb-gallery img {
+    width: 100%;
+    height: 90px;
+    object-fit: cover;
+    border-radius: 6px;
+    border: 2px solid transparent;
+    cursor: pointer;
+    transition: .3s;
+}
+
+.thumb-gallery img.active,
+.thumb-gallery img:hover {
+    border-color: #0095ff;
+} */
+
+.main-image img {
+  width: 420px;
+  height: auto;
+  border-radius: 10px;
+}
+
+/* Left image gallery */
+/* .gallery {
+  width: 25%;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.gallery img {
+  width: 100%;
+  cursor: pointer;
+  border-radius: 6px;
+  border: 2px solid transparent;
+  transition: .3s;
+}
+
+.gallery img:hover {
+  border-color: #008cff;
+} */
+
+/* Main product image */
+/* .main-image {
+  width: 45%;
+}
+
+.main-image img {
+  width: 100%;
+  border-radius: 10px;
 }
 
 .badge-status {
   font-size: 0.9rem;
   padding: 0.4rem 0.8rem;
-}
+} */
 
 /* category view  */
 .category-view table thead tr th {

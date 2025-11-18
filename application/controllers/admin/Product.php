@@ -18,13 +18,12 @@ class Product extends CI_Controller
 
     public function index()
     {
-        // echo $page;
-        // die();
+
 
         $config = [];
         $config['base_url'] = site_url('admin/Product/index');
         $config['total_rows'] = $this->product_model->totalProducts(); //total records
-   
+
         $config['per_page'] = 5;
         $config['uri_segment'] = 4;
 
@@ -50,15 +49,9 @@ class Product extends CI_Controller
         // $offset = $this->uri->segment(4, 0);
         // 🔹 Get data
         $data['products'] = $this->product_model->getProducts($config['per_page'], $offset);
-        print_r($data['products']);
-        die();
         $data['links'] = $this->pagination->create_links();
         $data['offset'] = $offset;
 
-        // $data['products'] = $this->product_model->getProducts();
-        // $this->load->view('admin/includes/header');
-        // $this->load->view('admin/view_products', $data);
-        // $this->load->view('admin/includes/footer');
         load_admin_views('view_products', $data);
     }
 
@@ -96,10 +89,8 @@ class Product extends CI_Controller
         $this->form_validation->set_rules('category', 'Category', 'required');
         $this->form_validation->set_rules('status', 'Active Or Deactive', 'required');
         $this->form_validation->set_rules('is_available', 'Available Or Not', 'required');
-        $this->form_validation->set_rules('description', 'Description', 'required');
-        $this->form_validation->set_rules('alt_text[]', 'Alt', 'required');
-        $this->form_validation->set_rules('image_type[]', 'Image Type', 'required');
-
+        $this->form_validation->set_rules('description', 'Description', 'required|callback_min_desc');
+       
         // 🔹 File validation logic (now checks temp uploads)
         if (empty($this->input->post('id'))) {
             // Add mode → temp images required
@@ -110,6 +101,27 @@ class Product extends CI_Controller
                 $this->form_validation->set_rules('images[]', 'Product Images', 'callback_file_check');
             }
         }
+
+
+        $alt_text = $this->input->post('alt_text');
+        $image_type = $this->input->post('image_type');
+        $tmp_img = $this->input->post('uploaded_temp') ?: [];
+        // DEBUG: Log values (remove after testing)
+        // log_message('debug', 'Uploaded temps: ' . json_encode($tmp_img));
+        // log_message('debug', 'Alt texts: ' . json_encode($alt_text));
+        // log_message('debug', 'Image types: ' . json_encode($image_type));
+
+
+        // Set rules for alt_text and image_type only if temp images exist
+        foreach ($tmp_img as $key => $img) {
+            if (!empty($img)) {
+                $this->form_validation->set_rules("alt_text[$key]", "Alt Text ", "required");
+                $this->form_validation->set_rules("image_type[$key]", "Image Type ", "required");
+            }
+        }
+
+
+
 
         // 🔹 Run validation
         if ($this->form_validation->run() == FALSE) {
@@ -124,8 +136,8 @@ class Product extends CI_Controller
                 'is_available',
                 'description',
                 'images[]',
-                'alt_text[]',
-                'image_type[]'
+                // 'alt_text[]',
+                // 'image_type[]'
             ];
             foreach ($fields_name as $field) {
                 $error = form_error($field);
@@ -133,6 +145,22 @@ class Product extends CI_Controller
                     $errors[$field] = $error;
                 }
             }
+
+            // Collect errors for array fields (alt_text and image_type)
+           foreach ($tmp_img as $key => $img) {
+               if (!empty($img)) {
+                   $alt_error = form_error("alt_text[$key]");
+                   $type_error = form_error("image_type[$key]");
+                   if (!empty($alt_error)) {
+                       $errors["alt_text[$key]"] = $alt_error;
+                   }
+                   if (!empty($type_error)) {
+                       $errors["image_type[$key]"] = $type_error;
+                   }
+               }
+           }
+            // DEBUG: Log errors (remove after testing)
+        //    log_message('debug', 'Validation errors: ' . json_encode($errors));
             echo json_encode(["status" => "error", "errors" => $errors]);
             return;
         }
@@ -405,6 +433,17 @@ class Product extends CI_Controller
         }
     }
 
+    // desceription text length validation 
+    public function min_desc($str)
+{
+    $plain = strip_tags($str); // remove HTML tags
+    if (strlen($plain) < 150) {
+        $this->form_validation->set_message('min_desc', 'The Description must be at least 150 characters.');
+        return FALSE;
+    }
+    return TRUE;
+}
+
     // Callback for form_validation for multiple image 
     public function file_check()
     {
@@ -513,10 +552,8 @@ class Product extends CI_Controller
             return;
         }
         // var_dump($data);
-        $data['product'] = $this->product_model->singleView($id);
-        // $this->load->view('admin/includes/header');
-        // $this->load->view('admin/single_view', $data);
-        // $this->load->view('admin/includes/footer');
+        $data = $this->product_model->singleView($id);
+       
         load_admin_views('product_single_view', $data);
     }
 
@@ -531,6 +568,7 @@ class Product extends CI_Controller
         }
     }
 
+    // delete product 
     public function delete($enc_id)
     {
         // $enc_id=$this->input->post('id');
@@ -628,7 +666,7 @@ class Product extends CI_Controller
             echo json_encode(['status' => 'error', 'message' => 'No file received']);
         }
     }
-
+    // delete tmp image from tmp folder 
     public function delete_temp_image()
     {
         $filename = $this->input->post('filename');

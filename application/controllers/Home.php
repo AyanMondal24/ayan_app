@@ -6,36 +6,78 @@ class Home extends CI_Controller
 	function __construct()
 	{
 		parent::__construct();
+		$this->load->helper('common');
+		$this->load->model('product_model');
+		$this->load->model('category_model');
+		$this->load->library('pagination');
 		// $this->load->model('Product');
 	}
 	public function index()
 	{
-		$this->load->view('includes/header');
-		$this->load->view('home');
-		$this->load->view('includes/footer');
+		$config = [];
+		$config['base_url'] = base_url('Home/index/');
+		$config['total_rows'] = $this->product_model->totalProducts(0);
+		$config['per_page'] =  4;
+		$config['uri_segment'] = 3;
+
+		$config['full_tag_open'] = '<ul class="pagination">';
+		$config['full_tag_close'] = '</ul>';
+		$config['attributes'] = ['class' => 'page-link'];
+		$config['first_tag_open'] = '<li class="page-item">';
+		$config['first_tag_close'] = '</li>';
+		$config['last_tag_open'] = '<li class="page-item">';
+		$config['last_tag_close'] = '</li>';
+		$config['next_tag_open'] = '<li class="page-item">';
+		$config['next_tag_close'] = '</li>';
+		$config['prev_tag_open'] = '<li class="page-item">';
+		$config['prev_tag_close'] = '</li>';
+		$config['cur_tag_open'] = '<li class="page-item active"><span class="page-link">';
+		$config['cur_tag_close'] = '</span></li>';
+		$config['num_tag_open'] = '<li class="page-item">';
+		$config['num_tag_close'] = '</li>';
+
+		$this->pagination->initialize($config);
+		$offset = ($this->uri->segment(3)) ? $this->uri->segment(3) : 0;
+
+
+		if ($this->input->is_ajax_request()) {
+			$category_name = $this->input->post('category_name');
+			$offset =  $this->input->post('offset') ?? 0;;
+			
+			$config['total_rows'] = $this->product_model->totalProductByCategory($category_name);
+			$this->pagination->initialize($config);
+
+			$products = $this->product_model->getAllproducts($config['per_page'], $offset, $category_name);
+
+			$html = $this->load->view('ajax_products', ['products' => $products], TRUE);
+
+			echo json_encode([
+				'html' => $html,
+				'pagination' => $this->pagination->create_links()
+			]);
+			return;
+		}
+
+		$data['products'] = $this->product_model->getAllproducts($config['per_page'], $offset);
+		$data['category'] = $this->category_model->getAllCategory();
+		$data['pagination'] = $this->pagination->create_links();
+	
+		load_views('home', $data);
 	}
 	public function contact()
 	{
-		$this->load->view('includes/header');
-		$this->load->view('contact');
-		$this->load->view('includes/footer');
+		load_views('contact');
 	}
 	public function shop()
 	{
-		$this->load->view('includes/header');
-		$this->load->view('shop');
-		$this->load->view('includes/footer');
+		load_views('shop');
 	}
 	public function cart()
 	{
-		$this->load->view('includes/header');
-		$this->load->view('cart');
-		$this->load->view('includes/footer');
+		load_views('cart');
 	}
 	public function checkout()
 	{
-		$this->load->view('includes/header');
-		$this->load->view('checkout');
-		$this->load->view('includes/footer');
+		load_views('checkout');
 	}
 }

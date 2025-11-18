@@ -14,6 +14,15 @@ function load_admin_views($main_view, $data = [])
     $CI->load->view('admin/includes/footer', $data);
 }
 
+function load_views($main_view, $data = [])
+{
+    $CI =& get_instance();  // Get CodeIgniter instance
+    
+    $CI->load->view('includes/header', $data);
+    $CI->load->view($main_view, $data);  // Assumes main views are in 'admin/'
+    $CI->load->view('includes/footer', $data);
+}
+
 
 function upload_image($field_name, $upload_path = 'products', $old_image = '', $prefix = 'product_')
 {

@@ -173,10 +173,10 @@
       window.CKEDITOR && (CKEDITOR.config.versionCheck = false);
       CKEDITOR.replace('description');
     });
-    
+
     $('#add-product').on('submit', function(e) {
       e.preventDefault();
-      
+
       // ✅ Sync CKEditor data to textarea
       for (const instance in CKEDITOR.instances) {
         CKEDITOR.instances[instance].updateElement();
@@ -198,16 +198,39 @@
           $('span.error-text').html('');
 
           if (response.status === 'error') {
+
             if (response.errors) {
               $.each(response.errors, function(field, msg) {
-                $(`[name="${field}"]`).closest('.error-show').find('span.error-text').html(msg);
+                // console.log('Processing field:', field, 'Msg:', msg); // DEBUG
+                // Handle indexed fields (e.g., alt_text[0], image_type[1])
+                let indexMatch = field.match(/\[(\d+)\]/); // FIXED: Use square brackets
+                let index = indexMatch ? parseInt(indexMatch[1]) : null;
+                let normalized = field.replace(/\[\d+\]/, '[]'); // FIXED: Use square brackets
+                // console.log('Index:', index, 'Normalized:', normalized); // DEBUG
+                if (index !== null) {
+                  // Target the specific indexed element in the array
+                  let element = $(`[name="${normalized}"]`).eq(index);
+                  // console.log('Element found:', element.length > 0, 'Element:', element); // DEBUG
+                  if (element.length) {
+                    let errorSpan = element.closest('.error-show').find('.error-text');
+                    // console.log('Error span found:', errorSpan.length > 0, 'Span:', errorSpan); // DEBUG
+                    errorSpan.html(msg); // Or .text(msg) if you stripped tags
+                  } else {
+                    console.warn(`Element not found for ${field} at index ${index}`);
+                  }
+                } else {
+                  // Handle non-indexed fields (e.g., 'name', 'price')
+                  let errorSpan = $(`[name="${field}"]`).closest('.error-show').find('.error-text');
+                  console.log('Non-indexed span found:', errorSpan.length > 0); // DEBUG
+                  errorSpan.html(msg);
+                }
               });
             }
 
             $("#response-msg")
               .addClass('error-msg')
               .removeClass('success-msg')
-              .html(response.message || "Validation failed.")
+              .html(response.msg || "Validation failed.")
               .fadeIn(300)
               .delay(3000)
               .fadeOut(500);
@@ -227,7 +250,7 @@
             $("#response-msg")
               .addClass('success-msg')
               .removeClass('error-msg')
-              .html(response.message || "Saved successfully!")
+              .html(response.msg || "Saved successfully!")
               .fadeIn(300)
               .delay(2000)
               .fadeOut(500, function() {
@@ -250,92 +273,6 @@
     });
 
 
-    // $('#add-product').on('submit', function(e) {
-    //   e.preventDefault();
-
-     
-    //   const form = new FormData(this);
-     
-    //   // Optional: Log form data for debugging
-    //   // for (let [key, value] of form.entries()) { console.log(key, value); }
-
-    //   $.ajax({
-    //     url: $(this).attr('action'),
-    //     type: 'POST',
-    //     data: form,
-    //     dataType: 'JSON', // Expects JSON response
-    //     processData: false,
-    //     contentType: false,
-    //     success: function(response) {
-    //       console.log('Success triggered. Response:', response); // Debugging
-    //       $('span.error-text').html(''); // Clear previous errors
-
-    //       if (response.status === 'error') {
-    //         // Handle validation or other errors
-    //         if (response.errors) {
-    //           $.each(response.errors, function(field, message) {
-    //             $(`[name="${field}"]`)
-    //               .closest('.error-show')
-    //               .find('span')
-    //               .html(message);
-    //           });
-    //         }
-    //         $("#response-msg")
-    //           .addClass('error-msg')
-    //           .removeClass('success-msg')
-    //           .html(response.message || "An error occurred.")
-    //           .fadeIn(500)
-    //           .delay(5000)
-    //           .fadeOut(500);
-    //       } else if (response.status === 'success') {
-    //         // Success: Reset form, show message, then reload
-    //         $("#add-product")[0].reset();
-
-    //         $("#response-msg")
-    //           .addClass('success-msg')
-    //           .removeClass('error-msg')
-    //           .html(response.message || "Data Successfully Submitted.")
-    //           .fadeIn(500)
-    //           .delay(2000) // Shorter delay before reload
-    //           .fadeOut(500, function() {
-    //             location.reload(true); // Hard reload after fade-out
-    //           });
-    //       } else if (response.status === 'update') {
-    //         // Update: Same as success
-    //         $("#add-product")[0].reset();
-    //         $("#response-msg")
-    //           .addClass('success-msg')
-    //           .removeClass('error-msg')
-    //           .html(response.message || "Data Successfully Updated.")
-    //           .fadeIn(500)
-    //           .delay(2000)
-    //           .fadeOut(500, function() {
-    //             location.reload(true);
-    //           });
-    //       } else {
-    //         // Fallback for unexpected status
-    //         $("#response-msg")
-    //           .addClass('error-msg')
-    //           .removeClass('success-msg')
-    //           .html("Unexpected response.")
-    //           .fadeIn(500)
-    //           .delay(5000)
-    //           .fadeOut(500);
-    //       }
-    //     },
-    //     error: function(xhr, status, error) {
-    //       console.error('AJAX Error:', status, error);
-    //       console.log('Raw Response:', xhr.responseText); // Key for debugging
-    //       $("#response-msg")
-    //         .addClass('error-msg')
-    //         .removeClass('success-msg')
-    //         .html("Submission failed. Check console for details.")
-    //         .fadeIn(500)
-    //         .delay(5000)
-    //         .fadeOut(500);
-    //     }
-    //   });
-    // });
 
     // update page 
     $(document).on('change', '.updateImageInput', function(e) {
@@ -401,7 +338,7 @@
           contentType: false,
           processData: false,
           success: function(response) {
-            console.log(response)
+            // console.log(response)
             let res = JSON.parse(response);
             if (res.status == 'success') {
               let imgHtml = `
