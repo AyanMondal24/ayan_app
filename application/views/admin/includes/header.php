@@ -356,7 +356,9 @@
                                     </li>
                                 </ul>
                                 </li>
-
+                                <!-- product CATEGORY section end  -->
+                            <!-- product unit section start  -->
+                            
                             <li class="nav-item">
                                 <a href="#" class="nav-link">
                                     <i class="nav-icon bi bi-box-seam-fill"></i>
@@ -380,8 +382,33 @@
                                     </li>
                                 </ul>
                                 </li>
+                            <!-- product unit section end  -->
 
-                                <!-- product CATEGORY section end  -->
+                                <!-- coupon section start  -->
+                                <li class="nav-item">
+                                <a href="#" class="nav-link">
+                                    <i class="nav-icon bi bi-box-seam-fill"></i>
+                                    <p>
+                                       Coupon
+                                        <i class="nav-arrow bi bi-chevron-right"></i>
+                                    </p>
+                                </a>
+                                <ul class="nav nav-treeview">
+                                    <li class="nav-item">
+                                        <a href="<?= site_url('admin/Coupons/add') ?>" class="nav-link">
+                                            <i class="nav-icon bi bi-circle"></i>
+                                            <p>Add Coupon</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="<?= site_url('admin/Category') ?>" class="nav-link">
+                                            <i class="nav-icon bi bi-circle"></i>
+                                            <p>View Coupon</p>
+                                        </a>
+                                    </li>
+                                </ul>
+                                </li>
+                                <!-- coupon section end  -->
 
                                 <li class="nav-item">
                                     <a href="<?= site_url('assets/admin') ?>/generate/theme.html" class="nav-link">

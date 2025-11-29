@@ -1,3 +1,9 @@
+<?php 
+$cart = $this->session->userdata('cart');
+$cart_count = is_array($cart) ? count($cart) : 0;
+?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -64,16 +70,16 @@
                     <div class="collapse navbar-collapse bg-white" id="navbarCollapse">
                         <div class="navbar-nav mx-auto">
                             <a href="<?= base_url() ?>" class="nav-item nav-link active">Home</a>
-                            <a href="<?= site_url('shop')?>" class="nav-item nav-link">Shop</a>
-                            <a href="<?= site_url('cart')?>" class="nav-item nav-link">Shop Cart</a>
+                            <a href="<?= site_url('Shop/index')?>" class="nav-item nav-link">Shop</a>
+                            <a href="<?= site_url('Cart/index')?>" class="nav-item nav-link">Shop Cart</a>
                             <a href="<?= site_url('checkout')?>" class="nav-item nav-link">Checkout</a>
-                            <a href="<?= site_url('contact') ?>" class="nav-item nav-link">Contact</a>
+                            <a href="<?= site_url('Contact/index') ?>" class="nav-item nav-link">Contact</a>
                         </div>
                         <div class="d-flex m-3 me-0">
                             <button class="btn-search btn border border-secondary btn-md-square rounded-circle bg-white me-4" data-bs-toggle="modal" data-bs-target="#searchModal"><i class="fas fa-search text-primary"></i></button>
-                            <a href="#" class="position-relative me-4 my-auto">
+                            <a href="<?= base_url('Cart/index') ?>" class="position-relative me-4 my-auto">
                                 <i class="fa fa-shopping-bag fa-2x"></i>
-                                <span class="position-absolute bg-secondary rounded-circle d-flex align-items-center justify-content-center text-dark px-1" style="top: -5px; left: 15px; height: 20px; min-width: 20px;">3</span>
+                                <span class="position-absolute bg-secondary rounded-circle d-flex align-items-center justify-content-center text-dark px-1 cart-count" style="top: -5px; left: 15px; height: 20px; min-width: 20px;"><?= $cart_count ?></span>
                             </a>
                             <a href="#" class="my-auto">
                                 <i class="fas fa-user fa-2x"></i>

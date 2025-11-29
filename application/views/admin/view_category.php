@@ -18,38 +18,35 @@
                         </thead>
                         <tbody>
                             <?php
-                            $serial_no =$offset + 1;
+                            $serial_no = $offset + 1;
                             $output = "";
                             foreach ($category as $cat) {
-                                $enc_id=urlencode(base64_encode($this->encryption->encrypt($cat->id)));
+                                $enc_id = urlencode(base64_encode($this->encryption->encrypt($cat->id)));
 
                                 $id = $cat->id;
                                 $name = ucfirst($cat->name);
                                 $image = $cat->image;
                                 // $output .= "
                             ?>
-                                <tr class='align-middle'>   
+                                <tr class='align-middle'>
                                     <td><?= $serial_no++ ?></td>
                                     <td>
-                                        <div class='d-block '>
-                                            <img src='<?= base_url('assets/uploads/category/'. $image)?>' alt='Preview' class='img-thumbnail rounded shadow-sm d-block'
-                                                style='width:150px; height:100px; object-fit:cover;'>
+                                        <div class='d-block category-view-image'>
+                                            <img src='<?= base_url('assets/uploads/category/thumb/' . $image) ?>' alt='<?= $cat->image_alt ?>' class='img-thumbnail rounded shadow-sm d-block'>
                                         </div>
                                     </td>
                                     <td><?= $name ?></td>
 
                                     <td class='align-middle text-center'>
-                                        <a href='<?= site_url('admin/Category/view/'. $enc_id) ?>' role='button' class='btn btn-primary btn-sm me-1'><i class='fa-solid fa-eye'></i>
-                                        </a>
                                         <a href='<?= site_url('admin/Category/add/' . $enc_id) ?>' role='button' class='btn-sm btn btn-warning text-light me-1'><i class='fa-solid fa-edit'></i>
                                         </a>
-                                        <a href='<?= site_url('admin/view/') ?>' role='button' class='btn-sm btn btn-danger text-light'><i class='fa-solid fa-trash'></i>
+                                        <a href='<?= site_url('admin/Category/delete/' . $enc_id) ?>' role='button' class='btn-sm btn btn-danger text-light' data-file="<?= $image ?>" data-id="<?= $enc_id ?>" id="deleteBtn"><i class='fa-solid fa-trash'></i>
                                         </a>
                                     </td>
                                 </tr>
                             <?php      // ";
                             }
-                            echo $output;
+                            // echo $output;
                             ?>
 
 
@@ -62,6 +59,49 @@
             </div>
 
         </div>
+        <div id="response-msg"> </div>
+
 
     </div>
 </div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        $(document).on('click', '#deleteBtn', function(e) {
+            e.preventDefault();
+            let id = $(this).data('id');
+            let file = $(this).data('file');
+
+            $.ajax({
+                url: "<?= base_url('admin/Category/delete/'); ?>"+ id,
+                type: "POST",
+                data:{file:file},
+                dataType:"JSON",
+                success: function(response) {
+                    // let res = JSON.parse(response);
+
+                    if (response.status === "success") {
+                    $("#response-msg")
+                            .addClass("success-msg")
+                            .removeClass("error-msg")
+                            .html("Successfully Deleted.")
+                            .fadeIn(200)
+                            .delay(3000)
+                            .fadeOut(200);
+                            setTimeout(() => {
+                                location.reload();
+                            }, 2000);
+                    } else {
+                        $("#response-msg")
+                            .addClass("error-msg")
+                            .removeClass("success-msg")
+                            .html("Failed to delete image")
+                            .fadeIn(200)
+                            .delay(3000)
+                            .fadeOut(200);
+                    }
+                }
+            });
+        })
+    });
+</script>

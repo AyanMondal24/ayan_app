@@ -100,6 +100,7 @@
                 <div class="col-lg-4 text-start">
                     <h1>Our Organic Products</h1>
                 </div>
+
                 <div class="col-lg-8 text-end">
                     <ul class="nav nav-pills d-inline-flex text-center mb-5">
                         <li class="nav-item category">
@@ -117,26 +118,43 @@
 
                     </ul>
                 </div>
+
+
             </div>
             <div class="tab-content">
                 <div id="tab-1" class="tab-pane fade show p-0 active">
                     <div class="row g-4">
                         <div class="col-lg-12">
                             <div class="row g-4" id="show-product-by-category">
-                                <?php foreach ($products as $product) { ?>
-                                    <div class="col-md-6 col-lg-4 col-xl-3">
+                                <?php
+                                // if(empty($products)){ 
+                                ?>
+                                <!-- <div class="p-4 text-center text-light rounded" style="background-color:#81c408;">
+                                            No Data Found
+                                        </div> -->
+                                <?php
+                                //    }
+                                ?>
+                                <?php foreach ($products as $product) {
+                                    $desc = strip_tags($product->description);
+                                    $desc = mb_convert_case($desc, MB_CASE_TITLE, "UTF-8"); // Only makes each word Title Case
+                                    $desc = mb_strtolower($desc, "UTF-8"); // Make all lowercase
+                                    $desc = mb_strtoupper(mb_substr($desc, 0, 1, "UTF-8"), "UTF-8") . mb_substr($desc, 1, null, "UTF-8");
+                                    $desc = mb_substr($desc, 0, 70) . "...";
+                                ?>
+
+                                    <div class="col-md-6 col-lg-4 col-xl-3 organic-products">
                                         <div class="rounded position-relative fruite-item">
                                             <div class="fruite-img border border-secondary border-bottom-0" style="width: 100%; height:260px;">
-                                                <img src="<?= base_url('assets/uploads/products/' . $product->image_name) ?>" class="img-fluid w-100 rounded-top" alt="<?= $product->alt_text ?>" style="width:100%; height:100%; object-fit:cover;">
+                                                <img src="<?= base_url('assets/uploads/products/medium/' . $product->image_name) ?>" class="img-fluid w-100 rounded-top" alt="<?= $product->alt_text ?>" style="width:100%; height:100%; object-fit:cover;">
                                             </div>
                                             <div class="text-white bg-secondary px-3 py-1 rounded position-absolute" style="top: 10px; left: 10px;"><?= $product->category_name ?></div>
-                                            <div class="p-4 border border-secondary  rounded-bottom" style="height:250px; max-height:250px;">
-                                                <h4><?= $product->product_name ?></h4>
-                                                <p class="text-start"><?= mb_substr(strip_tags($product->description), 0, 130) . '...' ?></p>
-                                                <div class="d-flex justify-content-between flex-lg-wrap">
-                                                    <p class="text-dark fs-5 fw-bold mb-0">$4.99 / kg</p>
-                                                    <a href="#" class="btn border border-secondary rounded-pill px-3 text-primary"><i class="fa fa-shopping-bag me-2 text-primary"></i> Add to cart</a>
-                                                </div>
+                                            <div class="p-4 border border-secondary  rounded-bottom product-content" style="height:245px; max-height:245px;">
+                                                <h4 class="product-title"><?= $product->product_name ?></h4>
+                                                <p class="text-dark fs-5 fw-bold mb-0 text-start product-price">&#8377; <?= $product->price ?> <span> / <?= $product->short_name ?></span></p>
+                                                <p class="text-start product-desc"><?= $desc ?></p>
+
+                                                <a href="#" class="btn border border-secondary rounded-pill px-3 text-primary add-to-cart mt-0" data-id="<?= $product->id ?>"><i class="fa fa-shopping-bag me-2 text-primary"></i> Add to cart</a>
                                             </div>
                                         </div>
                                     </div>
@@ -144,11 +162,9 @@
                                 } ?>
 
                             </div>
+                            <a href="<?= base_url('Shop/index') ?>" class="mt-2 btn btn-primary text-light view-more-btn"> View More</a>
                         </div>
                     </div>
-                </div>
-                <div id="pagination-container" class="d-flex align-items-center justify-content-center product-pagination mt-2">
-                    <?= $pagination ?>
                 </div>
 
             </div>
@@ -212,118 +228,28 @@
     <div class="container py-5">
         <h1 class="mb-0">Fresh Organic Vegetables</h1>
         <div class="owl-carousel vegetable-carousel justify-content-center">
-            <div class="border border-primary rounded position-relative vesitable-item">
-                <div class="vesitable-img">
-                    <img src="<?= base_url('assets/img') ?>/vegetable-item-6.jpg" class="img-fluid w-100 rounded-top" alt="">
-                </div>
-                <div class="text-white bg-primary px-3 py-1 rounded position-absolute" style="top: 10px; right: 10px;">Vegetable</div>
-                <div class="p-4 rounded-bottom">
-                    <h4>Parsely</h4>
-                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit sed do eiusmod te incididunt</p>
-                    <div class="d-flex justify-content-between flex-lg-wrap">
-                        <p class="text-dark fs-5 fw-bold mb-0">$4.99 / kg</p>
-                        <a href="#" class="btn border border-secondary rounded-pill px-3 text-primary"><i class="fa fa-shopping-bag me-2 text-primary"></i> Add to cart</a>
+            <?php foreach ($vegetables as $veg) {
+                $desc = strip_tags($veg->description);
+                $desc = mb_convert_case($desc, MB_CASE_TITLE, "UTF-8"); // Only makes each word Title Case
+                $desc = mb_strtolower($desc, "UTF-8"); // Make all lowercase
+                $desc = mb_strtoupper(mb_substr($desc, 0, 1, "UTF-8"), "UTF-8") . mb_substr($desc, 1, null, "UTF-8");
+                $desc = mb_substr($desc, 0, 70) . "...";
+            ?>
+
+                <div class="border border-primary rounded position-relative vesitable-item ">
+                    <div class="vesitable-img border-primary border-bottom ">
+                        <img src="<?= base_url('assets/uploads/products/medium/' . $veg->image_name) ?>" class="img-fluid w-100 rounded-top" alt="<?= $veg->alt_text ?>">
+                    </div>
+                    <div class="text-white bg-primary px-3 py-1 rounded position-absolute" style="top: 10px; right: 10px;"><?= $veg->category_name ?></div>
+                    <div class="p-4 border  rounded-bottom product-content" style="height:245px; max-height:245px;">
+                        <h4 class="product-title"><?= $veg->product_name ?></h4>
+                        <p class="text-dark fs-5 fw-bold mb-0 text-start product-price">&#8377; <?= $veg->price ?> <span> / <?= $veg->short_name ?></span></p>
+                        <p class="text-start product-desc"><?= $desc ?></p>
+
+                        <a href="#" class="btn border border-secondary rounded-pill px-3 text-primary add-to-cart mt-0" data-id="<?= $veg->id ?>"><i class="fa fa-shopping-bag me-2 text-primary"></i> Add to cart</a>
                     </div>
                 </div>
-            </div>
-            <div class="border border-primary rounded position-relative vesitable-item">
-                <div class="vesitable-img">
-                    <img src="<?= base_url('assets/img') ?>/vegetable-item-1.jpg" class="img-fluid w-100 rounded-top" alt="">
-                </div>
-                <div class="text-white bg-primary px-3 py-1 rounded position-absolute" style="top: 10px; right: 10px;">Vegetable</div>
-                <div class="p-4 rounded-bottom">
-                    <h4>Parsely</h4>
-                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit sed do eiusmod te incididunt</p>
-                    <div class="d-flex justify-content-between flex-lg-wrap">
-                        <p class="text-dark fs-5 fw-bold mb-0">$4.99 / kg</p>
-                        <a href="#" class="btn border border-secondary rounded-pill px-3 text-primary"><i class="fa fa-shopping-bag me-2 text-primary"></i> Add to cart</a>
-                    </div>
-                </div>
-            </div>
-            <div class="border border-primary rounded position-relative vesitable-item">
-                <div class="vesitable-img">
-                    <img src="<?= base_url('assets/img') ?>/vegetable-item-3.png" class="img-fluid w-100 rounded-top bg-light" alt="">
-                </div>
-                <div class="text-white bg-primary px-3 py-1 rounded position-absolute" style="top: 10px; right: 10px;">Vegetable</div>
-                <div class="p-4 rounded-bottom">
-                    <h4>Banana</h4>
-                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit sed do eiusmod te incididunt</p>
-                    <div class="d-flex justify-content-between flex-lg-wrap">
-                        <p class="text-dark fs-5 fw-bold mb-0">$7.99 / kg</p>
-                        <a href="#" class="btn border border-secondary rounded-pill px-3 text-primary"><i class="fa fa-shopping-bag me-2 text-primary"></i> Add to cart</a>
-                    </div>
-                </div>
-            </div>
-            <div class="border border-primary rounded position-relative vesitable-item">
-                <div class="vesitable-img">
-                    <img src="<?= base_url('assets/img') ?>/vegetable-item-4.jpg" class="img-fluid w-100 rounded-top" alt="">
-                </div>
-                <div class="text-white bg-primary px-3 py-1 rounded position-absolute" style="top: 10px; right: 10px;">Vegetable</div>
-                <div class="p-4 rounded-bottom">
-                    <h4>Bell Papper</h4>
-                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit sed do eiusmod te incididunt</p>
-                    <div class="d-flex justify-content-between flex-lg-wrap">
-                        <p class="text-dark fs-5 fw-bold mb-0">$7.99 / kg</p>
-                        <a href="#" class="btn border border-secondary rounded-pill px-3 text-primary"><i class="fa fa-shopping-bag me-2 text-primary"></i> Add to cart</a>
-                    </div>
-                </div>
-            </div>
-            <div class="border border-primary rounded position-relative vesitable-item">
-                <div class="vesitable-img">
-                    <img src="<?= base_url('assets/img') ?>/vegetable-item-5.jpg" class="img-fluid w-100 rounded-top" alt="">
-                </div>
-                <div class="text-white bg-primary px-3 py-1 rounded position-absolute" style="top: 10px; right: 10px;">Vegetable</div>
-                <div class="p-4 rounded-bottom">
-                    <h4>Potatoes</h4>
-                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit sed do eiusmod te incididunt</p>
-                    <div class="d-flex justify-content-between flex-lg-wrap">
-                        <p class="text-dark fs-5 fw-bold mb-0">$7.99 / kg</p>
-                        <a href="#" class="btn border border-secondary rounded-pill px-3 text-primary"><i class="fa fa-shopping-bag me-2 text-primary"></i> Add to cart</a>
-                    </div>
-                </div>
-            </div>
-            <div class="border border-primary rounded position-relative vesitable-item">
-                <div class="vesitable-img">
-                    <img src="<?= base_url('assets/img') ?>/vegetable-item-6.jpg" class="img-fluid w-100 rounded-top" alt="">
-                </div>
-                <div class="text-white bg-primary px-3 py-1 rounded position-absolute" style="top: 10px; right: 10px;">Vegetable</div>
-                <div class="p-4 rounded-bottom">
-                    <h4>Parsely</h4>
-                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit sed do eiusmod te incididunt</p>
-                    <div class="d-flex justify-content-between flex-lg-wrap">
-                        <p class="text-dark fs-5 fw-bold mb-0">$7.99 / kg</p>
-                        <a href="#" class="btn border border-secondary rounded-pill px-3 text-primary"><i class="fa fa-shopping-bag me-2 text-primary"></i> Add to cart</a>
-                    </div>
-                </div>
-            </div>
-            <div class="border border-primary rounded position-relative vesitable-item">
-                <div class="vesitable-img">
-                    <img src="<?= base_url('assets/img') ?>/vegetable-item-5.jpg" class="img-fluid w-100 rounded-top" alt="">
-                </div>
-                <div class="text-white bg-primary px-3 py-1 rounded position-absolute" style="top: 10px; right: 10px;">Vegetable</div>
-                <div class="p-4 rounded-bottom">
-                    <h4>Potatoes</h4>
-                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit sed do eiusmod te incididunt</p>
-                    <div class="d-flex justify-content-between flex-lg-wrap">
-                        <p class="text-dark fs-5 fw-bold mb-0">$7.99 / kg</p>
-                        <a href="#" class="btn border border-secondary rounded-pill px-3 text-primary"><i class="fa fa-shopping-bag me-2 text-primary"></i> Add to cart</a>
-                    </div>
-                </div>
-            </div>
-            <div class="border border-primary rounded position-relative vesitable-item">
-                <div class="vesitable-img">
-                    <img src="<?= base_url('assets/img') ?>/vegetable-item-6.jpg" class="img-fluid w-100 rounded-top" alt="">
-                </div>
-                <div class="text-white bg-primary px-3 py-1 rounded position-absolute" style="top: 10px; right: 10px;">Vegetable</div>
-                <div class="p-4 rounded-bottom">
-                    <h4>Parsely</h4>
-                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit sed do eiusmod te incididunt</p>
-                    <div class="d-flex justify-content-between flex-lg-wrap">
-                        <p class="text-dark fs-5 fw-bold mb-0">$7.99 / kg</p>
-                        <a href="#" class="btn border border-secondary rounded-pill px-3 text-primary"><i class="fa fa-shopping-bag me-2 text-primary"></i> Add to cart</a>
-                    </div>
-                </div>
-            </div>
+            <?php }  ?>
         </div>
     </div>
 </div>
@@ -494,81 +420,118 @@
                     </div>
                 </div>
             </div>
-            <h1 class="mb-0">Fresh Organic Vegetables</h1>
 
-            <div class="col-md-6 col-lg-6 col-xl-3">
-                <div class="text-center">
-                    <img src="<?= base_url('assets/img') ?>/fruite-item-1.jpg" class="img-fluid rounded" alt="">
-                    <div class="py-4">
-                        <a href="#" class="h5">Organic Tomato</a>
-                        <div class="d-flex my-3 justify-content-center">
-                            <i class="fas fa-star text-primary"></i>
-                            <i class="fas fa-star text-primary"></i>
-                            <i class="fas fa-star text-primary"></i>
-                            <i class="fas fa-star text-primary"></i>
-                            <i class="fas fa-star"></i>
-                        </div>
-                        <h4 class="mb-3">3.12 $</h4>
-                        <a href="#" class="btn border border-secondary rounded-pill px-3 text-primary"><i class="fa fa-shopping-bag me-2 text-primary"></i> Add to cart</a>
+        </div>
+    </div>
+</div>
+<!-- Bestsaler Product End -->
+<div class="container-fluid vesitable py-5">
+    <div class="container py-5">
+        <h1 class="mb-0">Featured Products</h1>
+        <div class="owl-carousel vegetable-carousel justify-content-center">
+            <?php foreach ($featured as $featured) {
+                $desc = strip_tags($featured->description);
+                $desc = mb_convert_case($desc, MB_CASE_TITLE, "UTF-8"); // Only makes each word Title Case
+                $desc = mb_strtolower($desc, "UTF-8"); // Make all lowercase
+                $desc = mb_strtoupper(mb_substr($desc, 0, 1, "UTF-8"), "UTF-8") . mb_substr($desc, 1, null, "UTF-8");
+                $desc = mb_substr($desc, 0, 70) . "...";
+            ?>
+
+                <div class="border border-primary rounded position-relative vesitable-item ">
+                    <div class="vesitable-img border-primary border-bottom ">
+                        <img src="<?= base_url('assets/uploads/products/medium/' . $featured->image_name) ?>" class="img-fluid w-100 rounded-top" alt="<?= $featured->alt_text ?>">
+                    </div>
+                    <div class="text-white bg-primary px-3 py-1 rounded position-absolute" style="top: 10px; right: 10px;"><?= $featured->category_name ?></div>
+                    <div class="p-4 border  rounded-bottom product-content" style="height:245px; max-height:245px;">
+                        <h4 class="product-title"><?= $featured->product_name ?></h4>
+                        <p class="text-dark fs-5 fw-bold mb-0 text-start product-price">&#8377; <?= $featured->price ?> <span> / <?= $featured->short_name ?></span></p>
+                        <p class="text-start product-desc"><?= $desc ?></p>
+
+                        <a href="#" class="btn border border-secondary rounded-pill px-3 text-primary add-to-cart mt-0" data-id="<?= $featured->id ?>"><i class="fa fa-shopping-bag me-2 text-primary"></i> Add to cart</a>
                     </div>
                 </div>
-            </div>
-            <div class="col-md-6 col-lg-6 col-xl-3">
-                <div class="text-center">
-                    <img src="<?= base_url('assets/img') ?>/fruite-item-2.jpg" class="img-fluid rounded" alt="">
-                    <div class="py-4">
-                        <a href="#" class="h5">Organic Tomato</a>
-                        <div class="d-flex my-3 justify-content-center">
-                            <i class="fas fa-star text-primary"></i>
-                            <i class="fas fa-star text-primary"></i>
-                            <i class="fas fa-star text-primary"></i>
-                            <i class="fas fa-star text-primary"></i>
-                            <i class="fas fa-star"></i>
+            <?php }  ?>
+        </div>
+    </div>
+</div>
+<!-- <div class="container-fluid my-5">
+    <div class="container">
+        <div class="text-center  mb-5" style="max-width: 700px;">
+            <h1 class="mb-0"></h1>
+
+            <div class="d-flex ">
+                <div class="col-md-6 col-lg-6 col-xl-3">
+                    <div class="text-center">
+                        <img src="<?= base_url('assets/img') ?>/fruite-item-1.jpg" class="img-fluid rounded" alt="">
+                        <div class="py-4">
+                            <a href="#" class="h5">Organic Tomato</a>
+                            <div class="d-flex my-3 justify-content-center">
+                                <i class="fas fa-star text-primary"></i>
+                                <i class="fas fa-star text-primary"></i>
+                                <i class="fas fa-star text-primary"></i>
+                                <i class="fas fa-star text-primary"></i>
+                                <i class="fas fa-star"></i>
+                            </div>
+                            <h4 class="mb-3">3.12 $</h4>
+                            <a href="#" class="btn border border-secondary rounded-pill px-3 text-primary"><i class="fa fa-shopping-bag me-2 text-primary"></i> Add to cart</a>
                         </div>
-                        <h4 class="mb-3">3.12 $</h4>
-                        <a href="#" class="btn border border-secondary rounded-pill px-3 text-primary"><i class="fa fa-shopping-bag me-2 text-primary"></i> Add to cart</a>
                     </div>
                 </div>
-            </div>
-            <div class="col-md-6 col-lg-6 col-xl-3">
-                <div class="text-center">
-                    <img src="<?= base_url('assets/img') ?>/fruite-item-3.jpg" class="img-fluid rounded" alt="">
-                    <div class="py-4">
-                        <a href="#" class="h5">Organic Tomato</a>
-                        <div class="d-flex my-3 justify-content-center">
-                            <i class="fas fa-star text-primary"></i>
-                            <i class="fas fa-star text-primary"></i>
-                            <i class="fas fa-star text-primary"></i>
-                            <i class="fas fa-star text-primary"></i>
-                            <i class="fas fa-star"></i>
+                <div class="col-md-6 col-lg-6 col-xl-3">
+                    <div class="text-center">
+                        <img src="<?= base_url('assets/img') ?>/fruite-item-2.jpg" class="img-fluid rounded" alt="">
+                        <div class="py-4">
+                            <a href="#" class="h5">Organic Tomato</a>
+                            <div class="d-flex my-3 justify-content-center">
+                                <i class="fas fa-star text-primary"></i>
+                                <i class="fas fa-star text-primary"></i>
+                                <i class="fas fa-star text-primary"></i>
+                                <i class="fas fa-star text-primary"></i>
+                                <i class="fas fa-star"></i>
+                            </div>
+                            <h4 class="mb-3">3.12 $</h4>
+                            <a href="#" class="btn border border-secondary rounded-pill px-3 text-primary"><i class="fa fa-shopping-bag me-2 text-primary"></i> Add to cart</a>
                         </div>
-                        <h4 class="mb-3">3.12 $</h4>
-                        <a href="#" class="btn border border-secondary rounded-pill px-3 text-primary"><i class="fa fa-shopping-bag me-2 text-primary"></i> Add to cart</a>
                     </div>
                 </div>
-            </div>
-            <div class="col-md-6 col-lg-6 col-xl-3">
-                <div class="text-center">
-                    <img src="<?= base_url('assets/img') ?>/fruite-item-4.jpg" class="img-fluid rounded" alt="">
-                    <div class="py-2">
-                        <a href="#" class="h5">Organic Tomato</a>
-                        <div class="d-flex my-3 justify-content-center">
-                            <i class="fas fa-star text-primary"></i>
-                            <i class="fas fa-star text-primary"></i>
-                            <i class="fas fa-star text-primary"></i>
-                            <i class="fas fa-star text-primary"></i>
-                            <i class="fas fa-star"></i>
+                <div class="col-md-6 col-lg-6 col-xl-3">
+                    <div class="text-center">
+                        <img src="<?= base_url('assets/img') ?>/fruite-item-3.jpg" class="img-fluid rounded" alt="">
+                        <div class="py-4">
+                            <a href="#" class="h5">Organic Tomato</a>
+                            <div class="d-flex my-3 justify-content-center">
+                                <i class="fas fa-star text-primary"></i>
+                                <i class="fas fa-star text-primary"></i>
+                                <i class="fas fa-star text-primary"></i>
+                                <i class="fas fa-star text-primary"></i>
+                                <i class="fas fa-star"></i>
+                            </div>
+                            <h4 class="mb-3">3.12 $</h4>
+                            <a href="#" class="btn border border-secondary rounded-pill px-3 text-primary"><i class="fa fa-shopping-bag me-2 text-primary"></i> Add to cart</a>
                         </div>
-                        <h4 class="mb-3">3.12 $</h4>
-                        <a href="#" class="btn border border-secondary rounded-pill px-3 text-primary"><i class="fa fa-shopping-bag me-2 text-primary"></i> Add to cart</a>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-6 col-xl-3">
+                    <div class="text-center">
+                        <img src="<?= base_url('assets/img') ?>/fruite-item-4.jpg" class="img-fluid rounded" alt="">
+                        <div class="py-2">
+                            <a href="#" class="h5">Organic Tomato</a>
+                            <div class="d-flex my-3 justify-content-center">
+                                <i class="fas fa-star text-primary"></i>
+                                <i class="fas fa-star text-primary"></i>
+                                <i class="fas fa-star text-primary"></i>
+                                <i class="fas fa-star text-primary"></i>
+                                <i class="fas fa-star"></i>
+                            </div>
+                            <h4 class="mb-3">3.12 $</h4>
+                            <a href="#" class="btn border border-secondary rounded-pill px-3 text-primary"><i class="fa fa-shopping-bag me-2 text-primary"></i> Add to cart</a>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
-<!-- Bestsaler Product End -->
-
+</div> -->
 
 <!-- Fact Start -->
 <div class="container-fluid py-5">
@@ -611,44 +574,68 @@
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {
+
+
+        $(document).on("click", ".add-to-cart", function(e) {
+            e.preventDefault();
+
+            let product_id = $(this).data('id');
+            let quantity = 1;
+            let button = $(this);
+            $.ajax({
+                url: "<?= base_url('Cart/add_to_cart') ?>",
+                type: "POST",
+                data: {
+                    product_id: product_id,
+                    quantity: quantity,
+                    update_mode: "add"
+                },
+                dataType: "JSON",
+                success: function(response) {
+                    // console.log(response)
+                    if (response.status === 'success') {
+                        button.prop('disabled', true);
+                        button.addClass('btn-disabled').text('Added To Cart');
+
+
+                        // Update cart count in header
+                        $('.cart-count').text(response.cart_items);
+                    }
+                }
+            });
+        });
+
+
+
         let currentCategory = "all";
 
-        $(document).on("click", '#pagination-container a', function(e) {
-            e.preventDefault(); // stop page reload
 
-            let url = $(this).attr("href"); // this contains ?page=2 or similar
-            let category_name = $(".category .active").attr("value"); // get selected category
-            let page_number = $(this).attr('data-ci-pagination-page');
-            let per_page = 4; // your per page
-
-            let offset = (page_number - 1) * per_page;
-            loadProducts(url, offset, category_name);
-        });
 
         $(document).on('click', '.category a', function(e) {
             e.preventDefault();
             let category_name = $(this).attr('value');
             // console.log(category_name)
             // return;
+
             let url = " <?= base_url('Home/index') ?>";
-            loadProducts(url, 0, category_name);
+            loadProducts(url, category_name);
         });
 
-        function loadProducts(url, offset, category_name) {
+        function loadProducts(url, category_name) {
+            // console.log(category_name)
             $.ajax({
                 url: url,
                 type: "POST",
                 data: {
                     category_name: category_name,
-                    offset: offset,
                 },
                 dataType: "JSON",
                 success: function(response) {
                     // console.log(response.html)
                     $("#show-product-by-category").html(response.html);
-                    $("#pagination-container").html(response.pagination);
+                    // $("#pagination-container").html(response.pagination);
                 }
-            })
+            });
         }
     }); // main 
 </script>

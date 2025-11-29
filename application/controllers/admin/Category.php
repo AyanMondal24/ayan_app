@@ -13,16 +13,19 @@ class Category extends CI_Controller
         $this->load->library('pagination');
         $this->load->library('encryption');
         $this->load->library('form_validation');
+        $this->load->helper('image');
     }
 
     public function add($enc_id = null)
     {
         $id = $this->encryption->decrypt(base64_decode(urldecode($enc_id)));
         if (!empty($id)) {
+            // edit page 
             $data['category'] = $this->category_model->getSingleCategory($id);
             $data['title'] = 'Updating Category';
             // load_admin_views('add_category', $data);
         } else {
+            // add page 
             $data['category'] = null;
             $data['title'] = 'Adding Category';
         }
@@ -34,18 +37,22 @@ class Category extends CI_Controller
         // if (isset($_POST['submit'])) {
 
         $this->form_validation->set_rules('name', 'Name', 'required|trim');
+        $this->form_validation->set_rules('alt_text', 'Alt Text', 'required|trim');
 
         if (empty($this->input->post('id'))) {
-            $this->form_validation->set_rules('image', 'Category Image', 'callback_file_check');
+            // add 
+            $this->form_validation->set_rules('image', 'Category Image', "callback_file_check[image]");
         } else {
-            if (!empty($_FILES['image']['name'])) {
-                $this->form_validation->set_rules('image', 'Category Image', 'callback_file_check');
+            // update 
+            if (!empty($_FILES['changeImage']['name'])) {
+                $this->form_validation->set_rules('changeImage', 'Category Image', "callback_file_check[changeImage]");
             }
         }
+        // $this->form_validation->set_rules('update_alt_text', 'Alt Text', 'required|trim');
 
         if ($this->form_validation->run() == FALSE) {
             $errors = [];
-            $fields_name = ['name', 'image'];
+            $fields_name = ['name', 'image', 'alt_text', 'changeImage'];
             foreach ($fields_name as $field) {
                 $error = form_error($field);
                 if (!empty($error)) {
@@ -57,60 +64,166 @@ class Category extends CI_Controller
                 "errors" => $errors
             ]);
             return;
-        } else {
-            $imageName = $this->input->post('old_img');
-            if (!empty($_FILES['image']['name'])) {
+        }
+
+        $category_id = $this->input->post('id');
+
+        if (empty($category_id)) {
+            $rowImage = isset($_FILES['image']['name']) ?
+                str_replace(' ', '_', $_FILES['image']['name']) : '';
+            if (!empty($rowImage)) {
                 $prefix = 'cat_';
                 $unique_id = uniqid();
-                $config['upload_path'] = FCPATH . 'assets/uploads/category';
-                $config['allowed_types'] = 'jpeg|jpg|png|gif';
-                $config['max_size'] = 2048;
-                $config['encrypt_name']  = FALSE;
-                $config['file_name']  = $prefix . $unique_id;
-                $this->load->library('upload', $config);
-                if ($this->upload->do_upload('image')) {
-                    $uploadData = $this->upload->data();
-                    $imageName = $uploadData['file_name'];
+                $parm_folder = FCPATH . 'assets/uploads/category/original/';
+                $ext = pathinfo($rowImage, PATHINFO_EXTENSION);
+
+                $new_file = $prefix . $unique_id . "." . $ext;
+                $destination = $parm_folder . $new_file;
+                $tmp_name = $_FILES['image']['tmp_name'];
+
+                if (move_uploaded_file($tmp_name, $destination)) {
+
+                    // Create resized versions using SAME filename
+                    create_image_copy(
+                        FCPATH . 'assets/uploads/category/',
+                        $new_file,
+                        150,
+                        150,
+                        'thumb'
+                    );
+
+                    create_image_copy(
+                        FCPATH . 'assets/uploads/category/',
+                        $new_file,
+                        600,
+                        600,
+                        'medium'
+                    );
+
+                    $data = [
+                        'name' => $this->input->post('name'),
+                        'image' => $new_file,
+                        'image_alt' => $this->input->post('alt_text')
+                    ];
+
+                    if ($this->category_model->setCategory($data)) {
+                        echo  json_encode(["status" => "success"]);
+                    } else {
+                        $original = FCPATH . 'assets/uploads/category/original/' . $new_file;
+                        $medium   = FCPATH . 'assets/uploads/category/medium/'   . $new_file;
+                        $thumb    = FCPATH . 'assets/uploads/category/thumb/'    . $new_file;
+
+                        if (file_exists($original)) unlink($original);
+                        if (file_exists($medium)) unlink($medium);
+                        if (file_exists($thumb)) unlink($thumb);
+                    }
                 } else {
-                    // Upload failed
-                    echo $this->upload->display_errors('<span style="color:#ff3030; font-size:16px;letter-spacing:0.7px;font-weight:lighter!important;">', '</span>');
-                    return;
+                    echo json_encode(['status' => 'error', 'message' => "Faild to upload local folder : $destination "]);
                 }
             }
+        } else {
+            // update page code 
+
+            $changeImage = isset($_FILES['changeImage']['name']) ?
+                str_replace(' ', '_', $_FILES['changeImage']['name']) : '';
+
+            if (!empty($changeImage)) {
+                $prefix = 'cat_';
+                $unique_id = uniqid();
+                $parm_folder = FCPATH . 'assets/uploads/category/original/';
+                $ext = pathinfo($changeImage, PATHINFO_EXTENSION);
+
+                $new_file = $prefix . $unique_id . "." . $ext;
+                $destination = $parm_folder . $new_file;
+                $tmp_name = $_FILES['changeImage']['tmp_name'];
+
+                if (move_uploaded_file($tmp_name, $destination)) {
+
+                    // Create resized versions using SAME filename
+                    create_image_copy(
+                        FCPATH . 'assets/uploads/category/',
+                        $new_file,
+                        150,
+                        150,
+                        'thumb'
+                    );
+
+                    create_image_copy(
+                        FCPATH . 'assets/uploads/category/',
+                        $new_file,
+                        600,
+                        600,
+                        'medium'
+                    );
 
 
-            $data = [
-                'name' => $this->input->post('name'),
-                'image' => $imageName,
-            ];
 
-            if (empty($this->input->post('id'))) {
-                // add 
-                if ($this->category_model->setCategory($data) == true) {
-                    echo  json_encode(["status" => "success"]);
+                    $oldImageName = $this->input->post('old_img');
+                    $category_id = $this->input->post('id');
+                    $data = [
+                        'name' => $this->input->post('name'),
+                        'image' => $new_file,
+                        'image_alt' => $this->input->post('alt_text')
+                    ];
+
+
+                    // $this->category_model->getOldImage($category_id);
+                    if ($this->category_model->updateCategory($category_id, $data)) {
+                        $original = FCPATH . 'assets/uploads/category/original/' . $oldImageName;
+                        $medium   = FCPATH . 'assets/uploads/category/medium/'   . $oldImageName;
+                        $thumb    = FCPATH . 'assets/uploads/category/thumb/'    . $oldImageName;
+
+                        if (file_exists($original)) unlink($original);
+                        if (file_exists($medium)) unlink($medium);
+                        if (file_exists($thumb)) unlink($thumb);
+                        echo  json_encode(["status" => "update"]);
+                    } else {
+                        $original = FCPATH . 'assets/uploads/category/original/' . $new_file;
+                        $medium   = FCPATH . 'assets/uploads/category/medium/'   . $new_file;
+                        $thumb    = FCPATH . 'assets/uploads/category/thumb/'    . $new_file;
+
+                        if (file_exists($original)) unlink($original);
+                        if (file_exists($medium)) unlink($medium);
+                        if (file_exists($thumb)) unlink($thumb);
+                        echo  json_encode(["status" => "error", "message" => "Faild to upload database for image."]);
+                    }
+                } else {
+                    echo json_encode(['status' => 'error', 'message' => "Faild to upload local folder : $destination "]);
                 }
-            }else{
-                // update 
-                $id=$this->input->post('id');
-                 if ($this->category_model->updateCategory($id,$data) == true) {
+            } else {
+                $oldImageName = $this->input->post('old_img');
+                $category_id = $this->input->post('id');
+                $alt_text = $this->input->post('alt_text');
+                $category_name = $this->input->post('name');
+                $data = [
+                    'name' => $category_name,
+                    'image' => $oldImageName,
+                    'image_alt' => $alt_text
+                ];
+                if ($this->category_model->updateCategory($category_id, $data)) {
                     echo  json_encode(["status" => "update"]);
+                } else {
+                    echo  json_encode(["status" => "error", "message" => "Faild to upload database."]);
                 }
             }
         }
-        // }
     }
 
-    public function file_check()
+    public function file_check($str, $param)
     {
-        if (empty($_FILES['image']['name'])) {
-            $this->form_validation->set_message('file_check', 'Please select an image to upload.');
-            return FALSE;
+
+
+        if ($param == 'image') {
+            if (empty($_FILES[$param]['name'])) {
+                $this->form_validation->set_message('file_check', 'Please select an image to upload.');
+                return FALSE;
+            }
         }
 
         // Basic checks: is actually an image and allowed mime/extension and size
         $allowed_ext = ['jpg', 'jpeg', 'png', 'gif'];
-        $file_name = $_FILES['image']['name'];
-        $file_size = $_FILES['image']['size']; // bytes
+        $file_name = $_FILES[$param]['name'];
+        $file_size = $_FILES[$param]['size']; // bytes
         $ext = strtolower(pathinfo($file_name, PATHINFO_EXTENSION));
 
         if (!in_array($ext, $allowed_ext)) {
@@ -125,7 +238,7 @@ class Category extends CI_Controller
         }
 
         // ensure it's an actual image
-        $tmp = @getimagesize($_FILES['image']['tmp_name']);
+        $tmp = @getimagesize($_FILES[$param]['tmp_name']);
         if ($tmp === FALSE) {
             $this->form_validation->set_message('file_check', 'The uploaded file is not a valid image.');
             return FALSE;
@@ -175,11 +288,28 @@ class Category extends CI_Controller
         load_admin_views('view_category', $data);
     }
 
-    public function view($enc_id)
+    public function delete($enc_id)
     {
+        // $enc_id=$this->input->post('id');
         $id = $this->encryption->decrypt(base64_decode(urldecode($enc_id)));
-        $data['category'] = $this->category_model->getSingleCategory($id);
+        $delete = $this->category_model->deleteCategory($id);
+        $file = $this->input->post('file');
+        if ($delete) {
+            $original = FCPATH . 'assets/uploads/category/original/' . $file;
+            $medium   = FCPATH . 'assets/uploads/category/medium/'   . $file;
+            $thumb    = FCPATH . 'assets/uploads/category/thumb/'    . $file;
 
-        load_admin_views('category_single_view', $data);
+            if (file_exists($original)) unlink($original);
+            if (file_exists($medium)) unlink($medium);
+            if (file_exists($thumb)) unlink($thumb);
+            echo  json_encode([
+                'status' => 'success'
+            ]);
+        } else {
+            echo  json_encode([
+                'status' => 'error'
+            ]);
+        }
+        // load_admin_views('category_single_view', $data);
     }
 }
