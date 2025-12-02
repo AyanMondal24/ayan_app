@@ -2,10 +2,12 @@
     display: inline-block;
     margin: 0 4px;
 }
-.pagination .page-item a{
-    border:1px solid #ffb524;
+
+.pagination .page-item a {
+    border: 1px solid #ffb524;
 
 }
+
 .pagination .page-link {
     padding: 10px 12px;
     border: 1px solid #ddd;
@@ -25,6 +27,7 @@
     overflow-wrap: break-word;
     white-space: normal;
 }
+
 .product-content {
     padding: 20px;
     text-align: center;
@@ -55,6 +58,7 @@
     height: 65px;
     overflow: hidden;
 }
+
 /* end organic product  */
 /* start home freash vegetable and featured product */
 .vesitable p {
@@ -92,10 +96,11 @@ shop page start
 ---------------------------------------------------------------
 */
 .view-more-btn:hover {
-    background-color:#ffb524 !important;
+    background-color: #ffb524 !important;
     /* border-color: #81c408 !important; */
     color: #fff !important;
 }
+
 .active-category {
     color: #ffb524 !important;
     border-radius: 5px;
@@ -118,18 +123,280 @@ shop page start
     height: 200px;
     object-fit: cover;
 }
+
 .btn-disabled {
     background-color: gray !important;
     color: white !important;
     border: none !important;
     cursor: not-allowed !important;
 }
+
 /* .pointer-events: none; */
 .btn.border-secondary.btn-disabled:hover {
     background-color: gray !important;
     color: white !important;
 }
+
 /*------------------------------------------------------------- 
 shop page end  
+---------------------------------------------------------------
+*/
+/*------------------------------------------------------------- 
+header auth start  
+---------------------------------------------------------------
+*/
+.my-auth {
+    position: relative;
+}
+
+.my-auth .dropdown-menu a {
+    color: #81c408;
+}
+
+.my-auth .dropdown-menu a:hover {
+    color: #ffb524;
+    background: none !important;
+}
+
+
+/* navbar icons  */
+.navbar-icons {
+    position: relative;
+    /* width: 250px; */
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly !important;
+}
+
+.navbar-icons li a i {
+    color: black;
+    font-size: 18px;
+    transition: color .3s ease-in-out;
+    position: relative;
+}
+
+.navbar-icons li a i:hover {
+    color: rgb(128, 128, 128);
+}
+
+.navbar-icons .dropdown-menu {
+    position: absolute;
+    top: 34px;
+    left: -63px;
+    background: none;
+    border: none;
+    text-align: center;
+}
+
+.navbar-icons .dropdown-menu li {
+    margin-bottom: 4px;
+}
+
+.navbar-icons .dropdown-menu li a {
+    text-align: center;
+    font-size: 16px;
+    font-weight: 600;
+    border-radius: 10px;
+    letter-spacing: 0.5px;
+    color: #fff;
+    background-color: #6BB252;
+    transition: background-color .3s ease-in-out;
+}
+
+.navbar-icons .dropdown-menu li a:hover {
+    background-color: #f7a422;
+
+}
+
+/* login form  */
+/* .login-form {
+    margin: 0;
+    padding: 0;
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(135deg, #ff00b3, #8a2eff);
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.login-form .container {
+    background: #fff;
+    width: 350px;
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0px 10px 25px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+.login-form .title {
+    font-size: 26px;
+    font-weight: 600;
+    margin-bottom: 20px;
+}
+
+.login-form .tabs {
+    display: flex;
+    margin-bottom: 20px;
+    background: #f1f1f1;
+    border-radius: 25px;
+    padding: 5px;
+}
+
+.login-form .tabs button {
+    flex: 1;
+    border: none;
+    padding: 10px;
+    background: transparent;
+    border-radius: 20px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: 0.3s;
+}
+
+.login-form .tabs .active {
+    background: linear-gradient(90deg, #ff2db3, #8a2eff);
+    color: #fff;
+}
+
+.login-form input {
+    width: 100%;
+    padding: 12px;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    margin-bottom: 12px;
+    outline: none;
+    font-size: 14px;
+}
+
+.login-form .forgot {
+    display: block;
+    text-align: left;
+    font-size: 13px;
+    margin-bottom: 20px;
+    color: #ff009d;
+    text-decoration: none;
+}
+
+.login-form .btn {
+    width: 100%;
+    padding: 12px;
+    background: linear-gradient(90deg, #ff2db3, #8a2eff);
+    border: none;
+    border-radius: 8px;
+    color: #fff;
+    font-size: 16px;
+    cursor: pointer;
+    margin-bottom: 10px;
+    transition: 0.3s;
+}
+
+.login-form .signup-text {
+    font-size: 14px;
+}
+
+.login-form .signup-text a {
+    color: #ff009d;
+    font-weight: 500;
+    text-decoration: none;
+} */
+
+.login-container {
+    margin-top: 100px !important;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #fff;
+}
+
+.login-container .form-box {
+    margin-top: 30px !important;
+    width: 600px;
+   min-height: 600px;
+    /* width: 360px; */
+    padding: 25px;
+    border-radius: 20px;
+    background: #fff;
+    box-shadow: 0 0 30px rgba(0,0,0,0.1);
+    text-align: center;
+}
+
+.login-container .title {
+    
+    margin-bottom: 20px;
+    color: #3b4353;
+}
+
+.login-container .tabs {
+    display: flex;
+    background: #f0f0f0;
+    padding: 5px;
+    border-radius: 50px;
+    margin-bottom: 25px;
+}
+
+.login-container .tab {
+    flex: 1;
+    padding: 12px;
+    border: none;
+    background: transparent;
+    font-size: 16px;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.login-container .tab.active {
+    background: linear-gradient(90deg, #ff3f9f, #7d3cff);
+    color: white;
+}
+
+.login-container .form {
+    display: none;
+}
+
+.login-container .form.active {
+    display: block;
+}
+
+.login-container form input {
+    width: 100%;
+    padding: 12px;
+    margin: 10px 0;
+    border-radius: 10px;
+    border: 1px solid #ddd;
+}
+
+.login-container .forgot {
+    display: block;
+    margin-bottom: 20px;
+    font-size: 14px;
+    color: #ff3f9f;
+}
+
+.login-container .btn.gradient {
+    width: 100%;
+    padding: 12px;
+    font-size: 16px;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    background: linear-gradient(90deg, #ff3f9f, #7d3cff);
+    cursor: pointer;
+}
+
+.login-container .switch-text {
+    margin-top: 15px;
+    font-size: 14px;
+}
+
+.switch-text a {
+    color: #ff3f9f;
+    cursor: pointer;
+}
+
+/*------------------------------------------------------------- 
+header auth end  
 ---------------------------------------------------------------
 */

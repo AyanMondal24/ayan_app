@@ -401,7 +401,7 @@
                                         </a>
                                     </li>
                                     <li class="nav-item">
-                                        <a href="<?= site_url('admin/Category') ?>" class="nav-link">
+                                        <a href="<?= base_url('admin/Coupons') ?>" class="nav-link">
                                             <i class="nav-icon bi bi-circle"></i>
                                             <p>View Coupon</p>
                                         </a>

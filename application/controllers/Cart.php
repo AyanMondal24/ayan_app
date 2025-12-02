@@ -13,69 +13,68 @@ class Cart extends CI_Controller
         // $this->load->library('pagination');
     }
 
+    
+
     public function add_to_cart()
     {
         $id = $this->input->post('product_id');
         $quantity = $this->input->post('quantity');
-        $update_mode = $this->input->post('update_mode');
-        $product = $this->product_model->getProductById($id);
+        $mode = $this->input->post('update_mode');
 
-        // $this->session->sess_destroy();
-
-        // echo $product->image_name;
-        // die;
-        $cart = $this->session->userdata('cart');
-        if (!$cart) {
-            $cart = [];
-        }
+        $cart = $this->session->userdata('cart') ?? [];
 
         $found = false;
 
         foreach ($cart as &$item) {
             if ($item['product_id'] == $id) {
-                if ($update_mode === 'add') {
-                    // If product exists increase qty  
+
+                if ($mode == 'add') {
                     $item['qty'] += $quantity;
                 } else {
-                    // update quantity 
                     $item['qty'] = $quantity;
                 }
+
                 $found = true;
                 break;
             }
         }
 
-
-        // If not found push new item
         if (!$found) {
             $cart[] = [
-                'product_id' => $product->product_id,
-                'name' => $product->product_name,
-                'qty' => $quantity,
-                'price' => $product->price,
-                'image' => $product->image_name,
-                'alt_text' => $product->alt_text,
-                'unit' => $product->short_name,
+                'product_id' => $id,
+                'qty' => $quantity
             ];
         }
 
         $this->session->set_userdata('cart', $cart);
 
         echo json_encode([
-            'status' => 'success',
-            'cart_items' => count($cart)
+            'status'      => 'success',
+            'cart_items'  => count($cart)
         ]);
     }
 
+  
     public function index()
     {
-        $cart = $this->session->userdata('cart');
-        if (!$cart) {
-            $cart = [];
+        $cart = $this->session->userdata('cart') ?? [];
+        $cart_products = [];
+
+        foreach ($cart as $item) {
+
+            $product = $this->product_model->getProductById($item['product_id']);
+
+            if ($product) {
+                $product->qty = $item['qty'];  // attach session qty
+                $cart_products[] = $product;  // push to final array
+            }
         }
 
-        load_views('cart', ['cart' => $cart]);
+        $data['product'] = $cart_products;
+
+        load_views('cart', $data);
     }
+
     public function remove_item()
     {
         $product_id = $this->input->post('product_id');
@@ -125,6 +124,9 @@ class Cart extends CI_Controller
             $discount = ($subtotal * $coupon->discount_value) / 100;
         }
         $grand_total = $subtotal - $discount;
+        if ($grand_total <= 0) {
+            $grand_total = 0;
+        }
         $this->session->set_userdata([
             'coupon_code' => $coupon->code,
             'discount' => $discount,

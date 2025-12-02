@@ -13,7 +13,7 @@
             <table class="table">
                 <thead>
                     <tr>
-                        <th scope="col">Products</th>
+                        <th scope="col">Images</th>
                         <th scope="col">Name</th>
                         <th scope="col">Price</th>
                         <th scope="col">Quantity</th>
@@ -22,29 +22,29 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <?php if (!empty($cart)) {
-                        foreach ($cart as $key => $item) {
+                    <?php if (!empty($product)) {
+                        foreach ($product as $key => $item) {
                     ?>
-                            <tr id="row-<?= $item['product_id'] ?>">
+                            <tr id="row-<?= $item->product_id ?>">
                                 <th scope="row">
                                     <div class="d-flex align-items-center">
-                                        <img src="<?= base_url('assets/uploads/products/thumb/' . $item['image']) ?>" class="img-fluid me-5 rounded-circle" style="width: 80px; height: 80px;" alt="<?= $item['alt_text'] ?>">
+                                        <img src="<?= base_url('assets/uploads/products/thumb/' . $item->image_name) ?>" class="img-fluid me-5 rounded-circle" style="width: 80px; height: 80px;" alt="<?= $item->alt_text ?>">
                                     </div>
                                 </th>
                                 <td>
-                                    <p class="mb-0 mt-4"><?= $item['name'] ?></p>
+                                    <p class="mb-0 mt-4"><?= $item->product_name ?></p>
                                 </td>
                                 <td>
-                                    <p class="mb-0 mt-4" id="price-<?= $item['product_id'] ?>" data-price="<?= $item['price'] ?>">&#8377;<?= $item['price'] ?>/<?= $item['unit'] ?></p>
+                                    <p class="mb-0 mt-4" id="price-<?= $item->product_id ?>" data-price="<?= $item->price ?>">&#8377;<?= $item->price ?>/<?= $item->short_name ?></p>
                                 </td>
                                 <td>
-                                    <div class="input-group quantity mt-4" style="width: 100px;" data-id="<?= $item['product_id'] ?>">
+                                    <div class="input-group quantity mt-4" style="width: 100px;" data-id="<?= $item->product_id ?>">
                                         <div class="input-group-btn">
                                             <button class="btn btn-sm btn-minus rounded-circle bg-light border qty-btn" id="decrease">
                                                 <i class="fa fa-minus"></i>
                                             </button>
                                         </div>
-                                        <input type="text" class="form-control form-control-sm text-center border-0 qty-input" id="quantity-input" value="<?= $item['qty'] ?>" data-id="<?= $item['product_id'] ?>">
+                                        <input type="text" class="form-control form-control-sm text-center border-0 qty-input" id="quantity-input" value="<?= $item->qty ?>" data-id="<?= $item->product_id ?>">
                                         <div class="input-group-btn">
                                             <button class="btn btn-sm btn-plus rounded-circle bg-light border qty-btn" id="increase">
                                                 <i class="fa fa-plus"></i>
@@ -53,11 +53,11 @@
                                     </div>
                                 </td>
                                 <td>
-                                    <?php $total = $item['qty'] * $item['price']  ?>
-                                    <p class="mb-0 mt-4 " id="total-<?= $item['product_id'] ?>">&#8377;<?= $total ?></p>
+                                    <?php $total = $item->qty * $item->price  ?>
+                                    <p class="mb-0 mt-4 " id="total-<?= $item->product_id ?>">&#8377;<?= $total ?></p>
                                 </td>
                                 <td>
-                                    <button class="btn btn-md rounded-circle bg-light border mt-4 remove-btn" data-id="<?= $item['product_id'] ?>">
+                                    <button class="btn btn-md rounded-circle bg-light border mt-4 remove-btn" data-id="<?= $item->product_id ?>">
                                         <i class="fa fa-times text-danger"></i>
                                     </button>
 
@@ -77,9 +77,9 @@
         </div>
         <?php
         $subtotal = 0;
-        if (!empty($cart)) {
-            foreach ($cart as $item) {
-                $subtotal += $item['qty'] * $item['price'];
+        if (!empty($product)) {
+            foreach ($product as $item) {
+                $subtotal += $item->qty * $item->price;
             }
         }
         ?>
@@ -87,15 +87,15 @@
         $discount = $this->session->userdata('discount');
         $coupon_code = $this->session->userdata('coupon_code');
         $grand_total = $this->session->userdata('grand_total');
-        if (!empty($cart)) { ?>
+        if (!empty($product)) { ?>
 
-            <div class="mt-5">
+            <div class="mt-5" style="height: 100px;">
                 <form action="<?= base_url('Cart/apply_coupon') ?>" method="post" id="coupon-form">
-                    <input type="text" name="code" class="border-0 border-bottom rounded me-5 py-3 mb-4" placeholder="Coupon Code">
+                    <input type="text" name="code" id="coupon_code" class="border-0 border-bottom rounded me-5 py-3 mb-4" value="<?= set_value('code', $coupon_code) ?>" placeholder="Coupon Code">
                     <input type="hidden" name="total" id="coupon-total" value="<?= $subtotal ?>">
-                    <input type="submit" class="btn border-secondary rounded-pill px-4 py-3 text-primary" value="Apply Coupon">
+                    <input type="submit" id="submit" class="btn border-secondary rounded-pill px-4 py-3 text-primary" value="Apply Coupon">
                 </form>
-                <div id="response-msg"></div>
+                <div id="response-msg" class="mt-0"></div>
             </div>
 
 
@@ -129,9 +129,9 @@
                         </div>
                         <div class="py-4 mb-4 border-top border-bottom d-flex justify-content-between">
                             <h5 class="mb-0 ps-4 me-4">Total</h5>
-                            <p class="mb-0 pe-4" id="grand_total">₹<?= !empty($grand_total) ? number_format($grand_total, 2) : number_format($subtotal, 2) ?></p>
+                            <p class="mb-0 pe-4" id="grand_total">₹<?= isset($grand_total) ? number_format($grand_total, 2) : number_format($subtotal, 2) ?></p>
                         </div>
-                        <button class="btn border-secondary rounded-pill px-4 py-3 text-primary text-uppercase mb-4 ms-4" type="button">Proceed Checkout</button>
+                        <button class="btn border-secondary rounded-pill px-4 py-3 text-primary text-uppercase mb-4 ms-4" type="button" data-bs-toggle="modal" data-bs-target="#proceedCheckout">Proceed Checkout</button>
                     </div>
                 </div>
             </div>
@@ -140,7 +140,30 @@
     </div>
 </div>
 <!-- Cart Page End -->
+<!-- proceed to checkout modal  -->
+<!-- Button trigger modal -->
+<!-- <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+    Launch demo modal
+</button> -->
 
+<!-- Modal -->
+<div class="modal fade" id="proceedCheckout" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" style="width: 200px !important;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Order</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                 <a href="<?= base_url('Checkout/index') ?>" role="button" class="btn btn-secondary text-light">Guest</a>
+                <button type="button" class="btn btn-primary text-light float-end">Login</button>
+            </div>
+            <!-- <div class="modal-footer">
+               
+            </div> -->
+        </div>
+    </div>
+</div>
 
 <script>
     function calculateSubtotal() {
@@ -155,20 +178,23 @@
         $("#coupon-total").val(subtotal);
         $("#grand_total").html(subtotal);
     }
-    document.addEventListener('DOMContentLoaded', function() {
 
-        $(document).on('submit', '#coupon-form', function(e) {
-            e.preventDefault();
-            $.ajax({
-                url: $(this).attr('action'),
-                type: "POST",
-                data: $(this).serialize(),
-                dataType: "JSON",
-                success: function(response) {
-                    console.log(response)
+    function Coupons(callback) {
+        total = $("#coupon-total").val();
+        code = $("#coupon_code").val();
+        $.ajax({
+            url: "<?= base_url('Cart/apply_coupon') ?>",
+            type: "POST",
+            data: {
+                total: total,
+                code: code
+            },
+            dataType: "JSON",
+            success: function(response) {
+                console.log(response)
 
-                    if (response.status === 'success') {
-                        $("#discount_section").html(`
+                if (response.status === 'success') {
+                    $("#discount_section").html(`
                             <div class="d-flex justify-content-between">
                                 <h5 class="mb-0 me-4">Discount :</h5>
                                 <div>
@@ -176,35 +202,77 @@
                                 </div>
                             </div>
                         `);
-                           $("#grand_total").text("₹" + parseFloat(response.grand_total).toFixed(2));
-                        $("#response-msg")
-                            .text("Success!") // show message
-                            .css({
-                                "color": "green", // change text color
-                                "font-weight": "bold", // any css you want
-                                "background": "none" // ensure NO background color
-                            }).fadeIn();
+                    $("#grand_total").text("₹" + parseFloat(response.grand_total).toFixed(2));
+                    $("#coupon_code").prop("readonly", true);
+                    $("#submit").html("Applied").addClass("btn-secondery").removeClass("btn-primary");
 
-                        setTimeout(() => {
-                            $("#response-msg")
-                                .text("").fadeOut();
-                        }, 4000);
-                    } else if (response.status === 'error') {
-                        console.log('error')
-                        $("#response-msg")
-                            .html(response.message) // show message
-                            .css({
-                                "color": "red", // change text color
-                                "font-weight": "bold", // any css you want
-                                "background": "none" // ensure NO background color
-                            }).fadeIn();
-                        setTimeout(() => {
-                            $("#response-msg")
-                                .text("").fadeOut();
-                        }, 4000);
-                    }
+                } else if (response.status === 'error') {
+                    console.log('error')
                 }
-            })
+                callback(response);
+            }
+        })
+    }
+    document.addEventListener('DOMContentLoaded', function() {
+
+        $(document).on('submit', '#coupon-form', function(e) {
+            e.preventDefault();
+            Coupons(function(response) {
+
+                if (response.status === "success") {
+
+                    $("#submit")
+                        .val("Applied")
+                        .addClass("btn-secondary")
+                        .prop("disabled", true);
+
+                    $("#response-msg")
+                        .text("Success!")
+                        .css({
+                            "color": "green",
+                            "font-weight": "bold"
+                        })
+                        .fadeIn();
+
+                    setTimeout(() => {
+                        $("#response-msg").fadeOut();
+                    }, 4000);
+
+                } else if (response.status === "error") {
+
+                    $("#response-msg")
+                        .text(response.message)
+                        .css({
+                            "color": "red",
+                            "font-weight": "bold"
+                        })
+                        .fadeIn();
+
+                    setTimeout(() => {
+                        $("#response-msg").fadeOut();
+                    }, 4000);
+
+                }
+            });
+            // Coupons();
+            // $("#submit")
+            //     .val("Applied")
+            //     .addClass("btn-secondary")
+            //     .removeClass("text-primary")
+            //     .prop("disabled", true);
+
+            //     $("#response-msg")
+            //             .text("Success!") // show message
+            //             .css({
+            //                 "color": "green", // change text color
+            //                 "font-weight": "bold", // any css you want
+            //                 "background": "none" // ensure NO background color
+            //             }).fadeIn();
+
+            //         setTimeout(() => {
+            //             $("#response-msg")
+            //                 .text("").fadeOut();
+            //         }, 4000);
         })
         // quantity incease decrease 
         $(document).on("click", ".qty-btn", function(e) {
@@ -230,7 +298,7 @@
 
             input.val(qty);
             calculateSubtotal();
-
+            Coupons();
             // Send AJAX update
             $.ajax({
                 url: "<?= base_url('Cart/add_to_cart') ?>",
@@ -258,11 +326,13 @@
                 success: function(response) {
                     console.log(response)
                     if (response.status === 'success') {
+
                         // Remove row from HTML
                         $('#row-' + product_id).remove();
                         calculateSubtotal();
                         // Update cart count in header
                         $('.cart-count').text(response.cart_items);
+                        Coupons();
                     }
                 }
             });

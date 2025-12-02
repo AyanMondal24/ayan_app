@@ -9,12 +9,30 @@ class Coupons extends CI_Controller
         $this->load->helper('common');
         $this->load->helper('image');
         $this->load->library('form_validation');
+        $this->load->library('encryption');
         $this->load->model('coupon_model');
     }
 
-    function add()
+    function index()
     {
-        load_admin_views('add_coupon');
+        $data['coupons'] = $this->coupon_model->getCoupons();
+        load_admin_views('view_coupon', $data);
+    }
+    function add($enc_id = null)
+    {
+
+        if (empty($enc_id)) {
+            $data['title'] = "Add Coupon";
+            load_admin_views('add_coupon', $data);
+        } else {
+            $data['title'] = "Update Coupon";
+            $decoded = base64_decode(urldecode($enc_id));
+            $id = $this->encryption->decrypt($decoded);
+
+
+            $data['coupons'] = $this->coupon_model->getCouponById($id);
+            load_admin_views('add_coupon', $data);
+        }
     }
     function store()
     {
@@ -29,13 +47,13 @@ class Coupons extends CI_Controller
         $this->form_validation->set_rules(
             'start_date',
             'Start Date',
-            'required|callback_valid_expiry_date'
+            'callback_valid_start_date'
         );
 
         $this->form_validation->set_rules(
             'expiry_date',
             'Expiry Date',
-            'required|callback_valid_expiry_date'
+            'callback_valid_expiry_date'
         );
         $this->form_validation->set_rules('discount_type', ' Discount', 'required');
         $this->form_validation->set_rules('status', 'Status', 'required');
@@ -59,8 +77,15 @@ class Coupons extends CI_Controller
             ]);
             return;
         }
+
         $folder = FCPATH . 'assets/uploads/coupons/original/';
-        $image_file = '';
+        $id = $this->input->post('c_id');
+       
+        $old_img = $this->input->post('old_img');
+
+        // if (empty($id)) {
+
+        $image_file ='';
         if (!empty($_FILES['image']['name'])) {
             $prefix = "coupon_";
             $unique_name = uniqid();
@@ -86,6 +111,8 @@ class Coupons extends CI_Controller
                     'medium'
                 );
             }
+        }else{
+            $image_file= $old_img;
         }
 
         $data = [
@@ -98,25 +125,62 @@ class Coupons extends CI_Controller
             "status" => $this->input->post('status'),
             "image" => $image_file
         ];
-        // $data['coupons']=;
-        if ($this->coupon_model->setCoupon($data)) {
-            echo json_encode([
-                'status' => 'success',
-                'message' => 'Coupon Saved.'
-            ]);
-        } else {
-            $original = FCPATH . 'assets/uploads/coupons/original/' . $image_file;
-            $medium   = FCPATH . 'assets/uploads/coupons/medium/'   . $image_file;
-            $thumb    = FCPATH . 'assets/uploads/coupons/thumb/'    . $image_file;
 
-            if (file_exists($original)) unlink($original);
-            if (file_exists($medium)) unlink($medium);
-            if (file_exists($thumb)) unlink($thumb);
-            echo json_encode([
-                'status' => 'error',
-                'message' => 'DB Coupon Save Faild.'
-            ]);
+        // $data['coupons']=;
+        if (empty($id)) {
+            if ($this->coupon_model->setCoupon($data)) {
+                // add 
+                echo json_encode([
+                    'status' => 'success',
+                    'message' => 'Coupon Saved.'
+                ]);
+            } else {
+                $original = FCPATH . 'assets/uploads/coupons/original/' . $image_file;
+                $medium   = FCPATH . 'assets/uploads/coupons/medium/'   . $image_file;
+                $thumb    = FCPATH . 'assets/uploads/coupons/thumb/'    . $image_file;
+
+                if (file_exists($original)) unlink($original);
+                if (file_exists($medium)) unlink($medium);
+                if (file_exists($thumb)) unlink($thumb);
+                echo json_encode([
+                    'status' => 'error',
+                    'message' => 'DB Coupon Save Faild.'
+                ]);
+            }
+
+        } else {
+            // update 
+            if ($this->coupon_model->updateCoupon($id,$data)) {
+                if(!empty($_FILES['image']['name'])){
+
+                    $original = FCPATH . 'assets/uploads/coupons/original/' . $old_img;
+                    $medium   = FCPATH . 'assets/uploads/coupons/medium/'   . $old_img;
+                    $thumb    = FCPATH . 'assets/uploads/coupons/thumb/'    . $old_img;
+                    
+                    if (file_exists($original)) unlink($original);
+                    if (file_exists($medium)) unlink($medium);
+                    if (file_exists($thumb)) unlink($thumb);
+                }
+                echo json_encode([
+                    'status' => 'success',
+                    'message' => 'Coupon Updated.'
+                ]);
+            } else {
+                $original = FCPATH . 'assets/uploads/coupons/original/' . $image_file;
+                $medium   = FCPATH . 'assets/uploads/coupons/medium/'   . $image_file;
+                $thumb    = FCPATH . 'assets/uploads/coupons/thumb/'    . $image_file;
+
+                if (file_exists($original)) unlink($original);
+                if (file_exists($medium)) unlink($medium);
+                if (file_exists($thumb)) unlink($thumb);
+                echo json_encode([
+                    'status' => 'error',
+                    'message' => 'Update DB Coupon Save Faild.'
+                ]);
+            }
         }
+
+       
     }
 
     public function image_check()
@@ -154,36 +218,55 @@ class Coupons extends CI_Controller
         return TRUE;
     }
 
-    public function valid_expiry_date($date)
+    public function valid_start_date($date)
     {
-        $field = $this->input->post();
-        $fieldName = array_search($date, $field);
-
-        // Convert any date format to timestamp
+        if (empty($date)) {
+            return TRUE;
+        }
         $timestamp = strtotime($date);
 
-        // Invalid date
         if ($timestamp === false) {
-            if ($fieldName === "start_date") {
-                $this->form_validation->set_message('valid_expiry_date', 'Start Date is not valid.');
-            } else {
-                $this->form_validation->set_message('valid_expiry_date', 'Expiry Date is not valid.');
-            }
-            return FALSE;
+            $this->form_validation->set_message('valid_start_date', 'Start Date is not valid.');
+            return false;
         }
 
-        // Check if date is today or future
-        $today = strtotime(date("Y-m-d"));
-
-        if ($timestamp < $today) {
-            if ($fieldName === "start_date") {
-                $this->form_validation->set_message('valid_expiry_date', 'Start Date cannot be a past date.');
-            } else {
-                $this->form_validation->set_message('valid_expiry_date', 'Expiry Date cannot be a past date.');
-            }
-            return FALSE;
+        if ($timestamp < strtotime(date("Y-m-d"))) {
+            $this->form_validation->set_message('valid_start_date', 'Start Date cannot be a past date.');
+            return false;
         }
 
-        return TRUE;
+        return true;
+    }
+
+    public function valid_expiry_date($date)
+    {
+        if (empty($date)) {
+            return TRUE;
+        }
+        $timestamp = strtotime($date);
+
+        if ($timestamp === false) {
+            $this->form_validation->set_message('valid_expiry_date', 'Expiry Date is not valid.');
+            return false;
+        }
+
+        if ($timestamp < strtotime(date("Y-m-d"))) {
+            $this->form_validation->set_message('valid_expiry_date', 'Expiry Date cannot be a past date.');
+            return false;
+        }
+
+        return true;
+    }
+    public function delete($enc_id){
+        $id=$this->encryption->decrypt(base64_decode(urldecode($enc_id)));
+        if($this->coupon_model->couponDelete($id)){
+            echo json_encode([
+               'status'=>'success',
+            ]);
+        }else{
+             echo json_encode([
+               'status'=>'error',
+            ]);
+        }
     }
 }

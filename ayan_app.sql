@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Generation Time: Nov 29, 2025 at 05:06 AM
+-- Generation Time: Dec 02, 2025 at 10:07 AM
 -- Server version: 9.1.0
 -- PHP Version: 7.4.33
 
@@ -63,12 +63,12 @@ CREATE TABLE IF NOT EXISTS `coupons` (
   `min_purchase` decimal(10,2) DEFAULT '0.00',
   `start_date` date DEFAULT NULL,
   `expiry_date` date DEFAULT NULL,
-  `status` tinyint(1) DEFAULT '0',
+  `status` tinyint DEFAULT NULL COMMENT '1=active,0=inactive',
   `image` text NOT NULL,
   `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   UNIQUE KEY `code` (`code`)
-) ENGINE=MyISAM AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Dumping data for table `coupons`
@@ -76,7 +76,8 @@ CREATE TABLE IF NOT EXISTS `coupons` (
 
 INSERT INTO `coupons` (`id`, `code`, `discount_type`, `discount_value`, `min_purchase`, `start_date`, `expiry_date`, `status`, `image`, `created_at`) VALUES
 (5, 'ayan001', 'percentage', 20.00, 0.00, '2026-10-16', '2027-03-19', 1, 'coupon_692a511741c51.png', '2025-11-29 07:19:11'),
-(4, 'new1', 'fixed', 5.00, 67.00, '2026-09-22', '2027-08-15', 1, 'coupon_6929db5f27a80.png', '2025-11-28 22:56:55');
+(4, 'new1', 'fixed', 1000.00, 67.00, '2026-09-22', '2027-08-15', 1, 'coupon_6929db5f27a80.png', '2025-11-28 22:56:55'),
+(6, 'me205', 'fixed', 2000.00, 0.00, '2025-11-30', '2025-12-03', 1, 'coupon_692c65cbddc63.jpg', '2025-11-29 20:36:13');
 
 -- --------------------------------------------------------
 
