@@ -9,8 +9,8 @@
 
         <!-- Login Form -->
         <form id="login" class="form active">
-            <input type="email" placeholder="Email Address" required>
-            <input type="password" placeholder="Password" required>
+            <input type="email" placeholder="Email Address" name="email" required>
+            <input type="password" placeholder="Password" name="password" required>
 
             <a href="#" class="forgot">Forgot password?</a>
 

@@ -25,7 +25,7 @@
                     <?php if (!empty($product)) {
                         foreach ($product as $key => $item) {
                     ?>
-                            <tr id="row-<?= $item->product_id ?>">
+                            <tr id="product-<?= $item->product_id ?>" class="product" data-id="<?= $item->product_id ?>">
                                 <th scope="row">
                                     <div class="d-flex align-items-center">
                                         <img src="<?= base_url('assets/uploads/products/thumb/' . $item->image_name) ?>" class="img-fluid me-5 rounded-circle" style="width: 80px; height: 80px;" alt="<?= $item->alt_text ?>">
@@ -54,7 +54,7 @@
                                 </td>
                                 <td>
                                     <?php $total = $item->qty * $item->price  ?>
-                                    <p class="mb-0 mt-4 " id="total-<?= $item->product_id ?>">&#8377;<?= $total ?></p>
+                                    <p class="mb-0 mt-4 total">&#8377;<?= $total ?></p>
                                 </td>
                                 <td>
                                     <button class="btn btn-md rounded-circle bg-light border mt-4 remove-btn" data-id="<?= $item->product_id ?>">
@@ -121,7 +121,7 @@
                                     <div class="d-flex justify-content-between">
                                         <h5 class="mb-0 me-4">Discount : </h5>
                                         <div class="">
-                                            <p class="mb-0">Flat rate: &#8377;<?= number_format($discount, 2) ?></p>
+                                            <p class="mb-0">Flat rate: &#8377;<span id="discount"><?= number_format($discount, 2) ?></span></p>
                                         </div>
                                     </div>
                                 <?php endif; ?>
@@ -155,8 +155,8 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                 <a href="<?= base_url('Checkout/index') ?>" role="button" class="btn btn-secondary text-light">Guest</a>
-                <button type="button" class="btn btn-primary text-light float-end">Login</button>
+                <a href="<?= base_url('Checkout/index') ?>" role="button" class="btn btn-secondary text-light">Guest</a>
+                <a href="<?= base_url('Auth/login') ?>" type="button" class="btn btn-primary text-light float-end">Login</a>
             </div>
             <!-- <div class="modal-footer">
                
@@ -166,154 +166,199 @@
 </div>
 
 <script>
-    function calculateSubtotal() {
-        let subtotal = 0;
+    // calculate sub total
+    // function calculateSubtotal() {
+    //     let subtotal = 0;
 
-        $("p[id^='total-']").each(function() {
-            let amount = parseInt($(this).text().replace("₹", ""));
-            subtotal += amount;
-        });
+    //     $("p[id^='total-']").each(function() {
+    //         let amount = parseInt($(this).text().replace("₹", ""));
+    //         subtotal += amount;
+    //     });
 
-        $("#subtotal").text("₹" + subtotal);
-        $("#coupon-total").val(subtotal);
-        $("#grand_total").html(subtotal);
-    }
+    //     $("#subtotal").text("₹" + subtotal);
+    //     $("#coupon-total").val(subtotal);
+    //     $("#grand_total").html(subtotal);
+    // }
+    // Coupons(function(response) {
 
-    function Coupons(callback) {
-        total = $("#coupon-total").val();
-        code = $("#coupon_code").val();
-        $.ajax({
-            url: "<?= base_url('Cart/apply_coupon') ?>",
-            type: "POST",
-            data: {
-                total: total,
-                code: code
-            },
-            dataType: "JSON",
-            success: function(response) {
-                console.log(response)
+    //     if (response.status === "success") {
 
-                if (response.status === 'success') {
-                    $("#discount_section").html(`
-                            <div class="d-flex justify-content-between">
-                                <h5 class="mb-0 me-4">Discount :</h5>
-                                <div>
-                                    <p class="mb-0">₹${parseFloat(response.discount).toFixed(2)}</p>
-                                </div>
-                            </div>
-                        `);
-                    $("#grand_total").text("₹" + parseFloat(response.grand_total).toFixed(2));
-                    $("#coupon_code").prop("readonly", true);
-                    $("#submit").html("Applied").addClass("btn-secondery").removeClass("btn-primary");
+    //         $("#submit")
+    //             .val("Applied")
+    //             .addClass("btn-secondary")
+    //             .prop("disabled", true);
 
-                } else if (response.status === 'error') {
-                    console.log('error')
-                }
-                callback(response);
-            }
-        })
-    }
+    //         $("#response-msg")
+    //             .text("Success!")
+    //             .css({
+    //                 "color": "green",
+    //                 "font-weight": "bold"
+    //             })
+    //             .fadeIn();
+
+    //         setTimeout(() => {
+    //             $("#response-msg").fadeOut();
+    //         }, 4000);
+
+    //     } else if (response.status === "error") {
+
+    //         $("#response-msg")
+    //             .text(response.message)
+    //             .css({
+    //                 "color": "red",
+    //                 "font-weight": "bold"
+    //             })
+    //             .fadeIn();
+
+    //         setTimeout(() => {
+    //             $("#response-msg").fadeOut();
+    //         }, 4000);
+
+    //     }
+    // });
+
+
     document.addEventListener('DOMContentLoaded', function() {
 
-        $(document).on('submit', '#coupon-form', function(e) {
+
+        $('#coupon-form').on('submit', function(e) {
             e.preventDefault();
-            Coupons(function(response) {
+            console.log("called");
 
-                if (response.status === "success") {
+        });
 
-                    $("#submit")
-                        .val("Applied")
-                        .addClass("btn-secondary")
-                        .prop("disabled", true);
-
-                    $("#response-msg")
-                        .text("Success!")
-                        .css({
-                            "color": "green",
-                            "font-weight": "bold"
-                        })
-                        .fadeIn();
-
-                    setTimeout(() => {
-                        $("#response-msg").fadeOut();
-                    }, 4000);
-
-                } else if (response.status === "error") {
-
-                    $("#response-msg")
-                        .text(response.message)
-                        .css({
-                            "color": "red",
-                            "font-weight": "bold"
-                        })
-                        .fadeIn();
-
-                    setTimeout(() => {
-                        $("#response-msg").fadeOut();
-                    }, 4000);
-
-                }
-            });
-            // Coupons();
-            // $("#submit")
-            //     .val("Applied")
-            //     .addClass("btn-secondary")
-            //     .removeClass("text-primary")
-            //     .prop("disabled", true);
-
-            //     $("#response-msg")
-            //             .text("Success!") // show message
-            //             .css({
-            //                 "color": "green", // change text color
-            //                 "font-weight": "bold", // any css you want
-            //                 "background": "none" // ensure NO background color
-            //             }).fadeIn();
-
-            //         setTimeout(() => {
-            //             $("#response-msg")
-            //                 .text("").fadeOut();
-            //         }, 4000);
-        })
-        // quantity incease decrease 
-        $(document).on("click", ".qty-btn", function(e) {
-            e.preventDefault();
-
-            let wrapper = $(this).closest(".quantity");
-            let input = wrapper.find(".qty-input");
-
-            let qty = parseInt(input.val());
-            let product_id = input.data('id');
-
-            let price = parseFloat($("#price-" + product_id).data("price"));
-
-            if ($(this).hasClass("btn-plus")) {
-                qty++;
-            } else if ($(this).hasClass("btn-minus") && qty > 1) {
-                qty--;
+        lastApplied = $("#coupon_code").val();
+        $(document).on('input', '#coupon_code', function(e) {
+            // console.log(lastApplied)
+            if ($(this).val() !== lastApplied) {
+                $("#submit")
+                    .val("Apply Coupon")
+                    .removeClass("btn-secondary btn-primary")
+                    .prop("disabled", false);
+                calculateSubtotal();
             }
 
-            let total = price * qty;
-            $("#total-" + product_id).text("₹" + total);
+            if ($(this).val() === lastApplied) {
+                $("#submit")
+                    .val("Applied")
+                    .addClass("btn-secondary")
+                    .prop("disabled", true);
+                calculateSubtotal();
+            }
+        });
+
+        // quantity incease decrease 
+        $(document).on("click", '.qty-btn', function(e) {
+            e.preventDefault();
+
+            const elem = e.target; // DOM element
+            const product_div = elem.closest('.product'); // Pure JS .closest()
+            const quantityElem = product_div.querySelector('.qty-input');
+            const quantity = quantityElem.value;
+            const data = product_div.dataset;
+            let payload = {
+                product_id: data.id,
+                quantity: quantity,
+                update_mode: "update"
+            }
 
 
-            input.val(qty);
-            calculateSubtotal();
-            Coupons();
-            // Send AJAX update
+            // let wrapper = $(this).closest(".quantity");
+            // let input = wrapper.find(".qty-input");
+
+            // let qty = parseInt(input.val(),2);
+            // let product_id = input.data('id');
+
+            // let price = parseFloat($("#price-" + product_id).data("price"));
+
+            // if ($(this).hasClass("btn-plus")) {
+            //     qty++;
+            // } else if ($(this).hasClass("btn-minus") && qty > 1) {
+            //     qty--;
+            // }
+
+            // let total = price * qty;
+            // $("#total-" + product_id).text("₹" + total);
+
+
+            // input.val(qty);
+            // Coupons();
+
             $.ajax({
                 url: "<?= base_url('Cart/add_to_cart') ?>",
                 type: "POST",
+                dataType: 'JSON',
                 data: {
-                    product_id: product_id,
-                    quantity: qty,
-                    update_mode: "update"
+                    ...payload
                 },
                 success: function(res) {
+                    set_page(res, product_div);
+                    // calculateSubtotal();
+
                     console.log("Updated", res);
                 }
             });
         });
+        // code by atanu 
+        function set_page(response) {
+            const product_cont = document.querySelector('tbody')
+            if (response.status == 'success') {
+            lastApplied = response.coupon.code;
+                data=response;
+                $('#subtotal').text(data.subtotal);
+                $('#grand_total').text(data.total);
+                if (data.coupon_applied) {
+                    $('#discount').text(data.discount);
+                    $('#submit').val('Applied').prop('disabled', true);
+                } else {
+                    $('#discount').text('0');
+                    $('#submit').val('Apply Coupon').prop('disabled', false);
+                }
+                var table_html = '';
+                data.products.forEach(function(product, index) {
+                table_html +=    `<tr id="product-17" class="product" data-id="${product.id}">
+                                <th scope="row">
+                                    <div class="d-flex align-items-center">
+                                        <img src="http://localhost/ayan_app/assets/uploads/products/thumb/product_69259cbb1325a.jpg" class="img-fluid me-5 rounded-circle" style="width: 80px; height: 80px;" alt="Ut consequat Tempor">
+                                    </div>
+                                </th>
+                                <td>
+                                    <p class="mb-0 mt-4">${product.name}</p>
+                                </td>
+                                <td>
+                                    <p class="mb-0 mt-4" id="price-17" data-price="678.00">${product.price}</p>
+                                </td>
+                                <td>
+                                    <div class="input-group quantity mt-4" style="width: 100px;" data-id="17">
+                                        <div class="input-group-btn">
+                                            <button class="btn btn-sm btn-minus rounded-circle bg-light border qty-btn" id="decrease">
+                                                <i class="fa fa-minus"></i>
+                                            </button>
+                                        </div>
+                                        <input type="text" class="form-control form-control-sm text-center border-0 qty-input" id="quantity-input" value="${product.quantity}">
+                                        <div class="input-group-btn">
+                                            <button class="btn btn-sm btn-plus rounded-circle bg-light border qty-btn" id="increase">
+                                                <i class="fa fa-plus"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                                                        <p class="mb-0 mt-4 total">${product.subtotal}</p>
+                                </td>
+                                <td>
+                                    <button class="btn btn-md rounded-circle bg-light border mt-4 remove-btn" data-id="17">
+                                        <i class="fa fa-times text-danger"></i>
+                                    </button>
 
+                                </td>
+
+                            </tr>`;
+                });
+
+                $(product_cont).html(table_html);
+            }
+        }
         $(document).on('click', '.remove-btn', function(e) {
             let product_id = $(this).data('id');
             $.ajax({
@@ -324,18 +369,44 @@
                 },
                 dataType: "JSON",
                 success: function(response) {
-                    console.log(response)
-                    if (response.status === 'success') {
-
-                        // Remove row from HTML
-                        $('#row-' + product_id).remove();
-                        calculateSubtotal();
-                        // Update cart count in header
-                        $('.cart-count').text(response.cart_items);
-                        Coupons();
-                    }
+                   set_page(response)
                 }
             });
         });
+
+        function Coupons(callback) {
+            total = $("#coupon-total").val();
+            code = $("#coupon_code").val();
+            $.ajax({
+                url: "<?= base_url('Cart/apply_coupon') ?>",
+                type: "POST",
+                data: {
+                    total: total,
+                    code: code
+                },
+                dataType: "JSON",
+                success: function(response) {
+                    console.log(response)
+
+                    if (response.status === 'success') {
+                        $("#discount_section").html(`
+                            <div class="d-flex justify-content-between">
+                                <h5 class="mb-0 me-4">Discount :</h5>
+                                <div>
+                                    <p class="mb-0">₹${parseFloat(response.discount).toFixed(2)}</p>
+                                </div>
+                            </div>
+                        `);
+                        $("#grand_total").text("₹" + parseFloat(response.grand_total).toFixed(2));
+                        // $("#coupon_code").prop("readonly", true);
+                        $("#submit").html("Applied").addClass("btn-secondery").removeClass("btn-primary");
+
+                    } else if (response.status === 'error') {
+                        console.log('error')
+                    }
+                    callback(response);
+                }
+            })
+        }
     });
 </script>

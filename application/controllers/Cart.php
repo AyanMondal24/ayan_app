@@ -13,7 +13,7 @@ class Cart extends CI_Controller
         // $this->load->library('pagination');
     }
 
-    
+
 
     public function add_to_cart()
     {
@@ -40,7 +40,7 @@ class Cart extends CI_Controller
         }
 
         if (!$found) {
-            $cart[] = [
+            $cart[$id] = [
                 'product_id' => $id,
                 'qty' => $quantity
             ];
@@ -48,13 +48,12 @@ class Cart extends CI_Controller
 
         $this->session->set_userdata('cart', $cart);
 
-        echo json_encode([
-            'status'      => 'success',
-            'cart_items'  => count($cart)
-        ]);
+       $this->cart_response();
+
+
     }
 
-  
+
     public function index()
     {
         $cart = $this->session->userdata('cart') ?? [];
@@ -137,5 +136,55 @@ class Cart extends CI_Controller
             "discount" => $discount,
             "grand_total" => $grand_total
         ]);
+    }
+
+    function cart_response()
+    {
+        $cart = $this->session->userdata('cart');
+        $ids = array_keys($cart);
+        // fetch product by this ids
+        $products = [
+            [
+                "product_id" => 12,
+                "name" => "Wireless Mouse",
+                "quantity" => 2,
+                "price" => 500,
+                "subtotal" => 1000,
+                "image" => "https://yourwebsite.com/uploads/mouse.jpg"
+            ],
+            [
+                "product_id" => 33,
+                "name" => "Keyboard",
+                "quantity" => 1,
+                "price" => 500,
+                "subtotal" => 500,
+                "image" => "https://yourwebsite.com/uploads/keyboard.jpg"
+            ]
+        ];
+        foreach ($products as $key => $product) {
+            $products[$key]['quantity'] = $cart[$product['product_id']]['qty'];
+        }
+
+        $subtotal = 1500;
+        $coupon = [
+            "code" => "WELCOME200",
+            "type" => "flat",
+            "amount" => 200
+        ];
+
+        $response = [
+            "status" => "success",
+            "subtotal" => $subtotal,
+            "discount" => $coupon["amount"],
+            "total" => $subtotal - $coupon["amount"],
+            "coupon_applied" => true,
+            "coupon" => $coupon,
+            "products" => $products
+        ];
+
+        echo json_encode($response);
+    }
+    fucntiom calculate(){
+        
     }
 }
