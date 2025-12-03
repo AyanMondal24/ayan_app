@@ -289,4 +289,24 @@ class product_model extends CI_Model
         $this->db->where('p.id',$id);
         return $this->db->get()->row();
      }
+     public function getProductByIds($id){
+        $this->db->select('
+        p.id as product_id,
+        p.name AS product_name,
+        p.description,
+        p.price,
+        c.name AS category_name,
+        u.short_name,
+        i.image_name,
+        i.alt_text
+        ');
+        $this->db->from('products p');
+        $this->db->join('category c', 'c.id=p.category', 'inner');
+        $this->db->join('product_unit u', 'u.id=p.unit_id', 'inner');
+        $this->db->join('product_image i', 'i.product_id=p.id', 'inner');
+
+        $this->db->where('i.is_featured',0);
+        $this->db->where_in('p.id',$id);
+        return $this->db->get()->result();
+     }
 }

@@ -21,7 +21,7 @@
                         <th scope="col">Handle</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody id="cart-body">
                     <?php if (!empty($product)) {
                         foreach ($product as $key => $item) {
                     ?>
@@ -54,7 +54,7 @@
                                 </td>
                                 <td>
                                     <?php $total = $item->qty * $item->price  ?>
-                                    <p class="mb-0 mt-4 total">&#8377;<?= $total ?></p>
+                                    <p class="mb-0 mt-4 total">&#8377;<?= number_format((float)$total, 2) ?></p>
                                 </td>
                                 <td>
                                     <button class="btn btn-md rounded-circle bg-light border mt-4 remove-btn" data-id="<?= $item->product_id ?>">
@@ -84,15 +84,23 @@
         }
         ?>
         <?php
-        $discount = $this->session->userdata('discount');
-        $coupon_code = $this->session->userdata('coupon_code');
-        $grand_total = $this->session->userdata('grand_total');
+
+        $applied_coupon = $this->session->userdata('applied_coupon');
+
+        $code           = isset($applied_coupon['code']) ? $applied_coupon['code'] : '';
+        $discount_type  = isset($applied_coupon['type']) ? $applied_coupon['type'] : '';
+        // echo $discount_type;
+        $discount_value = isset($applied_coupon['discount_value']) ? $applied_coupon['discount_value'] : '';
+        $discount = isset($applied_coupon['discount']) ? $applied_coupon['discount'] : [];
+        // echo $discount;
+
+        $grand_total = isset($applied_coupon['grand_total']) ? $applied_coupon['grand_total'] : $subtotal;
+
         if (!empty($product)) { ?>
 
             <div class="mt-5" style="height: 100px;">
                 <form action="<?= base_url('Cart/apply_coupon') ?>" method="post" id="coupon-form">
-                    <input type="text" name="code" id="coupon_code" class="border-0 border-bottom rounded me-5 py-3 mb-4" value="<?= set_value('code', $coupon_code) ?>" placeholder="Coupon Code">
-                    <input type="hidden" name="total" id="coupon-total" value="<?= $subtotal ?>">
+                    <input type="text" name="code" id="coupon_code" class="border-0 border-bottom rounded me-5 py-3 mb-4" value="<?= $code  ?>" placeholder="Coupon Code">
                     <input type="submit" id="submit" class="btn border-secondary rounded-pill px-4 py-3 text-primary" value="Apply Coupon">
                 </form>
                 <div id="response-msg" class="mt-0"></div>
@@ -107,24 +115,21 @@
                             <h1 class="display-6 mb-4">Cart <span class="fw-normal">Total</span></h1>
                             <div class="d-flex justify-content-between mb-4">
                                 <h5 class="mb-0 me-4">Subtotal:</h5>
-                                <p class="mb-0" id="subtotal">&#8377;<?= $subtotal ?></p>
+                                <p class="mb-0" id="subtotal">&#8377;<?= number_format((float)$subtotal, 2)  ?></p>
                             </div>
-                            <!-- <div class="d-flex justify-content-between">
-                                <h5 class="mb-0 me-4">Shipping</h5>
-                                <div class="">
-                                    <p class="mb-0">Flat rate: $3.00</p>
-                                </div>
-                            </div> -->
-                            <!-- <p class="mb-0 text-end">Shipping to Ukraine.</p> -->
                             <div id="discount_section">
-                                <?php if (!empty($discount)) : ?>
+                                <?php if (!empty($applied_coupon)) { ?>
                                     <div class="d-flex justify-content-between">
                                         <h5 class="mb-0 me-4">Discount : </h5>
-                                        <div class="">
-                                            <p class="mb-0">Flat rate: &#8377;<span id="discount"><?= number_format($discount, 2) ?></span></p>
+                                        <div id="show-discount-div">
+                                            <?php if ($discount_type === 'percentage') { ?>
+                                                <p class="mb-0 ">(<?= $discount_value ?>%) Off : &#8377;<span id="discount"><?= number_format($discount, 2) ?></span></p>
+                                            <?php } else { ?>
+                                                <p class="mb-0">Flat Off : &#8377;<span id="discount"><?= number_format($discount, 2) ?></span></p>
+                                            <?php } ?>
                                         </div>
                                     </div>
-                                <?php endif; ?>
+                                <?php } ?>
                             </div>
                         </div>
                         <div class="py-4 mb-4 border-top border-bottom d-flex justify-content-between">
@@ -166,86 +171,7 @@
 </div>
 
 <script>
-    // calculate sub total
-    // function calculateSubtotal() {
-    //     let subtotal = 0;
-
-    //     $("p[id^='total-']").each(function() {
-    //         let amount = parseInt($(this).text().replace("₹", ""));
-    //         subtotal += amount;
-    //     });
-
-    //     $("#subtotal").text("₹" + subtotal);
-    //     $("#coupon-total").val(subtotal);
-    //     $("#grand_total").html(subtotal);
-    // }
-    // Coupons(function(response) {
-
-    //     if (response.status === "success") {
-
-    //         $("#submit")
-    //             .val("Applied")
-    //             .addClass("btn-secondary")
-    //             .prop("disabled", true);
-
-    //         $("#response-msg")
-    //             .text("Success!")
-    //             .css({
-    //                 "color": "green",
-    //                 "font-weight": "bold"
-    //             })
-    //             .fadeIn();
-
-    //         setTimeout(() => {
-    //             $("#response-msg").fadeOut();
-    //         }, 4000);
-
-    //     } else if (response.status === "error") {
-
-    //         $("#response-msg")
-    //             .text(response.message)
-    //             .css({
-    //                 "color": "red",
-    //                 "font-weight": "bold"
-    //             })
-    //             .fadeIn();
-
-    //         setTimeout(() => {
-    //             $("#response-msg").fadeOut();
-    //         }, 4000);
-
-    //     }
-    // });
-
-
     document.addEventListener('DOMContentLoaded', function() {
-
-
-        $('#coupon-form').on('submit', function(e) {
-            e.preventDefault();
-            console.log("called");
-
-        });
-
-        lastApplied = $("#coupon_code").val();
-        $(document).on('input', '#coupon_code', function(e) {
-            // console.log(lastApplied)
-            if ($(this).val() !== lastApplied) {
-                $("#submit")
-                    .val("Apply Coupon")
-                    .removeClass("btn-secondary btn-primary")
-                    .prop("disabled", false);
-                calculateSubtotal();
-            }
-
-            if ($(this).val() === lastApplied) {
-                $("#submit")
-                    .val("Applied")
-                    .addClass("btn-secondary")
-                    .prop("disabled", true);
-                calculateSubtotal();
-            }
-        });
 
         // quantity incease decrease 
         $(document).on("click", '.qty-btn', function(e) {
@@ -254,34 +180,26 @@
             const elem = e.target; // DOM element
             const product_div = elem.closest('.product'); // Pure JS .closest()
             const quantityElem = product_div.querySelector('.qty-input');
-            const quantity = quantityElem.value;
+            let quantity = quantityElem.value;
             const data = product_div.dataset;
+
+            if ($(this).hasClass("btn-plus")) {
+                quantity++;
+            } else if ($(this).hasClass("btn-minus") && quantity > 1) {
+                quantity--;
+            }
+
             let payload = {
                 product_id: data.id,
                 quantity: quantity,
                 update_mode: "update"
             }
 
-
-            // let wrapper = $(this).closest(".quantity");
-            // let input = wrapper.find(".qty-input");
-
-            // let qty = parseInt(input.val(),2);
-            // let product_id = input.data('id');
-
-            // let price = parseFloat($("#price-" + product_id).data("price"));
-
-            // if ($(this).hasClass("btn-plus")) {
-            //     qty++;
-            // } else if ($(this).hasClass("btn-minus") && qty > 1) {
-            //     qty--;
-            // }
-
             // let total = price * qty;
             // $("#total-" + product_id).text("₹" + total);
 
 
-            // input.val(qty);
+            quantityElem.value = quantity;
             // Coupons();
 
             $.ajax({
@@ -291,42 +209,148 @@
                 data: {
                     ...payload
                 },
-                success: function(res) {
-                    set_page(res, product_div);
+                success: function(response) {
+                    // set_page(response, product_div);
                     // calculateSubtotal();
 
-                    console.log("Updated", res);
+                    console.log("Updated", response);
+                    set_page(response);
                 }
             });
         });
-        // code by atanu 
-        function set_page(response) {
-            const product_cont = document.querySelector('tbody')
-            if (response.status == 'success') {
-            lastApplied = response.coupon.code;
-                data=response;
-                $('#subtotal').text(data.subtotal);
-                $('#grand_total').text(data.total);
-                if (data.coupon_applied) {
-                    $('#discount').text(data.discount);
-                    $('#submit').val('Applied').prop('disabled', true);
-                } else {
-                    $('#discount').text('0');
-                    $('#submit').val('Apply Coupon').prop('disabled', false);
+
+        // remove from cart 
+        $(document).on('click', '.remove-btn', function(e) {
+
+            let product_id = $(this).data('id');
+
+            $.ajax({
+                url: "<?= base_url('Cart/remove_item') ?>",
+                type: "POST",
+                data: {
+                    product_id: product_id
+                },
+                dataType: "JSON",
+                success: function(response) {
+                    set_page(response)
                 }
-                var table_html = '';
-                data.products.forEach(function(product, index) {
-                table_html +=    `<tr id="product-17" class="product" data-id="${product.id}">
+            });
+        });
+
+
+
+        // coupons 
+        $('#coupon-form').on('submit', function(e) {
+            e.preventDefault();
+            // console.log("called");
+            const code = document.getElementById('coupon_code').value;
+            $.ajax({
+                url: "<?= base_url('Cart/apply_coupon') ?>",
+                type: "POST",
+                data: {
+                    code: code
+                },
+                dataType: "JSON",
+                success: function(response) {
+                    // console.log("inside coupon form"+ response)
+                    set_page(response)
+                }
+            });
+        });
+
+
+
+
+
+
+        lastApplied = $("#coupon_code").val();
+        $(document).on('input', '#coupon_code', function(e) {
+            // console.log(lastApplied)
+            if ($(this).val() !== lastApplied) {
+                $("#submit")
+                    .val("Apply Coupon")
+                    .removeClass("btn-secondary btn-primary")
+                    .prop("disabled", false);
+                $("#discount_section").hide();
+                
+                // $("#grand_total").val('');
+                // $("#grand_total").val($("#subtotal").val())
+                // calculateSubtotal();
+            }
+
+            if ($(this).val() === lastApplied) {
+                $("#submit")
+                    .val("Applied")
+                    .addClass("btn-secondary")
+                    .prop("disabled", true);
+                // $("#discount").text(discount);
+                $("#discount_section").show();
+
+
+                // calculateSubtotal();
+            }
+        });
+    });
+   
+    // code by atanu 
+    function set_page(response) {
+        const product_cont = document.getElementById('cart-body');
+        // const product_cont = document.querySelector('tbody')
+        if (response.status == 'success') {
+            lastApplied = response.coupon.code;
+            // console.log(lastApplied)
+            const type = JSON.stringify(response.coupon['type']); // discount type
+            console.log(type)
+
+            // lastApplied = response?.coupon?.code ?? "";
+
+            data = response;
+            // console.log(data.quantity)
+            $("#subtotal").text("₹"+parseFloat(response.subtotal).toLocaleString('en-IN', {
+                minimumFractionDigits: 2
+            }));
+            $("#grand_total").text("₹"+parseFloat(response.total).toLocaleString('en-IN', {
+                minimumFractionDigits: 2
+            }));
+
+
+            $('#cart-count').text(data.cart_items);
+            $('#coupon-total').text(data.total);
+
+            if (data.coupon_applied) {
+                if (type == "percentage") {
+                    $("#show-discount-div").html(
+                        `<p class='mb-0'>(${response.discount_value}%) Off : ₹<span id="discount">${parseFloat(response.discount).toFixed(2)}</span></p>`
+                    );
+                } else {
+                    $("#show-discount-div").html(
+                        `<p class='mb-0'>Flat Off : ₹<span id="discount">${parseFloat(response.discount).toFixed(2)}</span></p>`
+                    );
+                }
+                $("#discount_section").show();
+                // $('#discount').text(data.discount);
+                $("#discount").text(parseFloat(response.discount).toLocaleString('en-IN', {
+                    minimumFractionDigits: 2
+                }));
+                $('#submit').val('Applied').prop('disabled', true);
+            } else {
+                $('#discount').text('0');
+                $('#submit').val('Apply Coupon').prop('disabled', false);
+            }
+            var table_html = '';
+            // if(data.products && data.products.length > 0){
+            data.products.forEach(function(product, index) {
+                table_html += `<tr id="product-${product.product_id}" class="product" data-id="${product.product_id}">
                                 <th scope="row">
                                     <div class="d-flex align-items-center">
-                                        <img src="http://localhost/ayan_app/assets/uploads/products/thumb/product_69259cbb1325a.jpg" class="img-fluid me-5 rounded-circle" style="width: 80px; height: 80px;" alt="Ut consequat Tempor">
+                                        <img src="<?= base_url('assets/uploads/products/thumb/') ?>${product.image}" class="img-fluid me-5 rounded-circle" style="width: 80px; height: 80px;" alt="${product.alt_text}">
                                     </div>
                                 </th>
                                 <td>
                                     <p class="mb-0 mt-4">${product.name}</p>
                                 </td>
                                 <td>
-                                    <p class="mb-0 mt-4" id="price-17" data-price="678.00">${product.price}</p>
+                                    <p class="mb-0 mt-4" id="price-17" data-price="678.00">₹${product.price}/${product.unit}</p>
                                 </td>
                                 <td>
                                     <div class="input-group quantity mt-4" style="width: 100px;" data-id="17">
@@ -344,69 +368,29 @@
                                     </div>
                                 </td>
                                 <td>
-                                                                        <p class="mb-0 mt-4 total">${product.subtotal}</p>
+                                        <p class="mb-0 mt-4 total">₹${parseFloat(product.subtotal).toLocaleString('en-IN', { minimumFractionDigits: 2 })}
+                                        </p>
                                 </td>
                                 <td>
-                                    <button class="btn btn-md rounded-circle bg-light border mt-4 remove-btn" data-id="17">
+                                    <button class="btn btn-md rounded-circle bg-light border mt-4 remove-btn" data-id="${product.product_id}">
                                         <i class="fa fa-times text-danger"></i>
                                     </button>
 
                                 </td>
 
                             </tr>`;
-                });
-
-                $(product_cont).html(table_html);
-            }
-        }
-        $(document).on('click', '.remove-btn', function(e) {
-            let product_id = $(this).data('id');
-            $.ajax({
-                url: "<?= base_url('Cart/remove_item') ?>",
-                type: "POST",
-                data: {
-                    product_id: product_id
-                },
-                dataType: "JSON",
-                success: function(response) {
-                   set_page(response)
-                }
             });
-        });
 
-        function Coupons(callback) {
-            total = $("#coupon-total").val();
-            code = $("#coupon_code").val();
-            $.ajax({
-                url: "<?= base_url('Cart/apply_coupon') ?>",
-                type: "POST",
-                data: {
-                    total: total,
-                    code: code
-                },
-                dataType: "JSON",
-                success: function(response) {
-                    console.log(response)
+            $(product_cont).html(table_html);
+        } else {
+            console.log("empty cart :")
+            table_html = `
+                         <tr class="text-center fw-bold w-100">
+                            <td class="py-4" colspan="6">Your Cart Is Empty </td>
+                         </tr>
+            `;
+            $(product_cont).html(table_html);
 
-                    if (response.status === 'success') {
-                        $("#discount_section").html(`
-                            <div class="d-flex justify-content-between">
-                                <h5 class="mb-0 me-4">Discount :</h5>
-                                <div>
-                                    <p class="mb-0">₹${parseFloat(response.discount).toFixed(2)}</p>
-                                </div>
-                            </div>
-                        `);
-                        $("#grand_total").text("₹" + parseFloat(response.grand_total).toFixed(2));
-                        // $("#coupon_code").prop("readonly", true);
-                        $("#submit").html("Applied").addClass("btn-secondery").removeClass("btn-primary");
-
-                    } else if (response.status === 'error') {
-                        console.log('error')
-                    }
-                    callback(response);
-                }
-            })
         }
-    });
+    }
 </script>
