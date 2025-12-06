@@ -27,28 +27,39 @@
         <form id="signup" class="form" method="POST" enctype="multipart/form-data">
             <div class="row">
                 <div class="col-md-6 col-lg-6 col-sm-12">
-                    <input type="text" placeholder="First Name" name="firstname" required>
+                    <input id="f_name" type="text" placeholder="First Name" name="firstname">
+                    <span class="error" id="f_name_error" data-callback=check1></span>
                 </div>
+
                 <div class="col-md-6 col-lg-6 col-sm-12">
-                    <input type="text" placeholder="Last Name" name="lastname" required>
+                    <input id="l_name" type="text" placeholder="Last Name" name="lastname">
+                    <span class="error" id="l_name_error"></span>
                 </div>
+
                 <div class="col-md-12 col-lg-12 col-sm-12">
-                    <input type="email" placeholder="Email Address" name="email" required>
+                    <input id="email" type="text" placeholder="Email Address" name="email">
+                    <span class="error" id="email_error"></span>
                 </div>
+
                 <div class="col-md-12 col-lg-12 col-sm-12">
-                    <input type="text" placeholder="Phone No." name="phone" required>
+                    <input id="ph" type="text" placeholder="Phone No." name="phone">
+                    <span class="error" id="ph_error"></span>
                 </div>
+
                 <div class="col-md-6 col-lg-6 col-sm-12">
-                    <input type="password" placeholder="Password" name="password" required>
+                    <input id="pass" type="password" placeholder="Password" name="password">
+                    <span class="error" id="pass_error"></span>
                 </div>
+
                 <div class="col-md-6 col-lg-6 col-sm-12">
-                    <input type="password" placeholder="Confirm Password" name="cpassword" required>
+                    <input id="pass_confirm" type="password" placeholder="Confirm Password" name="cpassword">
+                    <span class="error" id="pass_confirm_error"></span>
                 </div>
             </div>
 
-            <!-- <button class="btn gradient" type="submit" id="signup-form">Signup</button> -->
-            <input type="submit" class="btn gradient" id="signup-form" value="Signup">
+            <button type="submit" class="btn gradient" id="signup-form">Sign up</button>
         </form>
+
         <p class="switch-text">
             Already a member? <a href="#" onclick="switchTab('login')">Login now</a>
         </p>
@@ -57,8 +68,93 @@
 </div>
 <script>
     document.addEventListener('DOMContentLoaded', function() {
+        const f_name = document.querySelector("#f_name");
+        const l_name = document.querySelector("#l_name");
+        const email = document.querySelector("#email");
+        const phone = document.querySelector("#ph");
+        const password = document.querySelector("#pass");
+        const pass_confirm = document.querySelector("#pass_confirm");
         $("#signup").on("submit", function(e) {
             e.preventDefault();
+
+            const fields = [{
+                    element: f_name,
+                    rules: [{
+                            rule: "required",
+                            message: "First name required"
+                        },
+                        {
+                            rule: "min",
+                            value: 2
+                        }
+                    ],
+                    errorSelector: "#f_name_error"
+                },
+                {
+                    element: l_name,
+                    rules: [{
+                        rule: "required",
+                        message: "Last name required"
+                    }],
+                    errorSelector: "#l_name_error"
+                },
+                {
+                    element: email,
+                    rules: [{
+                            rule: "required"
+                        },
+                        {
+                            rule: "email",
+                            message: "Enter a valid email"
+                        }
+                    ],
+                    errorSelector: "#email_error"
+                },
+                {
+                    element: phone,
+                    rules: [{
+                            rule: "required"
+                        },
+                        {
+                            rule: "number"
+                        },
+                        {
+                            rule: "min",
+                            value: 10,
+                            message: "Minimum 10 digits"
+                        }
+                    ],
+                    errorSelector: "#ph_error"
+                },
+                {
+                    element: password,
+                    rules: [{
+                            rule: "required"
+                        },
+                        {
+                            rule: "min",
+                            value: 6,
+                            message: "Password must be 6+ chars"
+                        }
+                    ],
+                    errorSelector: "#pass_error"
+                },
+                {
+                    element: pass_confirm,
+                    rules: [{
+                        rule: "custom",
+                        message: "Password does not match",
+                        func: val => val === password.value
+                    }],
+                    errorSelector: "#pass_confirm_error",
+                }
+            ];
+            let is_validate = validate(fields);
+
+            if (!is_validate)
+                return;
+
+
             $.ajax({
                 url: "<?= base_url('Auth/addUser') ?>",
                 type: "POST",
@@ -72,7 +168,7 @@
         });
 
         $("#login").on("submit", function(e) {
-            e.preventDefault(); 
+            e.preventDefault();
 
             $.ajax({
                 url: "<?= base_url('Auth/loginUser') ?>",

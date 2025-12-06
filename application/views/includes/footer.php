@@ -107,6 +107,7 @@
 
     <!-- Template Javascript -->
     <script src="<?=base_url('assets/js/main.js')?>"></script>
+    <script src="<?=base_url('assets/js/custom.js')?>"></script>
     </body>
 
 </html>
