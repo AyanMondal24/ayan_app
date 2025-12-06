@@ -106,10 +106,17 @@ $cart_count = is_array($cart) ? count($cart) : 0;
                                 <i class="fas fa-user fa-2x"></i>
                             </a>
                             <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" role="button" data-bs-toggle="modal" data-bs-target="#signupmodal">Signup</a></li>
+                           <?php  if(!$this->session->userdata('logged_in')){ ?>
+                              
+                                <li><a href="<?= base_url('Auth/signup') ?>" class="dropdown-item" >Signup</a></li>
                                 <li><a href="<?= base_url('Auth/login') ?>" class="dropdown-item" >Login</a></li>
-                                <!-- <li><a class="dropdown-item" role="button" data-bs-toggle="modal" data-bs-target="#loginmodal">Login</a></li> -->
-                                <li><a class="dropdown-item" href="sql/user-logout.php">Logout</a></li>
+                              
+                            <?php
+                           }
+                             if($this->session->userdata('logged_in')){ ?>
+                                 <li><a class="dropdown-item" href="sql/user-logout.php">Logout</a></li>
+                            <?php }
+                             ?>
                             </ul>
                         </li>
                     </div>

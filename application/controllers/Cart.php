@@ -20,15 +20,11 @@ class Cart extends CI_Controller
         $id = $this->input->post('product_id');
         $quantity = $this->input->post('quantity');
 
-
         $mode = $this->input->post('update_mode');
-
 
         $cart = $this->session->userdata('cart') ?? [];
 
         $found = false;
-
-
 
         foreach ($cart as &$item) {
 
@@ -59,8 +55,6 @@ class Cart extends CI_Controller
         // echo json_encode([
         //     'status'=>'success'
         // ]);
-
-
     }
 
 
@@ -86,10 +80,7 @@ class Cart extends CI_Controller
 
     public function remove_item()
     {
-        // $this->session->sess_destroy();
-
         $product_id = $this->input->post('product_id');
-
         $cart = $this->session->userdata('cart');
 
         if ($cart) {
@@ -103,18 +94,15 @@ class Cart extends CI_Controller
             $cart = array_values($cart);
 
             // Save updated cart
-            $this->session->set_userdata('cart', $cart);
-            // echo "<pre>";
-            // print_r($cart);
-            // die;
-            $this->cart_response();
-        }
+            if (count($cart) > 0) {
+                $this->session->set_userdata('cart', $cart);
+            } else {
+                $this->session->unset_userdata('cart');
+                $this->session->unset_userdata('applied_coupon');
+            }
 
-        // echo json_encode([
-        //     'status' => 'success',
-        //     'cart' => $cart,
-        //     'cart_items' => count($cart)
-        // ]);
+            return $this->cart_response(); // return refreshed values
+        }
     }
 
     function apply_coupon()
@@ -135,9 +123,11 @@ class Cart extends CI_Controller
             $subtotal += $product->price * $item['qty'];
         }
 
+
         $coupon = $this->coupon_model->getCouponByCode($coupon_code);
         if (!$coupon) {
-            echo json_encode(['status' => 'error', 'message' => 'Invalid Coupon Code']);
+            // $this->session->unset_userdata("applied_coupon");
+            $this->cart_response();
             return;
         }
 
@@ -160,78 +150,13 @@ class Cart extends CI_Controller
             "grand_total" => ($subtotal - $discount),
         ]);
 
-        $this->cart_response(); // will now handle coupon automatically
+        $this->cart_response();
     }
 
-    // function cart_response()
-    // {
-    //     $cart = $this->session->userdata('cart');
-    //     $ids = array_keys($cart);
-    //     // fetch product by this ids
-
-    //     $db_products = $this->product_model->getProductById($ids);
-    //     $products = [];
-    //     foreach ($db_products as $Product) {
-    //         $products[] = [
-    //             "product_id" => $Product->product_id,
-    //             "name" => $Product->product_name,
-    //             "quantity" => $cart[$Product->product_id]['qty'],   // from session cart
-    //             "price" => $Product->price,
-    //             "subtotal" => $Product->price * $cart[$Product->product_id]['qty'],
-    //             "image" => $Product->image_name,
-    //             "alt_text" => $Product->alt_text,
-    //             "unit" => $Product->short_name,
-    //         ];
-    //     }
-    //     // $products = [
-    //     //     [
-    //     //         "product_id" => 12,
-    //     //         "name" => "Wireless Mouse",
-    //     //         "quantity" => 2,
-    //     //         "price" => 500,
-    //     //         "subtotal" => 1000,
-    //     //         "image" => "https://yourwebsite.com/uploads/mouse.jpg"
-    //     //     ],
-    //     //     [
-    //     //         "product_id" => 33,
-    //     //         "name" => "Keyboard",
-    //     //         "quantity" => 1,
-    //     //         "price" => 500,
-    //     //         "subtotal" => 500,
-    //     //         "image" => "https://yourwebsite.com/uploads/keyboard.jpg"
-    //     //     ]
-    //     // ];
-    //     foreach ($products as $key => $product) {
-    //         $products[$key]['quantity'] = $cart[$product['product_id']]['qty'];
-    //     }
-
-    //     $coupon_code = $this->input->post('code');
-    //     $coupon = $this->coupon_model->getCouponByCode($coupon_code);
-
-    //     $subtotal = $this->input->post('total');
-    //     // $subtotal = ;
-    //     $coupon = [
-    //         "code" => $coupon->code,
-    //         "type" => $coupon->discount_type,
-    //         "discount_value" => $coupon->discount_value
-    //     ];
-
-    //     $response = [
-    //         "status" => "success",
-    //         "subtotal" => $subtotal,
-    //         "discount" => $coupon["amount"],
-    //         "total" => $subtotal - $coupon["amount"],
-    //         "coupon_applied" => false,
-    //         "coupon" => $coupon,
-    //         "products" => $products
-    //     ];
-
-    //     echo json_encode($response);
-    // }
 
     public function cart_response()
     {
-        // 1. Read cart session
+        // Read cart session
         $cart = $this->session->userdata('cart');
         $cart_count = is_array($cart) ? count($cart) : 0;
 
@@ -243,13 +168,13 @@ class Cart extends CI_Controller
             return;
         }
 
-        // 2. Get product IDs from cart (in same order)
+        // Get IDs
         $cart_keys = array_column($cart, 'product_id');
 
-        // 3. Fetch products from DB
+        //Fetch products
         $db_products = $this->product_model->getProductByIds($cart_keys);
 
-        // 4. Reorder DB results to match cart order
+        //  Maintain order
         $ordered_products = [];
         foreach ($cart_keys as $pid) {
             foreach ($db_products as $p) {
@@ -260,13 +185,12 @@ class Cart extends CI_Controller
             }
         }
 
-        // 5. Build product list + subtotal
+        // Build cart products
         $products = [];
         $subtotal = 0;
 
         foreach ($ordered_products as $p) {
 
-            // find qty from cart
             foreach ($cart as $item) {
                 if ($item['product_id'] == $p->product_id) {
                     $qty = $item['qty'];
@@ -290,30 +214,90 @@ class Cart extends CI_Controller
             $subtotal += $itemSubtotal;
         }
 
-        // 6. Coupon Processing
+        // Coupons 
         $session_coupon = $this->session->userdata('applied_coupon');
 
-        $coupon_applied = false;
         $discount = 0;
+        $coupon_applied = false;
         $coupon_data = null;
 
         if (!empty($session_coupon)) {
-            // change this section 
+
+            // Recalculate discount every cart refresh
+            if ($session_coupon['type'] === 'percentage') {
+                $discount = ($subtotal * $session_coupon['discount_value']) / 100;
+            } else {
+                $discount = $session_coupon['discount_value']; //if fixed
+            }
+
+            if ($discount > $subtotal) {
+                $discount = $subtotal;
+            }
+
+            $coupon_applied = true;
             $coupon = $this->coupon_model->getCouponByCode($session_coupon['code']);
 
-            if ($coupon) {
-                $coupon_applied = true;
-                $coupon_data = $session_coupon;
+            $this->session->set_userdata("applied_coupon", [
+                "code" => $session_coupon['code'],
+                "type" => $session_coupon['type'],
+                "discount" => $discount,
+                "discount_value" => $coupon->discount_value,
+                "grand_total" => ($subtotal - $discount),
+            ]);
+
+
+            $coupon_data = [
+                "code" => $session_coupon['code'],
+                "type" => $session_coupon['type'],
+                "discount_value" => $session_coupon['discount_value'],
+                "discount" => $discount
+            ];
+        }
+
+
+        // coupon exist and also new coupon comes 
+        $input_coupon   = $this->input->post("code");
+        if ($input_coupon) {
+
+            $coupon = $this->coupon_model->getCouponByCode($input_coupon);
+
+            if (!$coupon) {
+                $this->session->unset_userdata('applied_coupon');
+                $discount = 0;
+                $coupon_applied = false;
+
+                $coupon_data = [
+                    "code" => '',
+                    "type" => '',
+                    "discount_value" => ''
+                ];
+            } else {
 
                 if (strtotime($coupon->expiry_date) < time()) {
                     $this->session->unset_userdata('applied_coupon');
-                    echo json_encode(['status' => 'error', 'message' => 'Coupon expired.']);
+
+                    $discount = 0;
+                    $total = $subtotal;
+
+                    echo json_encode([
+                        "status" => "couponError",
+                        "message" => "Coupon Expired",
+                        "subtotal" => $subtotal,
+                        "discount" => 0,
+                        "total" => $total,
+                        "coupon_applied" => false,
+                        "coupon" => null,
+                        "cart_items" => $cart_count,
+                        "products" => $products
+                    ]);
                     return;
                 }
-                if ($coupon->discount_type === 'fixed') {
-                    $discount = $coupon->discount_value;
-                } else {
+
+                // New discount calculate with updated subtotal
+                if ($coupon->discount_type === 'percentage') {
                     $discount = ($subtotal * $coupon->discount_value) / 100;
+                } else {
+                    $discount = $coupon->discount_value;
                 }
 
                 if ($discount > $subtotal) {
@@ -321,6 +305,12 @@ class Cart extends CI_Controller
                 }
 
                 $coupon_applied = true;
+                $this->session->set_userdata('applied_coupon', [
+                    "code" => $coupon->code,
+                    "type" => $coupon->discount_type,
+                    "discount_value" => $coupon->discount_value,
+                    "discount" => $discount
+                ]);
 
                 $coupon_data = [
                     "code" => $coupon->code,
@@ -330,12 +320,11 @@ class Cart extends CI_Controller
             }
         }
 
-        // here calculate the refresh coupon func 
-        
-        // 7. Final total
+        //  Final Total
+
         $total = $subtotal - $discount;
 
-        // 8. Response
+        //Final JSON Response
         echo json_encode([
             "status" => "success",
             "subtotal" => $subtotal,
