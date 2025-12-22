@@ -147,7 +147,7 @@ $cart_count = is_array($cart) ? count($cart) : 0;
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
 
-                <div class="modal-body d-flex align-items-center">
+                <!-- <div class="modal-body d-flex align-items-center">
                     <form action="<?= base_url('Shop/index') ?>" method="POST" class="w-100">
                         <div class="input-group w-75 mx-auto">
 
@@ -160,7 +160,7 @@ $cart_count = is_array($cart) ? count($cart) : 0;
 
                         </div>
                     </form>
-                </div>
+                </div> -->
 
             </div>
         </div>
