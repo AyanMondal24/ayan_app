@@ -1,0 +1,235 @@
+.error{
+  color: red !important;
+  font: 16px;
+}
+.add-form h2 {
+  font-size: 34px !important;
+  margin: 20px 0px !important;
+}
+
+
+.add-form form {
+  background-color: #343a40;
+}
+
+.add-form form label {
+  font-size: 16px !important;
+  font-weight: bold;
+  /* color: rgb(229, 48, 48); */
+  letter-spacing: 0.7px;
+  color: #fff;
+  margin-bottom: 0px !important;
+}
+
+.add-form form label sup {
+  color: #ff3030;
+  font-size: 22px;
+  font-weight: bold;
+  vertical-align: bottom;
+  margin-left: 2px;
+  margin-top: 4px !important;
+}
+
+.add-form form input {
+  color: black;
+  letter-spacing: 0.3px;
+  font-size: 16px !important;
+  padding: 5px 7px;
+  margin-bottom: 8px;
+}
+
+#response-msg {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  width: 100%;
+  padding: 10px 8px;
+}
+
+.success-msg {
+  color: #fff;
+  background-color: green;
+}
+
+.error-msg {
+  color: #fff;
+  background-color: red;
+}
+
+/* validation error  */
+.error-text {
+  color: #ff3030 !important;
+  font-size: 16px;
+  letter-spacing: 0.7px;
+  font-weight: lighter !important;
+}
+
+@media (max-width: 768px) {
+  .form-label {
+    font-size: 14px;
+  }
+}
+
+/* product view start  */
+
+.product-view table thead tr th {
+  background-color: #343a40;
+  color: #fff;
+  text-align: center;
+}
+
+.product-view table tbody tr td {
+  text-align: center;
+}
+
+/* product single view start  */
+
+/* category view  */
+.category-view table thead tr th {
+  background-color: #343a40;
+  color: #fff;
+  text-align: center;
+}
+
+.category-view table tbody tr td {
+  text-align: center;
+}
+
+/*start product update page  image hover */
+.image-box:hover .change-btn {
+  opacity: 1 !important;
+  /* position: relative;
+  top: 50px !important; */
+}
+
+.product-img:hover .change-btn {
+  display: block !important;
+}
+
+.product-img {
+  transition: opacity 0.3s !important;
+}
+
+.image-box:hover .product-img {
+  opacity: 0.7 !important;
+}
+
+/*end product update page  image hover */
+
+/* start single product  */
+.single-view {
+  background-color: #f8f9fa;
+  font-family: 'Poppins', sans-serif;
+}
+
+.single-view .product-card {
+  background: #fff !important;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  transition: 0.3s ease;
+}
+
+.single-view .product-card:hover {
+  transform: scale(1.01);
+}
+
+.single-view .product-container {
+  width: 100%;
+  display: flex;
+  gap: 40px;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+
+.single-view .thumb-column {
+  width: 100px !important;
+  display: flex;
+  flex-direction: column !important;
+  /* <-- THIS MAKES IT VERTICAL */
+  gap: 12px;
+}
+
+.single-view .thumb-column .thumb {
+  border: 1px solid #0095ff;
+}
+
+.single-view .thumb-column img {
+  width: 100%;
+  height: 90px;
+  object-fit: cover;
+  border-radius: 6px;
+  border: 2px solid transparent;
+  cursor: pointer;
+  transition: .3s ease;
+}
+
+.single-view .thumb-column img.active,
+.single-view .thumb-column img:hover {
+  /* border-color: #0095ff; */
+  border: 1px solid red;
+}
+
+/* .single-view .main-image{
+  border:1px solid #0095ff;
+
+} */
+.single-view .main-image img {
+  width: 500px;
+  height: 500px;
+  border-radius: 10px;
+  object-fit: cover;
+
+}
+
+.single-view .single-view-details {
+  background-color: #343a40 !important;
+  width: 100% !important;
+  color: #fff;
+}
+
+.single-view .single-view-details p {
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  white-space: normal;
+}
+
+.single-view .single-view-details h2 sup {
+  font-size: 18px;
+}
+
+.badge-md {
+  font-size: 0.90rem;
+  /* medium text size */
+  padding: 0.45rem 0.65rem;
+  border-radius: 0.4rem;
+}
+
+
+/* end single product  */
+
+/* category view start  */
+.category-view-image img {
+  width: 150px;
+  height: 100px;
+  object-fit: cover;
+}
+
+/* category view end  */
+/* .coupon-image-box {
+  width: 100%;
+  height: 300px;
+  cursor: pointer;
+  overflow: hidden;
+  position: relative;
+} */
+
+.coupon-image {
+  width: 100% ;
+  height: 100%;
+  object-fit: cover;
+  display: none;
+  border-radius: 10px;
+}
