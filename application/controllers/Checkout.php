@@ -162,11 +162,6 @@ class Checkout extends CI_Controller
             $address_id = $this->address_model->create($data);
             if ($address_id) {
                 $address = true;
-                // echo json_encode([
-                //     "status" => "success",
-                //     "message" => "Data Successfully Saved.",
-                //     "redirect" => base_url('Order/thank_you')
-                // ]);
             } else {
                 $address = false;
                 echo json_encode([
@@ -181,11 +176,6 @@ class Checkout extends CI_Controller
             // echo $data['updated_at'];
             if ($this->address_model->update($data, $address_id)) {
                 $address = true;
-                // echo json_encode([
-                //     "status" => "success",
-                //     "message" => "Data Successfully Updated.",
-                //     "redirect" => base_url('Order/thank_you')
-                // ]);
             } else {
                 $address = false;
                 echo json_encode([
@@ -223,11 +213,6 @@ class Checkout extends CI_Controller
             $data['final_amount'] = $subtotal;
         }
         $data['total_amount'] = $subtotal;
-
-        //     $payment=$this->input->post('payment');
-        //    if($payment === 'cod'){
-        //     $payment_method="Cash On Delivery";
-        //    }
 
         $data['payment_method'] = $this->input->post('payment');
         $data['created_at'] = date("Y-m-d H:i:s");
@@ -279,9 +264,11 @@ class Checkout extends CI_Controller
 
         // FINAL RESPONSE
         if ($address && $order && $order_details_check) {
+            // getting payment details 
 
             $payment_method = $this->order_model->getPaymentMethod($order_id);
             if ($payment_method->payment_method == 'Card') {
+                $this->session->set_userdata('payment_pending', true);
 
                 echo json_encode([
                     "status" => "success",
@@ -292,6 +279,8 @@ class Checkout extends CI_Controller
                 return;
             }
             if ($payment_method->payment_method == 'Cash On Delivery') {
+                $this->session->set_userdata('order_success', true);
+
                 if ($this->session->has_userdata('applied_coupon')) {
                     $this->session->unset_userdata('applied_coupon');
                 }
@@ -319,6 +308,13 @@ class Checkout extends CI_Controller
 
     function index()
     {
+
+        // BLOCK checkout if cart is empty
+        $cart = $this->session->userdata('cart');
+        if (empty($cart)) {
+            redirect('Shop');
+            exit;
+        }
 
         $cart = $this->session->userdata('cart');
         $cart_products = [];

@@ -565,7 +565,7 @@
                     <div class="counter bg-white rounded p-5">
                         <i class="fa fa-users text-secondary"></i>
                         <h4>Available Products</h4>
-                        <h1>789</h1>
+                        <h1><?= $total_product ?></h1>
                     </div>
                 </div>
             </div>

@@ -360,7 +360,7 @@
         numberField('#b_phone', 10, 10, '#b_phone_error');
         numberField('#s_phone', 10, 10, '#s_phone_error');
         $("#checkout-form").on('submit', function(e) {
-          
+
             e.preventDefault();
             let myvalidate = true;
             const fields = [{
@@ -642,10 +642,10 @@
             } else {
                 $("#checkout-submit").text("Make Payment");
             }
-            
+
             $("#payment_error").text('');
-            
-            
+
+
 
             // console.log(myvalidate)
             if (myvalidate === true) {
@@ -681,12 +681,7 @@
         }
         toggleShipping();
         document.getElementById("is_shipping").addEventListener("change", toggleShipping);
-        // document.getElementById("is_shipping").addEventListener("change", function() {
-
-        //     const div = document.getElementById("ship");
-        //     div.style.display = this.checked ? "block" : "none";
-        // });
-
+     
     });
 
     function set_page(response) {

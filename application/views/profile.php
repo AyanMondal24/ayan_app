@@ -27,8 +27,8 @@
                     </a>
                 </li>
 
-                <li>
-                    <a href="<?= base_url('Profile/Addresses') ?>" class="menu-link">
+                <li class="<?= ($this->uri->segment(1) == 'Profile' && $this->uri->segment(2) == 'Address') ? 'active' : '' ?>">
+                    <a href="#address" class="menu-link" id="addressMenu" class="menu-link">
                         <span class="icon">📍</span>
                         <span class="text">Addresses</span>
                     </a>
@@ -115,11 +115,11 @@
                         </div>
 
                         <!-- BUTTONS -->
-                        <button type="button" class="btn profile-edit-btn" id="editBtn">
+                        <button type="button" class="btn profile-edit-btn profile-btn" id="editBtn">
                             Edit Profile
                         </button>
 
-                        <button type="submit" class="btn profile-save-btn d-none" id="saveBtn">
+                        <button type="submit" class="btn profile-save-btn d-none profile-btn" id="saveBtn">
                             Save Changes
                         </button>
                     </form>
@@ -133,15 +133,89 @@
         <!-- orders  -->
         <div class="profile-orders d-none" id="ordersSection">
 
+            <?php
+            if (!empty($orders)) {
+
+            ?>
+                <table class="table table-bordered show-order">
+                    <thead>
+                        <tr>
+                            <th>Order No</th>
+                            <th>Date</th>
+                            <th>Items</th>
+                            <th>Total</th>
+                            <th>Payment</th>
+                            <th>Status</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php foreach ($orders as $order):
+
+                            $enc_order_id = urlencode(base64_encode($this->encryption->encrypt($order->order_id)))
+                        ?>
+                            <tr>
+                                <td><?= $order->order_number ?></td>
+                                <td><?= date('d M Y', strtotime($order->created_at)) ?></td>
+                                <td>
+                                    <?php
+                                    $products = explode(', ', $order->product_names);   // string → array
+                                    $show = array_slice($products, 0, 4);               // take first 4
+
+                                    echo implode(', ', $show);                           // show 4 only
+
+                                    if (count($products) > 4) {
+                                        echo ' <span class="text-muted">+' . (count($products) - 4) . ' more</span>';
+                                    }
+                                    ?>
+
+                                </td>
+                                <td>
+                                    ₹<?= number_format($order->final_amount, 2) ?></td>
+                                <td>
+                                    <span class="badge bg-<?= $order->payment_status == 'paid' ? 'success' : ($order->payment_status == 'cancelled' ? 'danger' : 'warning') ?>">
+                                        <?= ucfirst($order->payment_status) ?>
+                                    </span>
+                                </td>
+
+                                <td>
+                                    <span class="badge bg-<?= $order->order_status == 'confirmed' ? 'success' : ($order->order_status == 'cancelled' ? 'danger' : 'warning') ?>">
+                                        <?= ucfirst($order->order_status) ?>
+                                    </span>
+                                </td>
+
+                                <td class="action-button">
+                                    <div class="d-flex justify-content-center align-items-center gap-2">
+                                        <a href="<?= base_url('Profile/order_details/' . $enc_order_id) ?>" class="btn btn-sm btn-primary text-light">
+                                            Visit
+                                        </a>
+                                        <?php
+                                        if ($order->order_status !== 'cancelled') { ?>
+                                            <a href="" class="btn btn-sm btn-danger text-light cancel-btn" data-order-id="<?= $enc_order_id ?>" data-bs-toggle="modal" data-bs-target="#cancelModal">
+                                                Cancel
+                                            </a>
+                                        <?php  }
+                                        ?>
+                                    </div>
+                                </td>
+                            </tr>
+                        <?php endforeach; ?>
+                    </tbody>
+                </table>
+
+            <?php } else { ?>
+                <p>No orders found.</p>
+            <?php  } ?>
+            <!-- old  -->
             <?php if (!empty($orders)) : ?>
                 <?php foreach ($orders as $order) : ?>
-                    <?php $order_id =urlencode(base64_encode($this->encryption->encrypt($order->order_id))) ?>
+                    <?php $order_id = urlencode(base64_encode($this->encryption->encrypt($order->order_id))) ?>
                     <div class="order-card">
                         <div class="order-content">
 
                             <!-- Product Names (COMMA SEPARATED) -->
                             <div class="product-details">
-                                <h4><a class="text-dark" href="<?= base_url('Profile/order_details/'.$order_id) ?>"><?= $order->product_names ?></a></h4>
+                                <h4><a class="text-dark" href="<?= base_url('Profile/order_details/' . $order_id) ?>"><?= $order->product_names ?></a></h4>
                             </div>
 
                             <!-- Price -->
@@ -167,11 +241,99 @@
 
         </div>
 
+        <!-- address  -->
+        <div class="profile-order d-none w-100" id="addressSection">
+            <!-- <div class="container profile-address"> -->
+            <div class="address-wrapper">
 
+                <!-- Billing Address -->
+                <div class="address-card">
+                    <div class="address-header">
+                        <h4>Billing Address</h4>
+                        <a href="<?= base_url('profile/edit_billing_address') ?>" class="btn-change">
+                            Change
+                        </a>
+                    </div>
+
+                    <div class="address-body">
+                        <p class="name"><?= $address->b_fname ?> <?= $address->b_lname ?></p>
+
+                        <p>
+                            <?= $address->b_address ?><br>
+                            <?= $address->b_city ?>, <?= $address->b_state ?><br>
+                            <?= $address->b_country ?> – <?= $address->b_pin ?>
+                        </p>
+
+                        <p class="phone">📞 <?= $address->b_phone ?></p>
+                        <p class="email">✉ <?= $address->b_email ?></p>
+                    </div>
+                </div>
+
+                <!-- Shipping Address -->
+                <div class="address-card">
+                    <div class="address-header">
+                        <h4>Shipping Address</h4>
+
+                        <?php if (!$address->is_shipping_same): ?>
+                            <a href="<?= base_url('profile/edit_shipping_address') ?>" class="btn-change">
+                                Change
+                            </a>
+                        <?php endif; ?>
+                    </div>
+
+                    <div class="address-body">
+                        <?php if ($address->is_shipping_same): ?>
+                            <p class="same-text">Same as billing address</p>
+                        <?php else: ?>
+                            <p class="name"><?= $address->s_fname ?> <?= $address->s_lname ?></p>
+
+                            <p>
+                                <?= $address->s_address ?><br>
+                                <?= $address->s_landmark ?><br>
+                                <?= $address->s_city ?>, <?= $address->s_state ?><br>
+                                <?= $address->s_country ?> – <?= $address->s_pin ?>
+                            </p>
+
+                            <p class="phone">📞 <?= $address->s_phone ?></p>
+                            <p class="email">✉ <?= $address->s_email ?></p>
+                        <?php endif; ?>
+                    </div>
+                </div>
+
+                
+            </div>
+
+
+            <!-- </div> -->
+        </div>
 
         <!-- end  -->
     </div>
+
 </div>
+<!-- Modal -->
+<div class="modal fade" id="cancelModal" data-bs-backdrop="static" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered ">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Cancel Order</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Do you want to cancel this order?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success" data-bs-dismiss="modal" id="confirm-cancel">Yes</button>
+                <button type="button" class="btn btn-danger">No</button>
+            </div>
+            <div id="response"> </div>
+        </div>
+    </div>
+</div>
+<!-- Button trigger modal -->
+<!-- <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+    Launch demo modal
+</button> -->
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {
@@ -280,13 +442,16 @@
 
         const profileMenu = document.getElementById('profileMenu');
         const ordersMenu = document.getElementById('ordersMenu');
+        const addressMenu = document.getElementById('addressMenu');
 
         const profileSection = document.getElementById('profileSection');
         const ordersSection = document.getElementById('ordersSection');
+        const addressSection = document.getElementById('addressSection');
 
         function showSection(section) {
             profileSection.classList.add('d-none');
             ordersSection.classList.add('d-none');
+            addressSection.classList.add('d-none');
 
             document.querySelectorAll('.menu li').forEach(li => {
                 li.classList.remove('active');
@@ -295,18 +460,88 @@
             if (section === 'orders') {
                 ordersSection.classList.remove('d-none');
                 ordersMenu.closest('li').classList.add('active');
-            } else {
+            } else if (section === 'profile') {
                 profileSection.classList.remove('d-none');
                 profileMenu.closest('li').classList.add('active');
+            } else if (section === 'address') {
+                addressSection.classList.remove('d-none');
+                addressMenu.closest('li').classList.add('active');
             }
         }
 
         // Click events
         profileMenu.addEventListener('click', () => showSection('profile'));
         ordersMenu.addEventListener('click', () => showSection('orders'));
+        addressMenu.addEventListener('click', () => showSection('address'));
 
-        // 🔥 ON PAGE LOAD (IMPORTANT)
+        // ON PAGE LOAD (IMPORTANT)
         const hash = window.location.hash.replace('#', '');
-        showSection(hash === 'orders' ? 'orders' : 'profile');
+        showSection(hash === 'orders' ? 'orders' : (hash === 'profile' ? 'profile' : 'address'));
+
+
+        // order cancel btn 
+        let currentOrderId = null;
+
+
+        // When a cancel button is clicked
+
+        $(".cancel-btn").on('click', function(e) {
+            e.preventDefault();
+
+            currentOrderId = $(this).data('order-id');
+
+            $('#cancelModal').modal('show');
+
+        });
+
+
+        // When "Yes" is clicked in the modal
+
+        $('#confirm-cancel').on('click', function() {
+
+            if (currentOrderId) {
+
+                $.ajax({
+
+                    url: '<?= base_url("Profile/cancel_order") ?>', // Your backend endpoint (adjust if different)
+
+                    type: 'POST',
+
+                    data: {
+                        order_id: currentOrderId
+                    }, // Send the order ID
+                    dataType: "JSON",
+                    success: function(response) {
+
+                        // Handle success (e.g., show a message, reload the page, or update the UI)
+
+                        // alert('Order canceled successfully!'); // Replace with a better notification (e.g., Bootstrap toast)
+                        if (response.status === 'success') {
+                            $("#response").addClass('success-msg').removeClass('error-msg').html(response.message).fadeIn(200).delay(3000).fadeOut(200);
+                            $('#cancelModal').modal('hide'); // Close the modal
+
+                            location.reload(); // Reload the page to reflect changes (or update the table dynamically)
+                        } else {
+                            $("#response").addClass('error-msg').removeClass('success-msg').html(response.message).fadeIn(200).delay(3000).fadeOut(200);
+                        }
+
+                    },
+
+                    error: function(xhr, status, error) {
+
+                        // Handle error
+
+                        // alert('Error canceling order: ' + error); // Replace with better error handling
+                        $("#response").addClass('error-msg').removeClass('success-msg').html(error).fadeIn(200).delay(3000).fadeOut(200);
+
+                        $('#cancelModal').modal('hide');
+
+                    }
+
+                });
+
+            }
+
+        });
     });
 </script>

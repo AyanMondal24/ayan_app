@@ -183,7 +183,7 @@ class product_model extends CI_Model
     }
 
     // shop page 
-    public function getShopProducts($limit, $offset, $category_name = null, $search = null,$price=null)
+    public function getShopProducts($limit, $offset, $category_name = null, $search = null, $price = null)
     {
         $this->db->select('
         p.id as product_id,
@@ -211,13 +211,13 @@ class product_model extends CI_Model
         if (!empty($category_name) && $category_name !== 'all') {
             $this->db->where('LOWER(c.name)', strtolower($category_name));
         }
-         if (!empty($price)) {
+        if (!empty($price)) {
             $this->db->where('p.price <=', $price);
         }
         if (!empty($search)) {
             $this->db->like('p.name', $search);
         }
-       
+
         $this->db->order_by('p.id', 'DESC');
         // Limit (optional)
         if (!empty($limit)) {
@@ -227,7 +227,7 @@ class product_model extends CI_Model
     }
 
 
-    public function countTotalProduct($category_name = null, $search = null,$price=null)
+    public function countTotalProduct($category_name = null, $search = null, $price = null)
     {
         $this->db->from('products p');
         $this->db->join('category c', 'c.id = p.category', 'inner');
@@ -240,7 +240,7 @@ class product_model extends CI_Model
             $this->db->where('c.name', $category_name);
         }
 
-         if (!empty($price)) {
+        if (!empty($price)) {
             $this->db->where('p.price <=', $price);
         }
         // Search filter
@@ -269,7 +269,8 @@ class product_model extends CI_Model
         $this->db->from('product_image');
         return $this->db->where('product_id', $id)->get()->result();
     }
-     public function getProductById($id){
+    public function getProductById($id)
+    {
         $this->db->select('
         p.id as product_id,
         p.name AS product_name,
@@ -285,11 +286,12 @@ class product_model extends CI_Model
         $this->db->join('product_unit u', 'u.id=p.unit_id', 'inner');
         $this->db->join('product_image i', 'i.product_id=p.id', 'inner');
 
-        $this->db->where('i.is_featured',0);
-        $this->db->where('p.id',$id);
+        $this->db->where('i.is_featured', 0);
+        $this->db->where('p.id', $id);
         return $this->db->get()->row();
-     }
-     public function getProductByIds($id){
+    }
+    public function getProductByIds($id)
+    {
         $this->db->select('
         p.id as product_id,
         p.name AS product_name,
@@ -305,8 +307,21 @@ class product_model extends CI_Model
         $this->db->join('product_unit u', 'u.id=p.unit_id', 'inner');
         $this->db->join('product_image i', 'i.product_id=p.id', 'inner');
 
-        $this->db->where('i.is_featured',0);
-        $this->db->where_in('p.id',$id);
+        $this->db->where('i.is_featured', 0);
+        $this->db->where_in('p.id', $id);
         return $this->db->get()->result();
-     }
+    }
+
+
+    //  sum of all quantity 
+    function totalProduct()
+    {
+        // Example using CodeIgniter / PHP
+        $this->db->select_sum('quantity');
+        $this->db->where('status', 0); // optional
+        $this->db->where('is_available', 0); // optional
+        $query = $this->db->get('products');
+        $result = $query->row();
+        return $total_available = $result->quantity;
+    }
 }

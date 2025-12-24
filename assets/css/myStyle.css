@@ -671,7 +671,7 @@ header auth end
 }
 
 /* Button */
-.profile .btn {
+.profile .profile-btn {
     width: 100%;
     background: #2874f0;
     color: #fff;
@@ -683,7 +683,7 @@ header auth end
     margin-top: 10px;
 }
 
-.profile .btn:hover {
+.profile .profile-btn:hover {
     background: #0b5ed7;
 }
 
@@ -785,7 +785,7 @@ header auth end
     font-size: 14px;
 }
 
-
+/* 
 .profile-orders .status-line .dot {
     width: 10px;
     height: 10px;
@@ -814,7 +814,7 @@ header auth end
 
 .profile-orders .delivery-status .confirmed {
     color: #16a34a;
-}
+} */
 
 .profile-orders .quantity {
     margin: 4px 0 0;
@@ -828,6 +828,43 @@ header auth end
     color: #374151;
     font-size: 13px;
 }
+
+.profile-orders .show-order thead {
+    background-color: #333;
+    color: #fff;
+    text-align: center;
+}
+
+.profile-orders .show-order tbody {
+    text-align: center;
+}
+
+.profile-orders .show-order tbody .danger {
+    background-color: red;
+    color: #fff;
+}
+
+.profile-orders .table td,
+.table th {
+    vertical-align: middle;
+    text-align: center;
+}
+.profile-orders td.action-button {
+    padding: 8px 0; 
+}
+
+/* Button styles remain the same */
+.profile-orders td.action-button .btn {
+    width: auto !important;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 4px 12px;
+}
+.profile-orders td.action-button .btn-primary{
+    background-color: #0b5ed7;
+}
+
 
 /* profile order details  */
 .order-details-page {
@@ -1098,6 +1135,68 @@ header auth end
 .order-details-page .myDesign h3 {
     color: black;
 }
+
+/* ----------------------- ADDRESS--------------------------- */
+.address-wrapper {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 20px;
+}
+
+.address-card {
+    background: #fff;
+    border-radius: 10px;
+    padding: 20px;
+    border: 1px solid #e5e7eb;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.06);
+}
+
+.address-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+}
+
+.address-header h4 {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.btn-change {
+    background: #2563eb;
+    color: #fff;
+    padding: 6px 14px;
+    border-radius: 6px;
+    font-size: 14px;
+    text-decoration: none;
+}
+
+.btn-change:hover {
+    background: #1d4ed8;
+}
+
+.address-body p {
+    margin: 5px 0;
+    line-height: 1.6;
+    color: #374151;
+}
+
+.address-body .name {
+    font-weight: 600;
+    font-size: 15px;
+}
+
+.phone, .email {
+    font-weight: 500;
+}
+
+.same-text {
+    font-style: italic;
+    color: #6b7280;
+}
+
 
 /* end profile  */
 /* --------------------------------------------------------------------- */

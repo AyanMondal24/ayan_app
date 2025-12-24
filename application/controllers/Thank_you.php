@@ -13,6 +13,13 @@ class Thank_you extends CI_Controller
 
     function index($enc_order_id = null)
     {
+        if (!$this->session->userdata('order_success')) {
+            redirect('/');
+            exit;
+        }
+
+        $this->session->unset_userdata('order_success');
+
         $order_id = $this->encryption->decrypt(base64_decode(urldecode($enc_order_id)));
         $data['order'] = $this->order_model->getOrderSummary($order_id);
         load_views('thank_you', $data);
@@ -20,7 +27,7 @@ class Thank_you extends CI_Controller
 
     public function verifyIntent()
     {
-        // 1️⃣ Get PaymentIntent ID from URL
+        //  Get PaymentIntent ID from URL
         $payment_intent_id = $this->input->get('payment_intent'); // pi_XXX
         $client_secret = $this->input->get('payment_intent_client_secret');
 
@@ -28,21 +35,21 @@ class Thank_you extends CI_Controller
             show_error("Invalid PaymentIntent");
         }
 
-        // 2️⃣ Initialize Stripe
+        // Initialize Stripe
         \Stripe\Stripe::setApiKey(STRIPE_SECRET);
 
         try {
-            // 3️⃣ Retrieve PaymentIntent from Stripe
+            // Retrieve PaymentIntent from Stripe
             $intent = \Stripe\PaymentIntent::retrieve($payment_intent_id);
 
             $status = $intent->status; // succeeded, processing, requires_payment_method
             $charge_id = $intent->latest_charge;
-            // 4️⃣ Optional: update your order DB if succeeded
+            //  Optional: update your order DB if succeeded
             if ($status === 'succeeded') {
                 $order_id = $this->order_model->markPaymentSuccess($payment_intent_id, $charge_id);
             }
 
-            // 5️⃣ Load appropriate view
+            //  Load appropriate view
             $data['order'] = $this->order_model->getOrderSummary($order_id ?? 0);
 
             if ($status === 'succeeded') {
@@ -54,7 +61,13 @@ class Thank_you extends CI_Controller
                     $this->session->unset_userdata('cart');
                 }
 
-                load_views('thank_you', $data);
+                $this->session->unset_userdata('payment_pending');
+                $this->session->set_userdata('order_success', true);
+
+                redirect('Thank_you/index/' . urlencode(base64_encode(
+                    $this->encryption->encrypt($order_id)
+                )));
+                exit;
             } else {
                 load_views('payment_processing', $data);
             }

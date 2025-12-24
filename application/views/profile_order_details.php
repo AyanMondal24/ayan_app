@@ -97,6 +97,10 @@
                 <strong><?= $name ?></strong>
                 <p><?= $phone ?></p>
             </div>
+            <div class="info-row">
+                <?php $enc_order_id= urlencode(base64_encode($this->encryption->encrypt($order->order_id)))?>
+                <a href="<?= base_url('Profile/edit_billing_address/'. $enc_order_id) ?>" class="btn btn-primary text-light">Change Address</a>
+            </div>
         </div>
 
         <?php

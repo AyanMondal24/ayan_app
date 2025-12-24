@@ -30,6 +30,7 @@ class Home extends CI_Controller
 		}
 		$data['vegetables'] = $this->product_model->getAllproducts('vegetables');
 		$data['featured'] = $this->product_model->getAllproducts(null, null, '0');
+		$data['total_product']=$this->product_model->totalProduct();
 		load_views('home', $data);
 	}
 	// public function contact()

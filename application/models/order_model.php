@@ -23,20 +23,42 @@ class order_model extends CI_Model
     {
         $this->db->select('
         or.id AS order_id,
-        GROUP_CONCAT(
-            CONCAT(p.name, " (", c.name, ")")
-            SEPARATOR ", "
-        ) AS product_names,
-        or.final_amount,
-        or.order_status
+
+        GROUP_CONCAT(p.name SEPARATOR ", ") AS product_names,
+
+        /* SAFE subtotal */
+        SUM(ord.quantity * ord.price) AS subtotal,
+
+        /* SAFE coupon calculation */
+        CASE
+            WHEN coupon.id IS NULL THEN SUM(ord.quantity * ord.price)
+
+            WHEN coupon.discount_type = "percentage"
+                THEN SUM(ord.quantity * ord.price)
+                     - (SUM(ord.quantity * ord.price) * coupon.discount_value / 100)
+
+            ELSE
+                SUM(ord.quantity * ord.price) - coupon.discount_value
+        END AS final_amount,
+
+        or.order_status,
+        or.payment_method,
+        or.order_number,
+        or.payment_status,
+        or.created_at,
+
+        coupon.code,
+        coupon.discount_type,
+        coupon.discount_value
     ');
 
         $this->db->from('order_details ord');
         $this->db->join('orders or', 'or.id = ord.order_id');
-        $this->db->join('products p', 'p.id = ord.product_id', 'inner');
-        $this->db->join('category c', 'c.id = p.category', 'inner');
+        $this->db->join('coupons coupon', 'coupon.id = or.coupon_id', 'left');
+        $this->db->join('products p', 'p.id = ord.product_id');
 
         $this->db->where('or.user_id', $user_id);
+        $this->db->where('or.order_status !=', 'canceled');
         $this->db->group_by('or.id');
 
         return $this->db->get()->result();
@@ -105,6 +127,7 @@ class order_model extends CI_Model
         o.b_pin,
         o.b_landmark,
         o.b_phone,
+        o.b_email as order_b_email,
         o.is_shipping_same,
         o.s_fname,
         o.s_lname,
@@ -115,6 +138,7 @@ class order_model extends CI_Model
         o.s_pin,
         o.s_landmark,
         o.s_phone,
+        o.s_email as order_s_email,
 
         o.id as order_id,
         o.order_number,
@@ -179,7 +203,7 @@ class order_model extends CI_Model
         $this->db
             ->where('payment_intent_id', $intent_id)
             ->update('orders', [
-                'order_status'   => 'success',
+                'order_status'   => 'confirmed',
                 'transaction_id' => $txn_id,
                 'payment_status' => 'paid'
             ]);
@@ -202,5 +226,20 @@ class order_model extends CI_Model
         $this->db->from('orders');
         $this->db->where('id', $order_id);
         return $this->db->get()->row();
+    }
+
+    function update_order_status($order_id, $status)
+    {
+        $this->db->where('id', $order_id);
+        return $this->db->update('orders', [
+            'order_status' => $status,
+            'updated_at'   => date('Y-m-d H:i:s')
+        ]);
+    }
+
+    function update($data, $order_id)
+    {
+        $this->db->where('id', $order_id);
+      return  $this->db->update('orders', $data);
     }
 }

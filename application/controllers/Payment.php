@@ -15,6 +15,13 @@ class Payment extends CI_Controller
 
     function index($enc_order_id = null)
     {
+        // 🚫 Must come ONLY from checkout
+        if (!$this->session->userdata('payment_pending')) {
+            redirect('Shop');
+            exit;
+        }
+
+
         $order_id = $this->encryption->decrypt(base64_decode(urldecode($enc_order_id)));
         $data['order'] = $this->order_model->getOrderSummary($order_id);
         $data['order_details'] = $this->order_model->getOrderItems($order_id);
