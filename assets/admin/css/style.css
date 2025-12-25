@@ -233,3 +233,9 @@
   display: none;
   border-radius: 10px;
 }
+
+
+/* order view  */
+.orders-table-wrapper {
+    min-height: 520px; /* adjust based on rows */
+}

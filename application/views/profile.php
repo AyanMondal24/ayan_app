@@ -206,38 +206,7 @@
             <?php } else { ?>
                 <p>No orders found.</p>
             <?php  } ?>
-            <!-- old  -->
-            <?php if (!empty($orders)) : ?>
-                <?php foreach ($orders as $order) : ?>
-                    <?php $order_id = urlencode(base64_encode($this->encryption->encrypt($order->order_id))) ?>
-                    <div class="order-card">
-                        <div class="order-content">
-
-                            <!-- Product Names (COMMA SEPARATED) -->
-                            <div class="product-details">
-                                <h4><a class="text-dark" href="<?= base_url('Profile/order_details/' . $order_id) ?>"><?= $order->product_names ?></a></h4>
-                            </div>
-
-                            <!-- Price -->
-                            <div class="product-price">
-                                ₹<?= number_format($order->final_amount, 2) ?>
-                            </div>
-
-                            <!-- Status -->
-                            <div class="delivery-status">
-                                <div class="status-line <?= $order->order_status ?>">
-                                    <span class="dot"></span>
-                                    <strong><?= ucfirst($order->order_status) ?></strong>
-                                </div>
-                            </div>
-
-                        </div>
-                    </div>
-
-                <?php endforeach; ?>
-            <?php else : ?>
-                <p>No orders found.</p>
-            <?php endif; ?>
+          
 
         </div>
 

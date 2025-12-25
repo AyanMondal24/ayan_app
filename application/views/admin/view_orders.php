@@ -4,35 +4,44 @@
             <h5 class="mb-0">All Orders</h5>
         </div>
 
+
         <div class="card-body">
-            <div class="table-responsive">
-                <table class="table table-bordered table-hover text-center align-middle">
+            <div class="row mb-3">
+                <div class="col-md-4">
+                    <input type="text" id="tableSearch" class="form-control"
+                        placeholder="Search orders...">
+                </div>
+            </div>
+            <div class="table-responsive orders-table-wrapper">
+
+                <table class="table table-bordered table-hover text-center align-middle" id="ordersTable">
                     <thead class="table-dark">
                         <tr>
-                            <th>#</th>
-                            <th>Order No</th>
-                            <th>Customer</th>
-                            <th>Total Items</th>
-                            <th>Total Amount</th>
-                            <th>Discount</th>
-                            <th>Final Amount</th>
+                            <th data-column="0" class="sortable">#</th>
+                            <th data-column="1" class="sortable">Order No</th>
+                            <th data-column="2" class="sortable">Customer</th>
+                            <th data-column="3" class="sortable">Total Items</th>
+                            <th data-column="4" class="sortable">Total Amount</th>
+                            <th data-column="5" class="sortable">Discount</th>
+                            <th data-column="6" class="sortable">Final Amount</th>
                             <th>Payment</th>
                             <th>Pay Status</th>
                             <th>Order Status</th>
-                            <th>Order Date</th>
+                            <th data-column="10" class="sortable">Order Date</th>
                             <th>Action</th>
+
                         </tr>
                     </thead>
 
-                    <tbody>
+                    <tbody id="order-tbody">
                         <?php if (!empty($orders)) : ?>
                             <?php $i = 1;
-                            foreach ($orders as $order) : 
-                            $order_id=urlencode(base64_encode($this->encryption->encrypt($order->order_id)));
+                            foreach ($orders as $order) :
+                                $order_id = urlencode(base64_encode($this->encryption->encrypt($order->order_id)));
                             ?>
-                            
+
                                 <tr>
-                                    <td><?= $i++; ?></td>
+                                    <td><?= $offset++; ?></td>
                                     <td><?= $order->order_number ?: '#' . $order->order_id; ?></td>
                                     <td><?= $order->customer_name ?? 'Guest'; ?></td>
                                     <td><?= $order->total_items; ?></td>
@@ -80,6 +89,46 @@
                     </tbody>
                 </table>
             </div>
+            <?php
+            if (!empty($orders)) {
+                echo $links;
+            }
+            ?>
         </div>
     </div>
 </div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+
+
+        /* ===============================
+           SEARCH FUNCTION
+        ================================*/
+        document.getElementById('tableSearch').addEventListener('keyup', function() {
+            let searchvalue = this.value.toLowerCase();
+            let rows = document.querySelectorAll('#ordersTable tbody tr');
+
+            rows.forEach(row => {
+                row.style.display = row.innerText.toLowerCase().includes(value) ?
+                    '' :
+                    'none';
+            });
+
+            $.ajax({
+                url:'<?= base_url('Orders/index') ?>',
+                type:"POST",
+                data:{
+                    search:searchvalue
+                },
+                dataType:"JSON",
+                success: function(response){
+                    // $("#order-tbody"). 
+                    // create full page html 
+                    
+                }
+            })
+        });
+
+    });
+</script>

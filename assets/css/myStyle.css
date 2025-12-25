@@ -849,8 +849,9 @@ header auth end
     vertical-align: middle;
     text-align: center;
 }
+
 .profile-orders td.action-button {
-    padding: 8px 0; 
+    padding: 8px 0;
 }
 
 /* Button styles remain the same */
@@ -861,7 +862,8 @@ header auth end
     justify-content: center;
     padding: 4px 12px;
 }
-.profile-orders td.action-button .btn-primary{
+
+.profile-orders td.action-button .btn-primary {
     background-color: #0b5ed7;
 }
 
@@ -1188,7 +1190,8 @@ header auth end
     font-size: 15px;
 }
 
-.phone, .email {
+.phone,
+.email {
     font-weight: 500;
 }
 
@@ -1197,6 +1200,56 @@ header auth end
     color: #6b7280;
 }
 
+/* order details copy code design  */
+.order-code-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-family: Arial, sans-serif;
+}
+
+.order-code-wrapper .order-label {
+    color: #777;
+    font-size: 14px;
+}
+
+.order-code-wrapper .order-code {
+    font-weight: 600;
+    color: #333;
+}
+
+.order-code-wrapper .copy-btn {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    border: 1px solid #dcdcdc;
+    background: #fff;
+    padding: 5px 10px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 13px;
+    transition: all 0.25s ease;
+}
+
+.order-code-wrapper .copy-btn:hover {
+    background: #f5faff;
+    border-color: #2874f0;
+    color: #2874f0;
+}
+
+.order-code-wrapper .copy-icon {
+    width: 16px;
+    height: 16px;
+    fill: currentColor;
+}
+
+.order-code-wrapper .copy-btn.copied {
+    background: #e6f4ea;
+    border-color: #2ecc71;
+    color: #2ecc71;
+    pointer-events: none;
+}
+/* end  */
 
 /* end profile  */
 /* --------------------------------------------------------------------- */

@@ -15,7 +15,7 @@ class Payment extends CI_Controller
 
     function index($enc_order_id = null)
     {
-        // 🚫 Must come ONLY from checkout
+       
         if (!$this->session->userdata('payment_pending')) {
             redirect('Shop');
             exit;
@@ -91,15 +91,5 @@ class Payment extends CI_Controller
         ]);
     }
 
-    // function success($order_id)
-    // {
-    //     // $order = $this->order_model->getOrderPaymentStatusById($order_id);
-    //     $data['order'] = $this->order_model->getOrderSummary($order_id);
-    //     $order = $data['order'];
-    //     if ($order->payment_status === 'paid') {
-    //         load_views('thank_you', $data);
-    //     } else {
-    //         load_views('payment_processing', $data);
-    //     }
-    // }
+    
 }

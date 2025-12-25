@@ -36,7 +36,7 @@
 
                     </div>
 
-                <?php   } else if($order->order_status === 'confirmed') { ?>
+                <?php   } else if ($order->order_status === 'confirmed') { ?>
                     <div class="order-status">
                         <div class="status-item">
                             <span class="check"></span>
@@ -47,24 +47,39 @@
                             <span>Delivered, Sep 25</span>
                         </div>
                     </div>
-            <?php  }else { ?>
-                     <div class="order-status">
+                <?php  } else { ?>
+                    <div class="order-status">
                         <div class="status-item">
                             <span class="check-not"></span>
                             <span>Order Canceled</span>
                         </div>
 
                     </div>
-          <?php  }
+            <?php  }
             } ?>
 
         </div>
         <!-- <a href="#" class="updates-link">See All Updates ›</a> -->
 
         <!-- Order ID -->
-        <div class="order-id">
-            Order <?= $order->order_number ?>
-            <span class="copy">📋</span>
+        <!-- <div class="order-id"> -->
+        <!-- Order Code - <?= $order->order_number ?>
+            <span class="copy">📋</span> -->
+        <!-- <span>Order Code - </span>
+            <span id="orderCode">ORD-20251224-752923-116</span>
+            <button id="copyBtn" onclick="copyOrderCode()">📋</button>
+        </div> -->
+
+        <div class="order-code-wrapper">
+            <span class="order-label">Order Code</span>
+            <span id="orderCode" class="order-code">ORD-20251224-752923-116</span>
+
+            <button class="copy-btn" id="copyBtn" onclick="copyOrderCode()">
+                <svg class="copy-icon" viewBox="0 0 24 24">
+                    <path d="M16 1H4a2 2 0 0 0-2 2v12h2V3h12V1zm3 4H8a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h11a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2zm0 16H8V7h11v14z" />
+                </svg>
+                <span class="copy-text">Copy</span>
+            </button>
         </div>
 
     </div>
@@ -98,8 +113,8 @@
                 <p><?= $phone ?></p>
             </div>
             <div class="info-row">
-                <?php $enc_order_id= urlencode(base64_encode($this->encryption->encrypt($order->order_id)))?>
-                <a href="<?= base_url('Profile/edit_billing_address/'. $enc_order_id) ?>" class="btn btn-primary text-light">Change Address</a>
+                <?php $enc_order_id = urlencode(base64_encode($this->encryption->encrypt($order->order_id))) ?>
+                <a href="<?= base_url('Profile/edit_billing_address/' . $enc_order_id) ?>" class="btn btn-primary text-light">Change Address</a>
             </div>
         </div>
 
@@ -118,7 +133,7 @@
         $final_amount = $order->listing_price - $discount;
         ?>
 
-     
+
 
         <div class="sidebar-card myDesign mt-4">
             <h3>Price details</h3>
@@ -163,8 +178,10 @@
 </div>
 
 <script>
-    // document.addEventListener('DOMContentLoaded', function() {
-    //    
-
-    // })
+    function copyOrderCode() {
+        const text = document.getElementById("orderCode").innerText;
+        navigator.clipboard.writeText(text).then(() => {
+            document.getElementById("copyBtn").innerText = "Copied ✅";
+        });
+    }
 </script>

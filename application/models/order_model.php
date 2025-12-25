@@ -65,9 +65,13 @@ class order_model extends CI_Model
     }
 
 
+    // count total orders 
+    function countTotalOrder()
+    {
+        return $this->db->count_all('orders');
+    }
     // get all orders data for admin
-
-    function getAllOrdersAdmin()
+    function getAllOrdersAdmin($limit, $offset)
     {
         $this->db->select('
         o.id AS order_id,
@@ -89,6 +93,8 @@ class order_model extends CI_Model
 
         $this->db->group_by('o.id');
         $this->db->order_by('o.created_at', 'DESC');
+
+        $this->db->limit($limit, $offset);
 
         return $this->db->get()->result();
     }
@@ -240,6 +246,6 @@ class order_model extends CI_Model
     function update($data, $order_id)
     {
         $this->db->where('id', $order_id);
-      return  $this->db->update('orders', $data);
+        return  $this->db->update('orders', $data);
     }
 }

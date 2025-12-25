@@ -83,7 +83,7 @@
             font-size: 12px !important;
         }
 
-        table {
+        /* table {
             width: 100%;
             border-collapse: collapse;
             font-size: 12px;
@@ -116,8 +116,32 @@
 
         .total td {
             font-weight: bold;
+        } */
+
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 12px;
         }
 
+        thead th {
+            border: 1px solid #000;
+            padding: 8px 5px;
+            text-align: center;
+            font-weight: bold;
+            background: #f2f2f2;
+        }
+
+        tbody td {
+            border: 1px solid #000;
+            padding: 7px 5px;
+            text-align: center;
+        }
+
+        tbody td:nth-child(2) {
+            text-align: left;
+        }
 
         .grand {
             display: flex;
@@ -157,6 +181,7 @@
             font-size: 14px;
             padding-top: 8px;
         }
+
     </style>
 </head>
 
@@ -220,49 +245,44 @@
         <hr>
 
         <!-- TABLE -->
-
-
         <table>
+            <thead>
+                <tr>
+                    <th style="width:5%">#</th>
+                    <th style="width:45%">Product</th>
+                    <th style="width:15%">Quantity</th>
+                    <th style="width:15%">Price</th>
+                    <th style="width:20%">Total</th>
+                </tr>
+            </thead>
 
             <tbody>
-                <tr>
-                    <td>#</td>
-                    <td>Product</td>
-                    <td>Quantity</td>
-                    <td>Price</td>
-                    <td>Total</td>
-                </tr>
-
                 <?php
                 $i = 1;
+                $subtotal = 0;
                 foreach ($order_details as $item) {
-                    $subtotal += $item->quantity * $item->price;
-                    $total = (float) $item->quantity * (float) $item->price;
+                    $total = $item->quantity * $item->price;
+                    $subtotal += $total;
                 ?>
                     <tr>
                         <td><?= $i++ ?></td>
-                        <td><?= $item->product_name ?></td>
+                        <td style="text-align:left"><?= $item->product_name ?></td>
                         <td><?= $item->quantity ?></td>
-                        <td><?= $item->price ?></td>
-                        <td><?= number_format($total, 2)  ?></td>
+                        <td>₹ <?= number_format($item->price, 2) ?></td>
+                        <td>₹ <?= number_format($total, 2) ?></td>
                     </tr>
-
-                <?php     }
-                ?>
+                <?php } ?>
             </tbody>
         </table>
 
 
+
         <hr>
 
-        <!-- GRAND TOTAL -->
-        <!-- <div class="grand">
-            <span>Grand Total</span>
-            <span>₹ </span>
-        </div> -->
+      
         <?php $grandTotal = $subtotal - $discount ?>
+   
         <div class="summary-box">
-
             <div class="summary-row">
                 <span>Total</span>
                 <span>₹ <?= number_format($subtotal, 2) ?></span>
@@ -274,11 +294,11 @@
                     <span>- ₹ <?= number_format($discount, 2) ?></span>
                 </div>
             <?php } ?>
+
             <div class="summary-row grand">
                 <span>Grand Total</span>
-                <span>₹ <?= number_format($grandTotal, 2) ?></span>
+                <span>₹ <?= number_format($subtotal - $discount, 2) ?></span>
             </div>
-
         </div>
 
         <!-- SIGN -->
