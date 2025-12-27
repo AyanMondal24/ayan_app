@@ -45,4 +45,25 @@ class user_model extends CI_Model
         $this->db->where('is_guest', 1);
         return $this->db->get()->row();
     }
+
+    public function getAllUsers($limit,$offset)
+    {
+        $this->db->select('*');
+        $this->db->from('users');
+        $this->db ->limit((int)$limit, (int)$offset);
+       return $this->db->get()->result();
+    }
+
+    public function update_status($user_id, $status)
+    {
+        return $this->db
+            ->where('id', $user_id)
+            ->update('users', [
+                'status' => $status,
+                'updated_at' => date('Y-m-d H:i:s')
+            ]);
+    }
+    public function total_data(){
+        return $this->db->count_all('users');
+    }
 }

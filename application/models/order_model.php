@@ -65,19 +65,46 @@ class order_model extends CI_Model
     }
 
 
-    // count total orders 
-    function countTotalOrder()
+    // count total orders for pagination 
+
+    function countTotalOrder($search = null, $filterBy = null, $filterValue = null)
     {
-        return $this->db->count_all('orders');
+        $this->db->select('COUNT(DISTINCT o.id) AS total_rows', false);
+        $this->db->from('orders o');
+        $this->db->join('order_details od', 'od.order_id = o.id', 'left');
+
+        if (!empty($search)) {
+            $this->db->group_start();
+            $this->db->like('o.order_number', $search);
+            $this->db->or_like('o.b_fname', $search);
+            $this->db->or_like('o.b_lname', $search);
+            $this->db->or_like('o.payment_method', $search);
+            $this->db->or_like('o.payment_status', $search);
+            $this->db->or_like('o.order_status', $search);
+            $this->db->or_like('o.created_at', $search);
+            $this->db->group_end();
+        }
+
+        if (!empty($filterBy) && !empty($filterValue)) {
+
+            // ONLY FILTERING, NOT SORTING
+            if (!in_array($filterValue, ['ASC', 'DESC'])) {
+                $this->db->where('o.' . $filterBy, $filterValue);
+            }
+        }
+
+        $query = $this->db->get()->row();
+        return (int) $query->total_rows;
     }
-    // get all orders data for admin
-    function getAllOrdersAdmin($limit, $offset)
+
+    // getting orders
+    function getAllOrdersAdmin($limit, $offset, $search = null, $filterBy = null, $filterValue = null)
     {
         $this->db->select('
         o.id AS order_id,
         o.order_number,
-        CONCAT(u.fname, " ", u.lname) AS customer_name,
-        COUNT(od.id) AS total_items,
+        CONCAT(o.b_fname, " ", o.b_lname) AS customer_name,
+        SUM(od.quantity) AS total_items,
         o.total_amount,
         o.coupon_discount,
         o.final_amount,
@@ -91,8 +118,48 @@ class order_model extends CI_Model
         $this->db->join('users u', 'u.id = o.user_id', 'left');
         $this->db->join('order_details od', 'od.order_id = o.id', 'left');
 
+        if (!empty($search)) {
+            $this->db->group_start();
+            $this->db->like('o.order_number', $search);
+            $this->db->or_like('o.b_fname', $search);
+            $this->db->or_like('o.b_lname', $search);
+            $this->db->or_like('o.payment_method', $search);
+            $this->db->or_like('o.payment_status', $search);
+            $this->db->or_like('o.order_status', $search);
+            $this->db->or_like('o.created_at', $search);
+            $this->db->group_end();
+        }
+
         $this->db->group_by('o.id');
-        $this->db->order_by('o.created_at', 'DESC');
+
+        if (!empty($filterBy) && !empty($filterValue)) {
+
+            if (in_array($filterValue, ['ASC', 'DESC'])) {
+
+                if ($filterBy === 'customer') {
+                    $this->db->order_by('o.b_fname', $filterValue);
+                    $this->db->order_by('o.b_lname', $filterValue);
+                } elseif ($filterBy === 'total_items') {
+                    $this->db->order_by('total_items', $filterValue);
+                } elseif ($filterBy === 'order_date') {
+                    $this->db->order_by('o.created_at', $filterValue);
+                } elseif ($filterBy === 'order_number') {
+                    $this->db->order_by('o.order_number', $filterValue);
+                } elseif ($filterBy === 'final_amount') {
+                    $this->db->order_by('o.final_amount', $filterValue);
+                } else {
+                    $this->db->order_by('o.created_at', 'DESC');
+                }
+            }
+            //filtering
+            else {
+                $this->db->where('o.' . $filterBy, $filterValue);
+                $this->db->order_by('o.created_at', 'DESC');
+            }
+        } else {
+            // DEFAULT
+            $this->db->order_by('o.created_at', 'DESC');
+        }
 
         $this->db->limit($limit, $offset);
 

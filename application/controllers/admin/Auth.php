@@ -12,15 +12,12 @@ class Auth extends MY_Controller
 
     function login()
     {
-        // echo APPPATH.'views/admin/auth/login.php'; exit;
-
         // If already logged in, go to dashboard
         if ($this->session->userdata('admin_logged_in')) {
             redirect('admin/dashboard');
             return;
         }
         $this->load->view('admin/auth/login');
-        // load_admin_views('auth/login');
     }
     function signup()
     {

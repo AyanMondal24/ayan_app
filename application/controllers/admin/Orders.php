@@ -13,20 +13,68 @@ class Orders extends MY_Controller
 
     function view($order_id)
     {
+        $pageno = (int) $this->input->get('pageno', TRUE);
         $id = $this->encryption->decrypt(base64_decode(urldecode($order_id)));
 
         $data['products'] = $this->order_model->getOrderItems($id);
 
         $data['order_details'] = $this->order_model->getOrderSummary($id);
+        $data['pageno'] = $pageno;
         load_admin_views('order_single_view', $data);
     }
+
+    public function set_select()
+    {
+        $select = $this->input->post('select');
+
+        if ($select == 'payment_status') {
+            $data = [
+                ['value' => 'paid', 'label' => 'Paid'],
+                ['value' => 'pending', 'label' => 'Pending'],
+                ['value' => 'cancel', 'label' => 'Cancel'],
+            ];
+        } elseif ($select == 'order_status') {
+            $data = [
+                ['value' => 'confirmed', 'label' => 'Confirmed'],
+                ['value' => 'pending', 'label' => 'Pending'],
+                ['value' => 'cancelled', 'label' => 'Cancelled'],
+            ];
+        } else {
+            $data = [
+                ['value' => 'ASC', 'label' => 'Ascending'],
+                ['value' => 'DESC', 'label' => 'Descending'],
+            ];
+        }
+
+        echo json_encode(['selected' => $data]);
+    }
+
     function index()
     {
-        $config = [];
+        $offset = 0;
+        $search = '';
+        $filterBy = '';
+        $filterValue = '';
+
+        if ($this->input->is_ajax_request()) {
+            $offset = (int) $this->input->post('offset');
+            $search = $this->input->post('search');
+            $filterBy = $this->input->post('filterBy');
+            $filterValue = $this->input->post('filterValue');
+        } else {
+            $search = $this->input->post('search') ?? '';
+            $filterBy = $this->input->post('filterBy') ?? '';
+            $filterValue = $this->input->post('filterValue') ?? '';
+            $offset = (int) $this->uri->segment(4, 0);
+        }
+
+        $total_rows = $this->order_model->countTotalOrder($search, $filterBy, $filterValue);
+
         $config['base_url'] = base_url('admin/Orders/index/');
-        $config['total_rows'] = $this->order_model->countTotalOrder();
+        $config['total_rows'] = $total_rows;
         $config['per_page'] = 6;
         $config['uri_segment'] = 4;
+        $config['num_links'] = 5;
 
         $config['full_tag_open'] = '<ul class="pagination">';
         $config['full_tag_close'] = '</ul>';
@@ -43,19 +91,78 @@ class Orders extends MY_Controller
         $config['cur_tag_close'] = '</span></li>';
         $config['num_tag_open'] = '<li class="page-item">';
         $config['num_tag_close'] = '</li>';
+        $config['next_link'] = '>';
+        $config['prev_link'] = '<';
+        $config['first_link'] = FALSE;
+        $config['last_link']  = FALSE;
 
-        $this->pagination->initialize($config);
 
-        $offset = ($this->uri->segment(4)) ? $this->uri->segment(4) : 0;
+        $orders = [];
+        $links = '';
+        if ($total_rows > $config['per_page']) {
+            if ($offset >= $total_rows) {
+                $offset = 0;
+            }
 
+            $config['cur_page'] = $offset;
 
-        $data['orders'] = $this->order_model->getAllOrdersAdmin($config['per_page'], $offset);
-        $data['links'] = $this->pagination->create_links();
+            $this->pagination->initialize($config);
+
+            $orders = $this->order_model->getAllOrdersAdmin(
+                $config['per_page'],
+                $offset,
+                $search,
+                $filterBy,
+                $filterValue
+            );
+            $links = $this->pagination->create_links();
+        } else {
+            // Only one page or no data
+            $offset = 0;
+
+            if ($total_rows > 0) {
+                $orders = $this->order_model->getAllOrdersAdmin(
+                    $config['per_page'],
+                    0,
+                    $search,
+                    $filterBy,
+                    $filterValue
+                );
+            }
+        }
+
+        $current_page = ($total_rows > 0)
+            ? floor($offset / $config['per_page']) + 1
+            : 1;
+
+        foreach ($orders as &$order) {
+            $order->enc_order_id = urlencode(
+                base64_encode(
+                    $this->encryption->encrypt($order->order_id)
+                )
+            );
+            $order->pageno = $current_page;
+        }
+        unset($order);
+
+        if ($this->input->is_ajax_request()) {
+            echo json_encode([
+                'total_rows' => $total_rows,
+                'offset' => $offset,
+                'pageno' => $current_page,
+                'orders' => $orders,
+                'links'  => $links
+            ]);
+            return;
+        }
+
+        $data['orders'] = $orders;
+        $data['links']  = $this->pagination->create_links();
         $data['offset'] = $offset;
-
 
         load_admin_views('view_orders', $data);
     }
+
 
     public function confirm($order_id)
     {

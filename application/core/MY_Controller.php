@@ -10,7 +10,7 @@ class MY_Controller extends CI_Controller
         $class     = strtolower($this->router->fetch_class());
         $method    = strtolower($this->router->fetch_method());
 
-        // Allow ALL Auth controller methods
+      
         // Allow Auth controller and dashboard
         if ($directory === 'admin/' && in_array($class, ['auth', 'dashboard'])) {
             return;

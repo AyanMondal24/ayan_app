@@ -13,22 +13,37 @@
             <h5 class="mb-0">Order #<?= $order_details->order_number ?></h5>
 
             <div class="d-flex gap-2 align-items-center">
-                <span class="badge bg-info">
+                <?php
+                $status = strtolower($order_details->order_status);
+
+                $badgeClass = 'bg-info';
+
+                if ($status === 'confirmed') {
+                    $badgeClass = 'bg-success';
+                } elseif ($status === 'cancelled') {
+                    $badgeClass = 'bg-danger';
+                }
+                ?>
+
+                <span class="badge <?= $badgeClass ?>">
                     <?= ucfirst($order_details->order_status) ?>
                 </span>
 
-                <?php if ($order_details->order_status == 'pending'): ?>
-                    <a href="<?= base_url('admin/orders/confirm/' . urlencode(base64_encode($this->encryption->encrypt($order_details->order_id)))) ?>"
-                        class="btn btn-sm btn-success">
-                        ✔ Confirm
-                    </a>
-
-                    <a href="<?= base_url('admin/orders/cancel/' . urlencode(base64_encode($this->encryption->encrypt($order_details->order_id)))) ?>"
-                        class="btn btn-sm btn-danger"
-                        onclick="return confirm('Are you sure you want to cancel this order?')">
-                        ✖ Cancel
-                    </a>
-                <?php endif; ?>
+                <div class="ms-auto d-flex align-items-center gap-2">
+                    <?php if ($order_details->order_status == 'pending'): ?>
+                        <a href="<?= base_url('admin/orders/confirm/' . urlencode(base64_encode($this->encryption->encrypt($order_details->order_id)))) ?>"
+                            class="btn btn-sm btn-success">
+                            ✔ Confirm
+                        </a>
+                    <?php endif; ?>
+                    <?php if ($order_details->order_status !== 'cancelled'): ?>
+                        <a href="<?= base_url('admin/orders/cancel/' . urlencode(base64_encode($this->encryption->encrypt($order_details->order_id)))) ?>"
+                            class="btn btn-sm btn-danger rounded"
+                            onclick="return confirm('Are you sure you want to cancel this order?')">
+                            ✖ Cancel
+                        </a>
+                    <?php endif; ?>
+                </div>
             </div>
         </div>
 
@@ -166,6 +181,10 @@
                     </p>
                 </div>
             </div>
+            <a href="<?= base_url('admin/Orders/index/' . $pageno) ?>"
+                class="btn btn-primary mt-2 w-25 float-right">
+                ← Back
+            </a>
         </div>
     </div>
 

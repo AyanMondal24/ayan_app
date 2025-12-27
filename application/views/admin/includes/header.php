@@ -219,13 +219,13 @@
                     </li>
                     <!--end::Fullscreen Toggle-->
                     <?php if ($this->session->userdata('admin_logged_in')): ?>
-                     <a href="<?= base_url('admin/Auth/logout') ?>" class="btn btn-primary btn-flat float-end">Logout</a>
-                     <?php endif; ?>
+                        <a href="<?= base_url('admin/Auth/logout') ?>" class="btn btn-primary btn-flat float-end">Logout</a>
+                    <?php endif; ?>
                     <!-- <?php if ($this->session->userdata('admin_id')): ?>
                        
                         <li class="nav-item dropdown user-menu">
                             <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
-                                <img src="<?= base_url('assets/uploads/admin_img/'. $admin->image); ?>" class="user-image rounded-circle shadow" alt="User Image">
+                                <img src="<?= base_url('assets/uploads/admin_img/' . $admin->image); ?>" class="user-image rounded-circle shadow" alt="User Image">
                                 <span class="d-none d-md-inline">
                                     <?= $admin->fname . ' ' . $admin->lname ?>
                                 </span>
@@ -233,7 +233,7 @@
 
                             <ul class="dropdown-menu dropdown-menu-lg dropdown-menu-end">
                                 <li class="user-header text-bg-primary">
-                                    <img src="<?=  base_url('assets/uploads/admin_img/'. $admin->image);  ?>" class="rounded-circle shadow" alt="User Image">
+                                    <img src="<?= base_url('assets/uploads/admin_img/' . $admin->image);  ?>" class="rounded-circle shadow" alt="User Image">
                                     <p>
                                         <?= $this->session->userdata('fname') . ' ' . $this->session->userdata('lname'); ?>
                                         - <?= ucfirst($this->session->userdata('role')) ?>
@@ -321,13 +321,13 @@
                             <ul class="nav nav-treeview">
                                 <li class="nav-item">
                                     <a href="<?= site_url('admin/Product/add') ?>" class="nav-link">
-                                        <i class="nav-icon bi bi-circle"></i>
+                                        <i class="bi bi-plus-circle-fill"></i>
                                         <p>Add Products</p>
                                     </a>
                                 </li>
                                 <li class="nav-item">
                                     <a href="<?= site_url('admin/Product') ?>" class="nav-link">
-                                        <i class="nav-icon bi bi-circle"></i>
+                                        <i class="bi bi-eye-fill"></i>
                                         <p>View Products</p>
                                     </a>
                                 </li>
@@ -339,7 +339,7 @@
                         <!-- product CATEGORY section start  -->
                         <li class="nav-item">
                             <a href="#" class="nav-link">
-                                <i class="nav-icon bi bi-box-seam-fill"></i>
+                                <i class="nav-icon bi bi-tags"></i>
                                 <p>
                                     Products Category
                                     <i class="nav-arrow bi bi-chevron-right"></i>
@@ -348,13 +348,13 @@
                             <ul class="nav nav-treeview">
                                 <li class="nav-item">
                                     <a href="<?= site_url('admin/Category/add') ?>" class="nav-link">
-                                        <i class="nav-icon bi bi-circle"></i>
+                                        <i class="bi bi-plus-circle-fill"></i>
                                         <p>Add Catgeory</p>
                                     </a>
                                 </li>
                                 <li class="nav-item">
                                     <a href="<?= site_url('admin/Category') ?>" class="nav-link">
-                                        <i class="nav-icon bi bi-circle"></i>
+                                        <i class="bi bi-eye-fill"></i>
                                         <p>View Category</p>
                                     </a>
                                 </li>
@@ -365,7 +365,7 @@
 
                         <li class="nav-item">
                             <a href="#" class="nav-link">
-                                <i class="nav-icon bi bi-box-seam-fill"></i>
+                                <i class="nav-icon bi bi-rulers"></i>
                                 <p>
                                     Products Unit
                                     <i class="nav-arrow bi bi-chevron-right"></i>
@@ -374,13 +374,13 @@
                             <ul class="nav nav-treeview">
                                 <li class="nav-item">
                                     <a href="<?= site_url('admin/Units/add') ?>" class="nav-link">
-                                        <i class="nav-icon bi bi-circle"></i>
+                                        <i class="bi bi-plus-circle-fill"></i>
                                         <p>Add Product Unit</p>
                                     </a>
                                 </li>
                                 <li class="nav-item">
                                     <a href="<?= site_url('admin/Units') ?>" class="nav-link">
-                                        <i class="nav-icon bi bi-circle"></i>
+                                        <i class="bi bi-eye-fill"></i>
                                         <p>View Product Unit</p>
                                     </a>
                                 </li>
@@ -391,7 +391,7 @@
                         <!-- coupon section start  -->
                         <li class="nav-item">
                             <a href="#" class="nav-link">
-                                <i class="nav-icon bi bi-box-seam-fill"></i>
+                                <i class="nav-icon bi bi-ticket-perforated"></i>
                                 <p>
                                     Coupon
                                     <i class="nav-arrow bi bi-chevron-right"></i>
@@ -400,13 +400,13 @@
                             <ul class="nav nav-treeview">
                                 <li class="nav-item">
                                     <a href="<?= site_url('admin/Coupons/add') ?>" class="nav-link">
-                                        <i class="nav-icon bi bi-circle"></i>
+                                        <i class="bi bi-plus-circle-fill"></i>
                                         <p>Add Coupon</p>
                                     </a>
                                 </li>
                                 <li class="nav-item">
                                     <a href="<?= base_url('admin/Coupons') ?>" class="nav-link">
-                                        <i class="nav-icon bi bi-circle"></i>
+                                        <i class="bi bi-eye-fill"></i>
                                         <p>View Coupon</p>
                                     </a>
                                 </li>
@@ -415,14 +415,22 @@
                         <!-- coupon section end  -->
 
                         <!-- order section  -->
-                         <li class="nav-item">
-                            <a href="<?= base_url('admin/Orders/index') ?>" class="nav-link active">
-                                <i class="nav-icon bi bi-speedometer"></i>
+                        <li class="nav-item">
+                            <a href="<?= base_url('admin/Orders/index') ?>" class="nav-link">
+                                <i class="nav-icon bi bi-cart-check"></i>
                                 <p>
                                     Orders
                                 </p>
                             </a>
-                         </li>
+                        </li>
+                        <li class="nav-item">
+                            <a href="<?= base_url('admin/Users/index') ?>" class="nav-link">
+                                <i class="nav-icon bi bi-person"></i>
+                                <p>
+                                    Users
+                                </p>
+                            </a>
+                        </li>
                         <li class="nav-item">
                             <a href="<?= site_url('assets/admin') ?>/generate/theme.html" class="nav-link">
                                 <i class="nav-icon bi bi-palette"></i>
