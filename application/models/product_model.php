@@ -13,13 +13,13 @@ class product_model extends CI_Model
         $this->db->insert('products', $data);
         return $this->db->insert_id();
     }
-    public function getProducts($limit, $start)
+    public function getProducts()
     {
         $this->db->select('p.id,p.name AS product_name,p.price,p.quantity,p.status,p.is_available,CONCAT(p.status,"/",p.is_available) AS status_combine,p.unit_id,c.name AS category_name,u.short_name');
         $this->db->from('products p');
         $this->db->join('category c', 'c.id=p.category', 'inner');
         $this->db->join('product_unit u', 'u.id=p.unit_id', 'inner');
-        $this->db->limit($limit, $start);
+        
         $this->db->order_by('id', 'ASC');
         return $this->db->get()->result();
     }

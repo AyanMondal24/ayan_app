@@ -65,6 +65,7 @@
                             <?php $i = 1;
                             foreach ($orders as $order) :
                                 $order_id = urlencode(base64_encode($this->encryption->encrypt($order->order_id)));
+                                $offset = $offset + 1;
                             ?>
 
                                 <tr>
@@ -139,49 +140,34 @@
                     </tbody>
                 </table>
             </div>
-            <?php
-            if (!empty($orders)) {
-                echo $links;
-            }
-            ?>
+            <div id="pagination-container"></div>
         </div>
     </div>
 </div>
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-        let urlSegments = window.location.pathname.split('/');
-        let pageNumber = parseInt(urlSegments[urlSegments.length - 1]) || 1;
-        let per_page = 6;
-        let offset = (pageNumber - 1) * per_page;
-        loadTable(offset);
+
 
         let currentSearch = '';
         // search 
         document.getElementById('tableSearch').addEventListener('keyup', function() {
             currentSearch = this.value.toLowerCase();
-            let offset = 0;
+            let pageno = 1;
             let filterBy = $("#filterBy").val();
             let filterValue = $("#filterValue").val();
-            loadTable(offset, currentSearch, filterBy, filterValue);
+            loadTable(pageno, currentSearch, filterBy, filterValue);
         });
 
         // pagination 
-        $(".pagination").on('click', 'a', function(e) {
+        $(document).on('click', '#pagination-container a', function(e) {
             e.preventDefault();
-            const href = $(this).attr("href");
-
-            let page_number = $(this).attr('data-ci-pagination-page');
-            let per_page = 6;
-            let offset = (page_number - 1) * per_page;
-
-            // Update browser URL with page number
-            let newUrl = "<?= base_url('admin/Orders/index/') ?>" + page_number;
-            window.history.replaceState({}, document.title, newUrl);
-
-            let filterBy = $("#filterBy").val();
-            let filterValue = $("#filterValue").val();
-            loadTable(offset, currentSearch, filterBy, filterValue);
+            const pageno = $(this).data("id");
+            console.log(pageno)
+            const search = $('#tableSearch').val();
+            const filterBy = $('#filterBy').val();
+            const filterValue = $('#filterValue').val();
+            loadTable(pageno, currentSearch, filterBy, filterValue);
         });
 
         //sorting
@@ -229,18 +215,20 @@
             let filterBy = $("#filterBy").val();
             let filterValue = $("#filterValue").val();
 
-            loadTable(0, currentSearch, filterBy, filterValue);
+            loadTable(1, currentSearch, filterBy, filterValue);
         });
+
+        loadTable();
 
     }); // main 
 
 
-    function loadTable(offset, search = '', filterBy = '', filterValue = '') {
+    function loadTable(pageno, search = '', filterBy = '', filterValue = '') {
         $.ajax({
             url: '<?= base_url('admin/Orders/index/') ?>',
             type: "POST",
             data: {
-                offset: offset,
+                pageno: pageno,
                 search: search,
                 filterBy: filterBy,
                 filterValue: filterValue
@@ -255,21 +243,21 @@
     function set_page(response) {
         let html = "";
         const BASE_URL = "<?= base_url() ?>";
-        
+
         if (response.orders.length > 0) {
-            $(".pagination").show();
+
 
             let index = response.offset + 1;
 
             $.each(response.orders, function(i, order) {
-              
+
 
                 let orderNo = order.order_number ? order.order_number : "#" + order.order_id;
 
                 let paymentStatusClass =
                     order.payment_status === "paid" ? "bg-success" : "bg-warning";
 
-                 let orderStatusClass = getOrderStatusClass(order.order_status);
+                let orderStatusClass = getOrderStatusClass(order.order_status);
 
                 let paymentMethod = order.payment_method ?
                     order.payment_method.charAt(0).toUpperCase() + order.payment_method.slice(1) :
@@ -314,6 +302,7 @@
             `;
             });
 
+            $("#pagination-container").html(response.pagination);
         } else {
             html = `
             <tr>
@@ -322,18 +311,14 @@
                 </td>
             </tr>
         `;
-            $(".pagination").hide();
+            $("#pagination-container").html('');
+
         }
 
         $("#order-tbody").html(html);
 
         // update pagination
 
-        if (response.total_rows <= 6) {
-            $(".pagination").hide();
-        } else {
-            $(".pagination").html(response.links).show();
-        }
 
     }
 
@@ -347,18 +332,17 @@
     }
 
     function getOrderStatusClass(status) {
-    switch (status.toLowerCase()) {
-        case 'pending':
-            return 'bg-warning';
-        case 'confirmed':
-            return 'bg-primary';
-        case 'delivered':
-            return 'bg-success';
-        case 'cancelled':
-            return 'bg-danger';
-        default:
-            return 'bg-secondary';
+        switch (status.toLowerCase()) {
+            case 'pending':
+                return 'bg-warning';
+            case 'confirmed':
+                return 'bg-primary';
+            case 'delivered':
+                return 'bg-success';
+            case 'cancelled':
+                return 'bg-danger';
+            default:
+                return 'bg-secondary';
+        }
     }
-}
-
 </script>

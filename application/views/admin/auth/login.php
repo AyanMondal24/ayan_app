@@ -13,65 +13,30 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            background: #0f172a;
-            /* dark tech background */
-            overflow: hidden;
-        }
-        .tech-bg {
-            position: fixed;
-            inset: 0;
-            z-index: -1;
-            overflow: hidden;
-            background: radial-gradient(circle at top, #020617, #020617 40%, #000);
+            background: linear-gradient(135deg, #020617, #0f172a);
         }
 
-        .tech-bg span {
-            position: absolute;
-            width: 2px;
-            height: var(--h);
-            left: var(--x);
-            top: -150px;
-            background: linear-gradient(transparent,
-                    rgba(56, 189, 248, 0.9),
-                    transparent);
-            animation: techMove var(--t) linear infinite;
-            filter: drop-shadow(0 0 6px #38bdf8);
-            opacity: 0.8;
-        }
 
-        @keyframes techMove {
-            0% {
-                transform: translateY(-150px) translateX(0) rotate(0deg);
+        @keyframes fadeSlide {
+            from {
                 opacity: 0;
+                transform: translate3d(-30px, 0, 0);
+                /* ← start from left */
             }
 
-            20% {
+            to {
                 opacity: 1;
-            }
-
-            100% {
-                transform: translateY(120vh) translateX(60px) rotate(8deg);
-                opacity: 0;
-            }
-        }
-
-        @keyframes float {
-            0% {
-                transform: translateY(0);
-            }
-
-            50% {
-                transform: translateY(-8px);
-            }
-
-            100% {
-                transform: translateY(0);
+                transform: translate3d(0, 0, 0);
+                /* center */
             }
         }
 
         .card {
-            animation: float 6s ease-in-out infinite;
+            animation: fadeSlide 0.6s ease-out;
+            will-change: transform, opacity;
+            transform: translateZ(0);
         }
+
 
         .error {
             color: red;
@@ -82,15 +47,7 @@
 
 
 <body>
-    <div class="tech-bg">
-        <span style="--x:5%; --h:140px; --t:5s"></span>
-        <span style="--x:15%; --h:220px; --t:7s"></span>
-        <span style="--x:30%; --h:180px; --t:6s"></span>
-        <span style="--x:45%; --h:260px; --t:9s"></span>
-        <span style="--x:60%; --h:200px; --t:6.5s"></span>
-        <span style="--x:75%; --h:300px; --t:10s"></span>
-        <span style="--x:85%; --h:160px; --t:5.5s"></span>
-    </div>
+
 
 
 

@@ -30,7 +30,7 @@
         href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css"
         rel="stylesheet"
         crossorigin="anonymous" />
-
+    <link rel="stylesheet" href="//cdn.datatables.net/2.3.6/css/dataTables.dataTables.min.css">
     <link rel="preload" href="<?= base_url('assets/admin/css/adminlte.css') ?>" as="style" />
     <!--end::Accessibility Features-->
     <!--begin::Fonts-->

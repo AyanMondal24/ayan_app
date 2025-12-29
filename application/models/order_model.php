@@ -161,7 +161,7 @@ class order_model extends CI_Model
             $this->db->order_by('o.created_at', 'DESC');
         }
 
-        $this->db->limit($limit, $offset);
+        $this->db->limit((int)$limit, (int)$offset);
 
         return $this->db->get()->result();
     }
@@ -262,26 +262,94 @@ class order_model extends CI_Model
         return $this->db->update('orders', $data); // returns true or false
     }
 
-    public function markPaymentSuccess($intent_id, $txn_id)
+    // old 
+    // public function markPaymentSuccess($intent_id, $txn_id)
+    // {
+    //     $order = $this->db
+    //         ->where('payment_intent_id', $intent_id)
+    //         ->get('orders')
+    //         ->row();
+
+    //     if (!$order) {
+    //         return false;
+    //     }
+
+    //     $this->db
+    //         ->where('payment_intent_id', $intent_id)
+    //         ->update('orders', [
+    //             'order_status'   => 'confirmed',
+    //             'transaction_id' => $txn_id,
+    //             'payment_status' => 'paid'
+    //         ]);
+
+    //     return $order->id;
+    // }
+
+
+    // new 
+    public function markPaymentSuccess($payment_intent_id, $charge_id)
     {
-        $order = $this->db
-            ->where('payment_intent_id', $intent_id)
+        // Use a transaction for atomicity (prevents race conditions)
+        $this->db->trans_start();
+
+        // Check if already paid or processed (expand status check)
+        $existing = $this->db
+            ->where('payment_intent_id', $payment_intent_id)
+            ->where_in('payment_status', ['paid', 'confirmed']) // Avoid updating if already done
             ->get('orders')
             ->row();
 
-        if (!$order) {
-            return false;
+        if ($existing) {
+            $this->db->trans_complete(); // Commit (no changes)
+            return $existing->id; // Return existing order ID
         }
 
-        $this->db
-            ->where('payment_intent_id', $intent_id)
-            ->update('orders', [
-                'order_status'   => 'confirmed',
-                'transaction_id' => $txn_id,
-                'payment_status' => 'paid'
-            ]);
+        // Update only if not already processed
+        $this->db->where('payment_intent_id', $payment_intent_id);
+        $this->db->update('orders', [
+            'payment_status' => 'paid',
+            'order_status'   => 'confirmed',
+            'transaction_id' => $charge_id, // Only set if new
+            'paid_at'        => date('Y-m-d H:i:s')
+        ]);
 
-        return $order->id;
+        $this->db->trans_complete(); // Commit changes
+
+        // Return the updated order ID
+        $updated = $this->db
+            ->where('payment_intent_id', $payment_intent_id)
+            ->get('orders')
+            ->row();
+
+        return $updated ? $updated->id : null;
+    }
+
+    public function isPaymentProcessed($payment_intent_id)
+    {
+        $row = $this->db
+            ->select('id')
+            ->where('payment_intent_id', $payment_intent_id)
+            ->where('payment_status', 'paid')
+            ->limit(1)
+            ->get('orders')
+            ->row();
+
+        // If found → return order_id
+        if ($row) {
+            return $row->id;
+        }
+
+        // If not found → return false
+        return false;
+    }
+
+    public function getOrderById($order_id)
+    {
+        return $this->db
+            ->where('id', $order_id)
+            ->limit(1)
+            ->get('orders')
+            ->row();
     }
 
 

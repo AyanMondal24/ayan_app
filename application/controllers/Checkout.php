@@ -268,7 +268,7 @@ class Checkout extends CI_Controller
 
             $payment_method = $this->order_model->getPaymentMethod($order_id);
             if ($payment_method->payment_method == 'Card') {
-                $this->session->set_userdata('payment_pending', true);
+                // $this->session->set_userdata('payment_pending', true);
 
                 echo json_encode([
                     "status" => "success",

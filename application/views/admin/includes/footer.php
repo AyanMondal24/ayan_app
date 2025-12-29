@@ -22,6 +22,8 @@
  <!-- Bootstrap + Popper bundled together -->
  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
 
+ <!-- data table  -->
+  <script src="//cdn.datatables.net/2.3.6/js/dataTables.min.js"></script>
  <!-- Optional scroll plugin -->
  <script src="https://cdn.jsdelivr.net/npm/overlayscrollbars@2.11.0/browser/overlayscrollbars.browser.es6.min.js" crossorigin="anonymous"></script>
 

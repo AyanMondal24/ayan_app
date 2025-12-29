@@ -1,7 +1,8 @@
-.error{
+.error {
   color: red !important;
   font: 16px;
 }
+
 .add-form h2 {
   font-size: 34px !important;
   margin: 20px 0px !important;
@@ -72,16 +73,31 @@
 }
 
 /* product view start  */
-
+/* Default for all headers */
 .product-view table thead tr th {
   background-color: #343a40;
   color: #fff;
   text-align: center;
+  /* remove !important */
 }
 
+/* Default for body cells */
 .product-view table tbody tr td {
   text-align: center;
 }
+
+/* Right-align Quantity column (both header and body) */
+.product-view table thead tr th.quantity,
+.product-view table tbody tr td.quantity {
+  text-align: center !important;
+}
+.product-view .dt-input{
+  background-color: #fff !important;
+}
+.product-view .dt-search input{
+ width: 100% !important;
+}
+
 
 /* product single view start  */
 
@@ -227,7 +243,7 @@
 } */
 
 .coupon-image {
-  width: 100% ;
+  width: 100%;
   height: 100%;
   object-fit: cover;
   display: none;
@@ -237,5 +253,34 @@
 
 /* order view  */
 .orders-table-wrapper {
-    min-height: 520px; /* adjust based on rows */
+  min-height: 520px;
+  /* adjust based on rows */
 }
+
+/*------------------------------ user view start -----------------------------  */
+#pagination-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#pagination-container a {
+  padding: 10px;
+  text-decoration: none;
+  background-color: black;
+  color: #fff;
+  margin-right: 5px;
+  border-radius: 10px;
+}
+
+#pagination-container .active {
+  background-color: #4f5459;
+}
+
+#pagination-container .page-link.disabled {
+  pointer-events: none;
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/*------------------------------ user view end ------------------------------ */

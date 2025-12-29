@@ -41,7 +41,7 @@
             </tbody>
         </table>
         <div id="pagination-container">
-            <?= $links ?> <!-- Initial links from PHP -->
+          <!-- Initial links from PHP -->
         </div>
 
     </div>
@@ -77,28 +77,24 @@
         });
 
         //pagination
-        $(document).on('click', '.pagination a', function(e) {
+        $(document).on('click','#pagination-container a', function(e) {
             e.preventDefault();
 
-            let page_number = parseInt($(this).attr('data-ci-pagination-page'));
-            let per_page = 3;
+            const pageno=$(this).data('id');
 
-            let offset = (page_number - 1) * per_page;
+            console.log('page:', pageno);
 
-            console.log('page:', page_number);
-            console.log('offset:', offset);
-
-            loadTable(offset);
+            loadTable(pageno);
         });
 
-        loadTable(0);
+        loadTable(1);
     }); //main
-    function loadTable(offset = 0) {
+    function loadTable(pageno) {
         $.ajax({
             url: '<?= base_url('admin/Users') ?>',
             type: "POST",
             data: {
-                offset: offset,
+                pageno: pageno,
             },
             dataType: "json",
             success: function(response) {
@@ -118,7 +114,7 @@
         if (response.users && response.users.length>0) {
             const user_body = document.getElementById('users-body');
             let html = '';
-            let index = 1;
+            let index = response.offset + 1;
 
             console.log(response.offset);
             response.users.forEach(function(user) {
@@ -156,7 +152,7 @@
             });
 
             user_body.innerHTML = html;
-            $('#pagination-container').html(response.links);
+            $('#pagination-container').html(response.pagination);
         }else {
         // Optional: Handle empty users (e.g., clear table or show message)
         document.getElementById('users-body').innerHTML = '<tr><td colspan="7">No users found.</td></tr>';

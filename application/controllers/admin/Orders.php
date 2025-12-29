@@ -51,89 +51,84 @@ class Orders extends MY_Controller
 
     function index()
     {
-        $offset = 0;
+        $range = 1;
         $search = '';
         $filterBy = '';
         $filterValue = '';
 
-        if ($this->input->is_ajax_request()) {
-            $offset = (int) $this->input->post('offset');
-            $search = $this->input->post('search');
-            $filterBy = $this->input->post('filterBy');
-            $filterValue = $this->input->post('filterValue');
-        } else {
-            $search = $this->input->post('search') ?? '';
-            $filterBy = $this->input->post('filterBy') ?? '';
-            $filterValue = $this->input->post('filterValue') ?? '';
-            $offset = (int) $this->uri->segment(4, 0);
-        }
+        $pageno = (int) ($this->input->post('pageno') ?? 1);
 
-        $total_rows = $this->order_model->countTotalOrder($search, $filterBy, $filterValue);
-
-        $config['base_url'] = base_url('admin/Orders/index/');
-        $config['total_rows'] = $total_rows;
-        $config['per_page'] = 6;
-        $config['uri_segment'] = 4;
-        $config['num_links'] = 5;
-
-        $config['full_tag_open'] = '<ul class="pagination">';
-        $config['full_tag_close'] = '</ul>';
-        $config['attributes'] = ['class' => 'page-link'];
-        $config['first_tag_open'] = '<li class="page-item">';
-        $config['first_tag_close'] = '</li>';
-        $config['last_tag_open'] = '<li class="page-item">';
-        $config['last_tag_close'] = '</li>';
-        $config['next_tag_open'] = '<li class="page-item">';
-        $config['next_tag_close'] = '</li>';
-        $config['prev_tag_open'] = '<li class="page-item">';
-        $config['prev_tag_close'] = '</li>';
-        $config['cur_tag_open'] = '<li class="page-item active"><span class="page-link">';
-        $config['cur_tag_close'] = '</span></li>';
-        $config['num_tag_open'] = '<li class="page-item">';
-        $config['num_tag_close'] = '</li>';
-        $config['next_link'] = '>';
-        $config['prev_link'] = '<';
-        $config['first_link'] = FALSE;
-        $config['last_link']  = FALSE;
-
+        $search = $this->input->post('search') ?? '';
+        $filterBy = $this->input->post('filterBy') ?? '';
+        $filterValue = $this->input->post('filterValue') ?? '';
 
         $orders = [];
-        $links = '';
-        if ($total_rows > $config['per_page']) {
-            if ($offset >= $total_rows) {
-                $offset = 0;
-            }
+        $pagination = '';
 
-            $config['cur_page'] = $offset;
+        $per_page = (int) 6;
 
-            $this->pagination->initialize($config);
+        $offset = ($pageno - 1) * $per_page;
+        $total_item = $this->order_model->countTotalOrder($search, $filterBy, $filterValue);
 
-            $orders = $this->order_model->getAllOrdersAdmin(
-                $config['per_page'],
-                $offset,
-                $search,
-                $filterBy,
-                $filterValue
-            );
-            $links = $this->pagination->create_links();
-        } else {
-            // Only one page or no data
-            $offset = 0;
+        $orders = $this->order_model->getAllOrdersAdmin(
+            $per_page,
+            $offset,
+            $search,
+            $filterBy,
+            $filterValue
+        );
 
-            if ($total_rows > 0) {
-                $orders = $this->order_model->getAllOrdersAdmin(
-                    $config['per_page'],
-                    0,
-                    $search,
-                    $filterBy,
-                    $filterValue
-                );
-            }
+
+        $total_pages = ceil($total_item / $per_page);
+
+        // pagination 
+        $firstDisable = ($pageno == 1) ? 'disabled' : '';
+        $firstPage = ($pageno == 1) ? 1 : 1;
+
+        $pagination .= "<a href='javascript:void(0)' class='page-link $firstDisable' data-id='$firstPage'>First</a>";
+
+        if ($pageno > 1) {
+            $pagination .= "<a href='javascript:void(0)' class='' data-id='" . ($pageno - 1) . "'><i class='bi bi-chevron-left'></i> </a>";
+        }
+        // first 2 page  
+        for ($i = 1; $i <= min(2, $total_pages); $i++) {
+            $active = ($pageno == $i) ? 'active' : '';
+            $pagination .= "<a href='javascript:void(0)' class='" . $active . "'  data-id='" . $i . "'>" . $i . "</a>";
         }
 
-        $current_page = ($total_rows > 0)
-            ? floor($offset / $config['per_page']) + 1
-            : 1;
+        if ($pageno > 4) {
+            $pagination .= "<span class='page-dots'>...</span>";
+        }
+
+        // middle page 
+        $start = max(3, $pageno - $range);
+        $end   = min($total_pages - 2, $pageno + $range);
+
+        for ($i = $start; $i <= $end; $i++) {
+            if ($i <= 2 || $i > $total_pages - 2) continue;
+            $active = ($pageno == $i) ? 'active' : '';
+            $pagination .= "<a href='javascript:void(0)' class='" . $active . "'  data-id='" . $i . "'>" . $i . "</a>";
+        }
+
+        if ($pageno < $total_pages - 3) {
+            $pagination .= "<span class='page-dots'>...</span>";
+        }
+
+        for ($i = max($total_pages - 1, 3); $i <= $total_pages; $i++) {
+
+            $active = ($pageno == $i) ? 'active' : '';
+            $pagination .= "<a href='javascript:void(0)' class='" . $active . "'  data-id='" . $i . "'>" . $i . "</a>";
+        }
+
+
+        if ($pageno < $total_pages) {
+            $pagination .= "<a href='javascript:void(0)' class='' data-id='" . ($pageno + 1) . "'><i class='bi bi-chevron-right'></i> </a>";
+        }
+
+        $lastDisabled = ($pageno == $total_pages) ? 'disabled' : '';
+        $lastPage = $total_pages;
+
+        $pagination  .= "<a href='javascript:void(0)' class='page-link $lastDisabled' data-id='$lastPage'>Last</a>";
 
         foreach ($orders as &$order) {
             $order->enc_order_id = urlencode(
@@ -141,23 +136,21 @@ class Orders extends MY_Controller
                     $this->encryption->encrypt($order->order_id)
                 )
             );
-            $order->pageno = $current_page;
         }
         unset($order);
 
         if ($this->input->is_ajax_request()) {
             echo json_encode([
-                'total_rows' => $total_rows,
+                'pagination' => $pagination,
                 'offset' => $offset,
-                'pageno' => $current_page,
+                'pageno' => $pageno,
                 'orders' => $orders,
-                'links'  => $links
+                // 'links'  => $links
             ]);
             return;
         }
 
         $data['orders'] = $orders;
-        $data['links']  = $this->pagination->create_links();
         $data['offset'] = $offset;
 
         load_admin_views('view_orders', $data);

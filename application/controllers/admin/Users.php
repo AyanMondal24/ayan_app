@@ -11,62 +11,52 @@ class Users extends MY_Controller
 
     function index()
     {
-        $offset = 0;
-        if ($this->input->is_ajax_request()) {
-            $offset = $this->input->post('offset');
-        } else {
-            // $offset = $this->input->post('offset') ?? 0;
-            $offset = (int) $this->uri->segment(4,1);
+        $create_page = '';
+        $pageno = $this->input->post('pageno') ?? 1;
+        $per_page = (int) 3;
+        $offset = ($pageno - 1) * $per_page;
+
+        $users = $this->user_model->getAllUsers($per_page, $offset);
+
+        $total_item = $this->user_model->total_data();
+
+        $total_pages = ceil($total_item / $per_page);
+
+        $firstDisabled = ($pageno == 1) ? 'disabled' : '';
+        $firstPage = ($pageno == 1) ? 1 : 1;
+
+        $create_page .= "<a href='javascript:void(0)' class='page-link $firstDisabled' data-id='$firstPage'>First</a>";
+
+        if ($pageno > 1) {
+            $create_page .= "<a href='javascript:void(0)' class='' data-id='" . ($pageno - 1) . "'><i class='bi bi-chevron-left'></i> </a>";
+        }
+        for ($i = 1; $i <= $total_pages; $i++) {
+            if ($pageno == $i) {
+                $create_page .= "<a href='javascript:void(0)' class='active' data-id='" . $i . "'>" . $i . "</a>";
+            } else {
+                $create_page .= "<a href='javascript:void(0)' class='' data-id='" . $i . "'>" . $i . "</a>";
+            }
+        }
+        if ($pageno < $total_pages) {
+            $create_page .= "<a href='javascript:void(0)' class='' data-id='" . ($pageno + 1) . "'><i class='bi bi-chevron-right'></i> </a>";
         }
 
-        $total_row = $this->user_model->total_data();
-        $config = [];
-        $config['base_url'] = base_url('admin/users/index');
-        $config['total_rows'] = $total_row;
-        $config['per_page'] = 3;
-        $config['uri_segment'] = 4;
+        $lastDisabled = ($pageno == $total_pages) ? 'disabled' : '';
+        $lastPage = $total_pages;
 
-        $config['full_tag_open'] = '<ul class="pagination">';
-        $config['full_tag_close'] = '</ul>';
-        $config['attributes'] = ['class' => 'page-link'];
-        $config['first_tag_open'] = '<li class="page-item">';
-        $config['first_tag_close'] = '</li>';
-        $config['last_tag_open'] = '<li class="page-item">';
-        $config['last_tag_close'] = '</li>';
-        $config['next_tag_open'] = '<li class="page-item">';
-        $config['next_tag_close'] = '</li>';
-        $config['prev_tag_open'] = '<li class="page-item">';
-        $config['prev_tag_close'] = '</li>';
-        $config['cur_tag_open'] = '<li class="page-item active"><span class="page-link">';
-        $config['cur_tag_close'] = '</span></li>';
-        $config['num_tag_open'] = '<li class="page-item">';
-        $config['num_tag_close'] = '</li>';
-        $config['next_link'] = '>';
-        $config['prev_link'] = '<';
-        $config['first_link'] = FALSE;
-        $config['last_link']  = FALSE;
-
-        $current_page = floor($offset / $config['per_page']) + 1;
-
-        $config['cur_page'] = $current_page;
-
-        $this->pagination->initialize($config);
-
-        $users = $this->user_model->getAllUsers($config['per_page'], $offset);
-
-        $links = $this->pagination->create_links();
+        $create_page .= "<a href='javascript:void(0)' class='page-link $lastDisabled' data-id='$lastPage'>Last</a>";
 
         if ($this->input->is_ajax_request()) {
             echo json_encode([
                 "users" => $users,
-                "links" => $links,
+                "pagination" => $create_page,
+                // "links" => $links,
                 "offset" => $offset,
             ]);
             exit;
         } else {
-
             $data['users'] = $users;
-            $data['links'] = $links;
+            // $data['links'] = $links;
             load_admin_views('view_users', $data);
         }
     }

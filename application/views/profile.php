@@ -206,7 +206,7 @@
             <?php } else { ?>
                 <p>No orders found.</p>
             <?php  } ?>
-          
+
 
         </div>
 
@@ -269,7 +269,7 @@
                     </div>
                 </div>
 
-                
+
             </div>
 
 
@@ -307,6 +307,7 @@
 <script>
     document.addEventListener('DOMContentLoaded', function() {
 
+        // profile 
         const fname = document.querySelector('#fname');
         const lname = document.querySelector('#lname');
         const email = document.querySelector('#email');
@@ -445,7 +446,16 @@
 
         // ON PAGE LOAD (IMPORTANT)
         const hash = window.location.hash.replace('#', '');
-        showSection(hash === 'orders' ? 'orders' : (hash === 'profile' ? 'profile' : 'address'));
+        switch (hash) {
+            case 'orders':
+                showSection('orders');
+                break;
+            case 'address':
+                showSection('address');
+                break;
+            default:
+                showSection('profile'); // FIRST LOAD
+        }
 
 
         // order cancel btn 

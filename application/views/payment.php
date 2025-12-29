@@ -84,7 +84,7 @@
                 }
             });
 
-            var stripe = Stripe('pk_test_51SfJbNF338nGzwqee2Ux5x6s3RNNlVjSI5prO8AdmC4j56uITbqabvH8sDwLkKfSRzMvbzVJbTb0RisNpxS1hOkj00q3mafZju');
+            var stripe = Stripe('pk_test_51SfJbNF338nGzwqeHvBJvTtptFqt2i1EDiXJckfHeSeTNzmffuRs5XnrRztlSClA6O7AL4QfuMCFLiGHflyZQqYm00BL0qxd2f');
             let elements;
 
             function buildPaymentElem(clientSecret) {
@@ -96,7 +96,7 @@
                             name: 'never',
                             email: 'never',
                             phone: 'never',
-                            address: 'never' // ✅ disable address
+                            address: 'never' // disable address
                         }
                     }
                 });

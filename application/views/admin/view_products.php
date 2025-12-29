@@ -1,20 +1,20 @@
-<div class="container-fluid">
-    <div class="row">
+<div class="container-fluid ">
+    <div class="row py-4">
         <div class="col-12">
             <div class="card mb-4">
                 <div class="card-header">
-                    <h3 class="card-title">Products Table</h3>
+                    <h3 class="card-title ">Products Table</h3>
                 </div>
                 <!-- /.card-header -->
                 <div class="card-body product-view">
-                    <table class="table table-bordered table-responsive">
+                    <table class="table table-bordered table-responsive" id="product-table">
                         <thead>
                             <tr>
                                 <th width="5%">#</th>
                                 <th width="20%">Name</th>
                                 <th width="20%">Category</th>
                                 <th width="15%">Price</th>
-                                <th width="15%">Quantity</th>
+                                <th width="15%" class="quantity">Quantity</th>
                                 <th width="20%">Status</th>
                                 <th width="20%">Action</th>
                             </tr>
@@ -22,7 +22,7 @@
                         <tbody>
                             <?php
 
-                            $i = $offset + 1;
+                            $i = 1;
                             if (!empty($products)) {
 
                                 foreach ($products as $product) {
@@ -60,7 +60,7 @@
                                         <td> <?= $name ?></td>
                                         <td> <?= $product->category_name ?></td>
                                         <td> <?= $product->price ?>/ <?= $product->short_name ?></td>
-                                        <td> <?= $product->quantity ?></td>
+                                        <td class="quantity"> <?= $product->quantity ?></td>
                                         <td>
                                             <?= $store_status ?>
                                         </td>
@@ -80,14 +80,8 @@
 
                             ?>
 
-
                         </tbody>
                     </table>
-
-                    <div>
-                        <?= $links ?>
-                    </div>
-
 
                 </div>
             </div>
@@ -102,6 +96,28 @@
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {
+        // add data table 
+        const totalRows = document.querySelectorAll('#product-table tbody tr').length;
+        let lengthMenu = [5, 10, 25];
+
+        if (totalRows <= 10) {
+            lengthMenu = [5, totalRows];
+        } else if (totalRows <= 25) {
+            lengthMenu = [5, 10, totalRows];
+        } else if (totalRows <= 50) {
+            lengthMenu = [5, 10, 25, totalRows];
+        } else {
+            lengthMenu = [5, 10, 25, 50, totalRows];
+        }
+
+        let table = new DataTable('#product-table', {
+            pageLength: lengthMenu[0], // default first option
+            lengthMenu: lengthMenu,
+            ordering: true,
+            searching: true
+        });
+
+
         $(document).on('click', "#product-delete", function(e) {
             e.preventDefault();
             const id = $(this).data('id');
@@ -132,6 +148,6 @@
                     }
                 }
             })
-        })
+        });
     });
 </script>

@@ -184,7 +184,7 @@ class Auth extends MY_Controller
         if (!password_verify($password, $admin->password)) {
             echo json_encode([
                 'status' => 'error',
-                'errors' => ['password' => $password]
+                'errors' => ['password' => "Passsword Not Match"]
             ]);
             return;
             // return $this->set_page('error', 'Incorrect password.');

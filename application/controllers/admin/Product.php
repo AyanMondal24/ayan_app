@@ -23,39 +23,12 @@ class Product extends MY_Controller
     public function index()
     {
 
-
-        $config = [];
-        $config['base_url'] = site_url('admin/Product/index');
-        $config['total_rows'] = $this->product_model->totalProducts(); //total records
-
-        $config['per_page'] = 5;
-        $config['uri_segment'] = 4;
-
-        $config['full_tag_open'] = '<ul class="pagination">';
-        $config['full_tag_close'] = '</ul>';
-        $config['attributes'] = ['class' => 'page-link'];
-        $config['first_tag_open'] = '<li class="page-item">';
-        $config['first_tag_close'] = '</li>';
-        $config['last_tag_open'] = '<li class="page-item">';
-        $config['last_tag_close'] = '</li>';
-        $config['next_tag_open'] = '<li class="page-item">';
-        $config['next_tag_close'] = '</li>';
-        $config['prev_tag_open'] = '<li class="page-item">';
-        $config['prev_tag_close'] = '</li>';
-        $config['cur_tag_open'] = '<li class="page-item active"><span class="page-link">';
-        $config['cur_tag_close'] = '</span></li>';
-        $config['num_tag_open'] = '<li class="page-item">';
-        $config['num_tag_close'] = '</li>';
-
-        $this->pagination->initialize($config);
-        // 🔹 Determine current page
-        $offset = ($this->uri->segment(4)) ? $this->uri->segment(4) : 0;
-        // $offset = $this->uri->segment(4, 0);
-        // 🔹 Get data
-        $data['products'] = $this->product_model->getProducts($config['per_page'], $offset);
-        $data['links'] = $this->pagination->create_links();
-        $data['offset'] = $offset;
-
+        $total_item= $this->product_model->totalProducts(); //total records
+        // $per_page=5;
+        // $offset=0;
+        $data['products'] = $this->product_model->getProducts();
+     
+        $data['totalRows']=$total_item;
         load_admin_views('view_products', $data);
     }
     // make featured 
