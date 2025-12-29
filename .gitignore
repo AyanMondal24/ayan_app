@@ -33,4 +33,10 @@ user_guide_src/cilexer/pycilexer.egg-info/*
 
 # Environment variables
 .env
+<<<<<<< HEAD
 application/config/*
+=======
+application/config/constants.php
+application/config/*
+assets/uploads/
+>>>>>>> 782122dd0ca221ec16676aecdf97d0f9df5bb2f3
