@@ -1,60 +1,80 @@
-<div class="container-fluid">
+<div class="container-fluid mt-2">
     <div class="card shadow-sm">
         <div class="card-header bg-dark text-white">
             <h5 class="mb-0">All Orders</h5>
         </div>
 
-
         <div class="card-body">
-            <div class="row mb-3">
-                <div class="col-md-4">
-                    <input type="text" id="tableSearch" class="form-control"
-                        placeholder="Search orders...">
-                </div>
-                <!-- <div class="row mb-3"> -->
-                <div class="col-md-3">
-                    <select id="filterBy" class="form-select" name="filterBy">
-                        <option value="">-- Select Filter --</option>
-                        <option value="order_number">Order No</option>
-                        <option value="customer">Customer</option>
-                        <option value="total_items">Total Items</option>
-                        <option value="final_amount">Amount</option>
-                        <option value="order_status">Order Status</option>
-                        <option value="payment_status">Payment Status</option>
-                        <option value="order_date">Order Date</option>
+            <div class="row mb-3 align-items-center g-2">
+
+                <!-- LEFT: Entries per page -->
+                <div class="col-auto d-flex align-items-center gap-2">
+                    <select
+                        class="form-select form-select-sm w-auto"
+                        id="entriesSelect">
+
                     </select>
+                    <span class="small">entries per page</span>
                 </div>
 
-                <div class="col-md-3">
-                    <select id="filterValue" class="form-select" name="filterValue" disabled>
-                        <option value="">-- Select Value --</option>
-                    </select>
-                </div>
+                <!-- RIGHT GROUP -->
+                <div class="col ms-auto">
+                    <div class="row g-2 justify-content-end">
 
-                <div class="col-md-2">
-                    <button id="applyFilter" class="btn btn-primary w-100" disabled>
-                        Apply
-                    </button>
+                        <!-- Filter by -->
+                        <div class="col-auto">
+                            <select
+                                id="filterBy"
+                                class="form-select form-select-sm"
+                                style="min-width: 170px;">
+                                <option value="">-- Select Filter --</option>
+                                <option value="order_status">Order Status</option>
+                                <option value="payment_status">Payment Status</option>
+                            </select>
+                        </div>
+
+                        <!-- Filter value -->
+                        <div class="col-auto">
+                            <select
+                                id="filterValue"
+                                class="form-select form-select-sm"
+                                style="min-width: 170px;"
+                                disabled>
+                                <option value="">-- Select Value --</option>
+                            </select>
+                        </div>
+
+                        <!-- Search -->
+                        <div class="col-auto">
+                            <input
+                                type="text"
+                                id="tableSearch"
+                                class="form-control form-control-sm"
+                                placeholder="Search orders..."
+                                style="min-width: 220px;">
+                        </div>
+
+                    </div>
                 </div>
-                <!-- </div> -->
 
             </div>
-            <div class="table-responsive orders-table-wrapper">
 
+
+            <div class="table-responsive orders-table-wrapper">
                 <table class="table table-bordered table-hover text-center align-middle" id="ordersTable">
                     <thead class="table-dark">
                         <tr>
-                            <th data-column="0" class="sortable">#</th>
-                            <th data-column="1" class="sortable">Order No</th>
-                            <th data-column="2" class="sortable">Customer</th>
-                            <th data-column="3" class="sortable">Total Items</th>
-                            <th data-column="4" class="sortable">Total Amount</th>
-                            <th data-column="5" class="sortable">Discount</th>
-                            <th data-column="6" class="sortable">Final Amount</th>
+                            <th class="sortable col-id" data-column="id" style="width: 20px;">#</th>
+                            <th>Order No</th>
+                            <th class="sortable" data-column="customer">Customer</th>
+                            <th class="sortable" data-column="total_item">Total Items</th>
+                            <th class="sortable" data-column="total_amount">Total Amount</th>
+                            <th class="sortable" data-column="discount">Discount</th>
+                            <th class="sortable" data-column="final_amount">Final Amount</th>
                             <th>Payment</th>
                             <th>Pay Status</th>
                             <th>Order Status</th>
-                            <th data-column="10" class="sortable">Order Date</th>
+                            <th class="sortable" data-column="created_at">Order Date</th>
                             <th>Action</th>
 
                         </tr>
@@ -67,7 +87,6 @@
                                 $order_id = urlencode(base64_encode($this->encryption->encrypt($order->order_id)));
                                 $offset = $offset + 1;
                             ?>
-
                                 <tr>
                                     <td><?= $offset++; ?></td>
                                     <td><?= $order->order_number ?: '#' . $order->order_id; ?></td>
@@ -84,7 +103,7 @@
                                     </td>
 
                                     <td>
-                                        <span class="badge 
+                                        <span class="badge
                                             <?= $order->payment_status == 'paid' ? 'bg-success' : 'bg-warning'; ?>">
                                             <?= ucfirst($order->payment_status); ?>
                                         </span>
@@ -140,7 +159,15 @@
                     </tbody>
                 </table>
             </div>
-            <div id="pagination-container"></div>
+
+            <div class="d-flex justify-content-between align-items-end">
+                <div id="showing-entries" class="fs-6 text-black text-start small">
+                    <!-- Showing text will come here -->
+                </div>
+                <div id="pagination-container">
+                    <!-- pagination links -->
+                </div>
+            </div>
         </div>
     </div>
 </div>
@@ -150,27 +177,81 @@
 
 
         let currentSearch = '';
-        // search 
+        let pageno = 1;
+        let filterBy = '';
+        let filterValue = '';
+        let sortOrder = '';
+        let sortColumn = '';
+        let per_page = 5;
+
+        // get entries per page
+        $.ajax({
+            url: "<?= base_url('admin/Orders/getEntriesPerPage') ?>",
+            type: "GET",
+            dataType: "json",
+            success: function(response) {
+                if (response.status === 'success') {
+                    const total = parseInt(response.total);
+                    const entriesSelect = $("#entriesSelect");
+
+                    let options = '';
+                    const baseOptions = [5, 10, 25, 50, 100];
+
+                    baseOptions.forEach(function(val) {
+                        if (val < total) {
+                            options += `<option value="${val}">${val}</option>`;
+                        }
+                    });
+
+                    // add total as last option
+                    options += `<option value="${total}">${total}</option>`;
+
+                    entriesSelect.html(options);
+                    loadTable(pageno, currentSearch, filterBy, filterValue, sortOrder, sortColumn, per_page);
+                }
+            }
+        });
+        // per page
+        $("#entriesSelect").on('change', function(e) {
+            e.preventDefault();
+            per_page = $(this).val();
+            loadTable(pageno, currentSearch, filterBy, filterValue, sortOrder, sortColumn, per_page);
+
+        });
+        // sorting
+        $("th.sortable").on('click', function(e) {
+            e.preventDefault();
+            const column = $(this).data('column');
+            if (sortColumn === column) {
+                sortOrder = sortOrder === 'asc' ? 'desc' : 'asc';
+            } else {
+                sortColumn = column;
+                sortOrder = 'asc';
+            }
+            $('th.sortable').removeClass('asc desc');
+            $(this).addClass(sortOrder);
+            loadTable(pageno, currentSearch, filterBy, filterValue, sortOrder, sortColumn, per_page);
+        });
+        // search
         document.getElementById('tableSearch').addEventListener('keyup', function() {
             currentSearch = this.value.toLowerCase();
-            let pageno = 1;
-            let filterBy = $("#filterBy").val();
-            let filterValue = $("#filterValue").val();
-            loadTable(pageno, currentSearch, filterBy, filterValue);
+            pageno = 1;
+            filterBy = $("#filterBy").val();
+            filterValue = $("#filterValue").val();
+            loadTable(pageno, currentSearch, filterBy, filterValue, sortOrder, sortColumn, per_page);
         });
 
-        // pagination 
+        // pagination
         $(document).on('click', '#pagination-container a', function(e) {
             e.preventDefault();
-            const pageno = $(this).data("id");
-            console.log(pageno)
-            const search = $('#tableSearch').val();
-            const filterBy = $('#filterBy').val();
-            const filterValue = $('#filterValue').val();
-            loadTable(pageno, currentSearch, filterBy, filterValue);
+            pageno = $(this).data("id");
+            search = $('#tableSearch').val();
+            filterBy = $('#filterBy').val();
+            filterValue = $('#filterValue').val();
+            loadTable(pageno, currentSearch, filterBy, filterValue, sortOrder, sortColumn, per_page);
         });
 
-        //sorting
+        //filter
         $("#filterBy").on('change', function(e) {
             e.preventDefault();
             let selectedFilter = $(this).val();
@@ -210,20 +291,21 @@
         });
 
         // filter apply btn clicked
-        $("#applyFilter").on('click', function() {
+        $("#filterValue").on('change', function() {
 
             let filterBy = $("#filterBy").val();
-            let filterValue = $("#filterValue").val();
+            let filterValue = $(this).val();
 
-            loadTable(1, currentSearch, filterBy, filterValue);
+            loadTable(1, currentSearch, filterBy, filterValue, sortOrder, sortColumn, per_page);
         });
 
-        loadTable();
+        loadTable(pageno, currentSearch, filterBy, filterValue, sortOrder, sortColumn, per_page);
 
-    }); // main 
+    }); // main
 
+    function loadTable(pageno = 1, search = '', filterBy = '', filterValue = '', sortOrder = '', sortColumn = '', per_page = 5) {
+        per_page = parseInt(per_page) || 5;
 
-    function loadTable(pageno, search = '', filterBy = '', filterValue = '') {
         $.ajax({
             url: '<?= base_url('admin/Orders/index/') ?>',
             type: "POST",
@@ -231,7 +313,10 @@
                 pageno: pageno,
                 search: search,
                 filterBy: filterBy,
-                filterValue: filterValue
+                filterValue: filterValue,
+                sortOrder: sortOrder,
+                sortColumn: sortColumn,
+                per_page: per_page,
             },
             dataType: "JSON",
             success: function(response) {
@@ -243,11 +328,30 @@
     function set_page(response) {
         let html = "";
         const BASE_URL = "<?= base_url() ?>";
+        // console.log(response.sortOrder)
+        // console.log(response.sortColumn)
 
         if (response.orders.length > 0) {
 
+            let index;
+            const total = parseInt(response.total_item);
+            const offset = parseInt(response.offset);
+            const perPage = parseInt(response.per_page);
 
-            let index = response.offset + 1;
+            if (response.sortOrder === 'desc') {
+                index = total - offset;
+                start = total - offset;
+                end = Math.max(total - (offset + perPage) + 1, 1);
+            } else {
+                index = offset + 1;
+                start = offset + 1;
+                end = Math.min(offset + perPage, total);
+            }
+            end = Math.min(offset + perPage, total);
+
+            $('#showing-entries').text(
+                `Showing ${index} to ${end} of ${total} entries`
+            );
 
             $.each(response.orders, function(i, order) {
 
@@ -265,7 +369,7 @@
 
                 html += `
                 <tr>
-                    <td>${index++}</td>
+                   <td>${response.sortOrder === 'desc' ? index-- : index++}</td>
                     <td>${orderNo}</td>
                     <td>${order.customer_name ?? 'Guest'}</td>
                     <td>${order.total_items}</td>
@@ -293,7 +397,7 @@
                     <td>${formatDate(order.created_at)}</td>
 
                     <td>
-                        <a href="${BASE_URL}admin/orders/view/${order.enc_order_id}?pageno=${response.pageno}" 
+                        <a href="${BASE_URL}admin/orders/view/${order.enc_order_id}?pageno=${response.pageno}"
                            class="btn btn-sm btn-primary">
                             View
                         </a>

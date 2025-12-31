@@ -20,7 +20,7 @@ class admin_model extends CI_Model
         return $this->db->insert('admins', $data);
     }
 
-    
+
     function getAdminById($id)
     {
         $this->db->select('*');

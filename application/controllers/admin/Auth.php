@@ -210,7 +210,7 @@ class Auth extends MY_Controller
             "status"  => "success",
             "message" => 'Login Successful.',
             "redirect" => base_url("admin/Home")
- // send redirect url
+            // send redirect url
         ]);
         // return $this->set_page('success', 'Login Successful.', 'login');
     }
@@ -249,7 +249,7 @@ class Auth extends MY_Controller
         $this->session->unset_userdata('email');
         $this->session->unset_userdata('admin_logged_in');
         $this->session->sess_destroy();
-      
+
         redirect('admin/dashboard');
     }
 }

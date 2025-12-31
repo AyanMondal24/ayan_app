@@ -253,11 +253,155 @@
 
 /* order view  */
 .orders-table-wrapper {
-  min-height: 520px;
+  /* min-height: 520px; */
   /* adjust based on rows */
 }
+/* base sortable header */
+#ordersTable th.sortable {
+    position: relative;
+    cursor: pointer;
+    padding-right: 28px; /* space for arrows */
+    user-select: none;
+    vertical-align: middle;
+}
+#ordersTable #entriesSelect {
+    min-width: 70px;
+}
+
+#ordersTable #filterBy,
+#ordersTable #filterValue {
+    background-color: #f8f9fa;
+}
+
+/* header text */
+#ordersTable th.sortable span {
+    display: inline-block;
+    font-weight: 600;
+}
+
+/* arrows */
+#ordersTable th.sortable::before,
+#ordersTable th.sortable::after {
+    content: "";
+    position: absolute;
+    right: 10px;
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    opacity: 0.35;
+}
+
+/* up arrow */
+#ordersTable th.sortable::before {
+    border-bottom: 6px solid #adb5bd;
+    top: 42%;
+}
+
+/* down arrow */
+#ordersTable th.sortable::after {
+    border-top: 6px solid #adb5bd;
+    top: 55%;
+}
+
+/* active sort */
+#ordersTable th.sortable.asc::before {
+    opacity: 1;
+    border-bottom-color: #fff;
+}
+
+#ordersTable th.sortable.desc::after {
+    opacity: 1;
+    border-top-color: #fff;
+}
+
+/* hover effect */
+#ordersTable th.sortable:hover::before,
+#ordersTable th.sortable:hover::after {
+    opacity: 0.8;
+}
+
+/* small ID column */
+#ordersTable .col-id {
+    width: 50px;
+    text-align: center;
+    white-space: nowrap;
+}
+
+
 
 /*------------------------------ user view start -----------------------------  */
+#usersTable th:last-child,
+#usersTable td:last-child {
+    width: 120px;        /* fixed width */
+    min-width: 120px;
+    max-width: 120px;
+    text-align: center;
+    white-space: nowrap;
+}
+/* Header like DataTables */
+#usersTable thead th {
+    background: #343a40;
+    color: #fff;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+/* Action column fixed */
+#usersTable th:last-child,
+#usersTable td:last-child {
+    width: 130px;
+    white-space: nowrap;
+}
+
+/* Buttons same width */
+.userActionBtn {
+    min-width: 90px;
+}
+
+/* Search input width */
+#tableSearch {
+    width: 200px;
+}
+ /* sorting start  */
+/* sortable header */
+#usersTable th.sortable {
+    position: relative;
+    cursor: pointer;
+    padding-right: 32px; /* more space for bigger arrows */
+}
+
+/* arrows */
+#usersTable th.sortable::before,
+#usersTable th.sortable::after {
+    content: "";
+    position: absolute;
+    right: 10px;
+    border-left: 6px solid transparent;
+    border-right: 6px solid transparent;
+    opacity: 0.35;
+}
+
+/* UP arrow */
+#usersTable th.sortable::before {
+    border-bottom: 10px solid #fff;
+    top: 38%;
+}
+
+/* DOWN arrow */
+#usersTable th.sortable::after {
+    border-top: 10px solid #fff;
+    top: 56%;
+}
+
+/* active sorting */
+#usersTable th.sortable.asc::before {
+    opacity: 1;
+}
+
+#usersTable th.sortable.desc::after {
+    opacity: 1;
+}
+
+/* end sorting  */
 #pagination-container {
   display: flex;
   align-items: center;

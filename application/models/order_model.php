@@ -18,7 +18,7 @@ class order_model extends CI_Model
         return $this->db->update('orders', ["order_number" => $order_number]);
     }
 
-    // get all orders data using user id 
+    // get all orders data using user id
     function getOrders($user_id)
     {
         $this->db->select('
@@ -65,7 +65,7 @@ class order_model extends CI_Model
     }
 
 
-    // count total orders for pagination 
+    // count total orders for pagination
 
     function countTotalOrder($search = null, $filterBy = null, $filterValue = null)
     {
@@ -98,7 +98,7 @@ class order_model extends CI_Model
     }
 
     // getting orders
-    function getAllOrdersAdmin($limit, $offset, $search = null, $filterBy = null, $filterValue = null)
+    function getAllOrdersAdmin($limit, $offset, $search = null, $filterBy = null, $filterValue = null, $sortOrder = null, $sortColumn = null)
     {
         $this->db->select('
         o.id AS order_id,
@@ -132,33 +132,39 @@ class order_model extends CI_Model
 
         $this->db->group_by('o.id');
 
-        if (!empty($filterBy) && !empty($filterValue)) {
+        if (!empty($sortColumn) && !empty($sortOrder)) {
 
-            if (in_array($filterValue, ['ASC', 'DESC'])) {
+            if (in_array($sortOrder, ['asc', 'desc'])) {
 
-                if ($filterBy === 'customer') {
-                    $this->db->order_by('o.b_fname', $filterValue);
-                    $this->db->order_by('o.b_lname', $filterValue);
-                } elseif ($filterBy === 'total_items') {
-                    $this->db->order_by('total_items', $filterValue);
-                } elseif ($filterBy === 'order_date') {
-                    $this->db->order_by('o.created_at', $filterValue);
-                } elseif ($filterBy === 'order_number') {
-                    $this->db->order_by('o.order_number', $filterValue);
-                } elseif ($filterBy === 'final_amount') {
-                    $this->db->order_by('o.final_amount', $filterValue);
-                } else {
-                    $this->db->order_by('o.created_at', 'DESC');
+                if ($sortColumn === 'customer') {
+                    $this->db->order_by('o.b_fname', $sortOrder);
+                    $this->db->order_by('o.b_lname', $sortOrder);
+                } elseif ($sortColumn === 'total_item') {
+                    $this->db->order_by('total_items', $sortOrder);
+                } elseif ($sortColumn === 'order_date') {
+                    $this->db->order_by('o.created_at', $sortOrder);
+                } elseif ($sortColumn === 'total_amount') {
+                    $this->db->order_by('o.total_amount', $sortOrder);
+                } elseif ($sortColumn === 'final_amount') {
+                    $this->db->order_by('o.final_amount', $sortOrder);
+                } elseif ($sortColumn === 'id') {
+                    $this->db->order_by('o.id', $sortOrder);
                 }
-            }
-            //filtering
-            else {
-                $this->db->where('o.' . $filterBy, $filterValue);
-                $this->db->order_by('o.created_at', 'DESC');
+                // elseif ($sortColumn === 'discount') {
+                //     $this->db->order_by('o.discount', $sortOrder);
+                // }
+                elseif ($sortColumn === 'created_at') {
+                    $this->db->order_by('o.created_at', $sortOrder);
+                }
             }
         } else {
             // DEFAULT
-            $this->db->order_by('o.created_at', 'DESC');
+            $this->db->order_by('o.created_at', 'asc');
+        }
+
+        //filtering
+        if (!empty($filterBy) && !empty($filterValue)) {
+            $this->db->where('o.' . $filterBy, $filterValue);
         }
 
         $this->db->limit((int)$limit, (int)$offset);
@@ -262,7 +268,7 @@ class order_model extends CI_Model
         return $this->db->update('orders', $data); // returns true or false
     }
 
-    // old 
+    // old
     // public function markPaymentSuccess($intent_id, $txn_id)
     // {
     //     $order = $this->db
@@ -286,7 +292,7 @@ class order_model extends CI_Model
     // }
 
 
-    // new 
+    // new
     public function markPaymentSuccess($payment_intent_id, $charge_id)
     {
         // Use a transaction for atomicity (prevents race conditions)

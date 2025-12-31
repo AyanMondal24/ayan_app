@@ -1,3 +1,14 @@
+<?php
+$CI = &get_instance();
+$CI->load->model('admin_model');
+
+$admin = null;
+if ($CI->session->userdata('admin_logged_in')) {
+    $admin = $CI->admin_model->getAdminById(
+        $CI->session->userdata('admin_id')
+    );
+}
+?>
 <!doctype html>
 <html lang="en">
 
@@ -11,7 +22,7 @@
     <meta name="theme-color" content="#1a1a1a" media="(prefers-color-scheme: dark)" />
     <!--end::Accessibility Meta Tags-->
     <!--begin::Primary Meta Tags-->
-    <meta name="title" content="AdminLTE | Dashboard v2" />
+    <!-- <meta name="title" content="AdminLTE | Dashboard v2" /> -->
     <meta name="author" content="ColorlibHQ" />
     <meta
         name="description"
@@ -85,8 +96,8 @@
                             <i class="bi bi-list"></i>
                         </a>
                     </li>
-                    <li class="nav-item d-none d-md-block"><a href="#" class="nav-link">Home</a></li>
-                    <li class="nav-item d-none d-md-block"><a href="#" class="nav-link">Contact</a></li>
+                    <!-- <li class="nav-item d-none d-md-block"><a href="#" class="nav-link">Home</a></li>
+                    <li class="nav-item d-none d-md-block"><a href="#" class="nav-link">Contact</a></li> -->
                 </ul>
                 <!--end::Start Navbar Links-->
                 <!--begin::End Navbar Links-->
@@ -218,14 +229,14 @@
                         </a>
                     </li>
                     <!--end::Fullscreen Toggle-->
-                    <?php if ($this->session->userdata('admin_logged_in')): ?>
+                    <!-- <?php if ($this->session->userdata('admin_logged_in')): ?>
                         <a href="<?= base_url('admin/Auth/logout') ?>" class="btn btn-primary btn-flat float-end">Logout</a>
-                    <?php endif; ?>
-                    <!-- <?php if ($this->session->userdata('admin_id')): ?>
-                       
+                    <?php endif; ?> -->
+                    <?php if ($admin): ?>
                         <li class="nav-item dropdown user-menu">
                             <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
-                                <img src="<?= base_url('assets/uploads/admin_img/' . $admin->image); ?>" class="user-image rounded-circle shadow" alt="User Image">
+                                <img src="<?= base_url('assets/uploads/admin_img/' . ($admin->image ?? 'default.png')); ?>"
+                                    class="user-image rounded-circle shadow" alt="User Image">
                                 <span class="d-none d-md-inline">
                                     <?= $admin->fname . ' ' . $admin->lname ?>
                                 </span>
@@ -233,35 +244,26 @@
 
                             <ul class="dropdown-menu dropdown-menu-lg dropdown-menu-end">
                                 <li class="user-header text-bg-primary">
-                                    <img src="<?= base_url('assets/uploads/admin_img/' . $admin->image);  ?>" class="rounded-circle shadow" alt="User Image">
+                                    <img src="<?= base_url('assets/uploads/admin_img/' . ($admin->image ?? 'default.png')); ?>"
+                                        class="rounded-circle shadow" alt="User Image">
                                     <p>
-                                        <?= $this->session->userdata('fname') . ' ' . $this->session->userdata('lname'); ?>
-                                        - <?= ucfirst($this->session->userdata('role')) ?>
-                                        <small>Member since <?= date("M, Y", strtotime($admin->created_at)) ?></small>
+                                        <?= $admin->fname . ' ' . $admin->lname ?>
+                                        - <?= ucfirst($CI->session->userdata('role')) ?>
+                                        <small>
+                                            Member since <?= date("M, Y", strtotime($admin->created_at)) ?>
+                                        </small>
                                     </p>
                                 </li>
+
                                 <li class="user-footer">
                                     <a href="<?= base_url('profile') ?>" class="btn btn-default btn-flat">Profile</a>
-                                    <a href="<?= base_url('admin/Auth/logout') ?>" class="btn btn-default btn-flat float-end">Logout</a>
+                                    <a href="<?= base_url('admin/Auth/logout') ?>"
+                                        class="btn btn-default btn-flat float-end">Logout</a>
                                 </li>
                             </ul>
                         </li>
+                    <?php endif; ?>
 
-                    <?php else: ?>
-
-                        
-                        <li class="nav-item">
-                            <a href="<?= base_url('admin/Auth/login') ?>" class="btn btn-outline-light me-2 px-3 py-1">
-                                <i class="fas fa-sign-in-alt"></i> Login
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="<?= base_url('admin/Auth/signup') ?>" class="btn btn-primary px-3 py-1">
-                                <i class="fas fa-user-plus"></i> Signup
-                            </a>
-                        </li>
-
-                    <?php endif; ?> -->
 
 
                     <!--end::End Navbar Links-->
@@ -429,407 +431,6 @@
                                 <p>
                                     Users
                                 </p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="<?= site_url('assets/admin') ?>/generate/theme.html" class="nav-link">
-                                <i class="nav-icon bi bi-palette"></i>
-                                <p>Theme Generate</p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="#" class="nav-link">
-                                <i class="nav-icon bi bi-box-seam-fill"></i>
-                                <p>
-                                    Widgets
-                                    <i class="nav-arrow bi bi-chevron-right"></i>
-                                </p>
-                            </a>
-                            <ul class="nav nav-treeview">
-                                <li class="nav-item">
-                                    <a href="<?= site_url('assets/admin') ?>/widgets/small-box.html" class="nav-link">
-                                        <i class="nav-icon bi bi-circle"></i>
-                                        <p>Small Box</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="<?= site_url('assets/admin') ?>/widgets/info-box.html" class="nav-link">
-                                        <i class="nav-icon bi bi-circle"></i>
-                                        <p>info Box</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="<?= site_url('assets/admin') ?>/widgets/cards.html" class="nav-link">
-                                        <i class="nav-icon bi bi-circle"></i>
-                                        <p>Cards</p>
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
-                        <li class="nav-item">
-                            <a href="#" class="nav-link">
-                                <i class="nav-icon bi bi-clipboard-fill"></i>
-                                <p>
-                                    Layout Options
-                                    <span class="nav-badge badge text-bg-secondary me-3">6</span>
-                                    <i class="nav-arrow bi bi-chevron-right"></i>
-                                </p>
-                            </a>
-                            <ul class="nav nav-treeview">
-                                <li class="nav-item">
-                                    <a href="<?= site_url('assets/admin') ?>/layout/unfixed-sidebar.html" class="nav-link">
-                                        <i class="nav-icon bi bi-circle"></i>
-                                        <p>Default Sidebar</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="<?= site_url('assets/admin') ?>/layout/fixed-sidebar.html" class="nav-link">
-                                        <i class="nav-icon bi bi-circle"></i>
-                                        <p>Fixed Sidebar</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="<?= site_url('assets/admin') ?>/layout/fixed-header.html" class="nav-link">
-                                        <i class="nav-icon bi bi-circle"></i>
-                                        <p>Fixed Header</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="<?= site_url('assets/admin') ?>/layout/fixed-footer.html" class="nav-link">
-                                        <i class="nav-icon bi bi-circle"></i>
-                                        <p>Fixed Footer</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="<?= site_url('assets/admin') ?>/layout/fixed-complete.html" class="nav-link">
-                                        <i class="nav-icon bi bi-circle"></i>
-                                        <p>Fixed Complete</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="<?= site_url('assets/admin') ?>/layout/layout-custom-area.html" class="nav-link">
-                                        <i class="nav-icon bi bi-circle"></i>
-                                        <p>Layout <small>+ Custom Area </small></p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="<?= site_url('assets/admin') ?>/layout/sidebar-mini.html" class="nav-link">
-                                        <i class="nav-icon bi bi-circle"></i>
-                                        <p>Sidebar Mini</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="<?= site_url('assets/admin') ?>/layout/collapsed-sidebar.html" class="nav-link">
-                                        <i class="nav-icon bi bi-circle"></i>
-                                        <p>Sidebar Mini <small>+ Collapsed</small></p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="<?= site_url('assets/admin') ?>/layout/logo-switch.html" class="nav-link">
-                                        <i class="nav-icon bi bi-circle"></i>
-                                        <p>Sidebar Mini <small>+ Logo Switch</small></p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="<?= site_url('assets/admin') ?>/layout/layout-rtl.html" class="nav-link">
-                                        <i class="nav-icon bi bi-circle"></i>
-                                        <p>Layout RTL</p>
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
-                        <li class="nav-item">
-                            <a href="#" class="nav-link">
-                                <i class="nav-icon bi bi-tree-fill"></i>
-                                <p>
-                                    UI Elements
-                                    <i class="nav-arrow bi bi-chevron-right"></i>
-                                </p>
-                            </a>
-                            <ul class="nav nav-treeview">
-                                <li class="nav-item">
-                                    <a href="<?= site_url('assets/admin') ?>/UI/general.html" class="nav-link">
-                                        <i class="nav-icon bi bi-circle"></i>
-                                        <p>General</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="<?= site_url('assets/admin') ?>/UI/icons.html" class="nav-link">
-                                        <i class="nav-icon bi bi-circle"></i>
-                                        <p>Icons</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="<?= site_url('assets/admin') ?>/UI/timeline.html" class="nav-link">
-                                        <i class="nav-icon bi bi-circle"></i>
-                                        <p>Timeline</p>
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
-                        <li class="nav-item">
-                            <a href="#" class="nav-link">
-                                <i class="nav-icon bi bi-pencil-square"></i>
-                                <p>
-                                    Forms
-                                    <i class="nav-arrow bi bi-chevron-right"></i>
-                                </p>
-                            </a>
-                            <ul class="nav nav-treeview">
-                                <li class="nav-item">
-                                    <a href="<?= site_url('assets/admin') ?>/forms/general.html" class="nav-link">
-                                        <i class="nav-icon bi bi-circle"></i>
-                                        <p>General Elements</p>
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
-                        <li class="nav-item">
-                            <a href="#" class="nav-link">
-                                <i class="nav-icon bi bi-table"></i>
-                                <p>
-                                    Tables
-                                    <i class="nav-arrow bi bi-chevron-right"></i>
-                                </p>
-                            </a>
-                            <ul class="nav nav-treeview">
-                                <li class="nav-item">
-                                    <a href="<?= site_url('assets/admin') ?>/tables/simple.html" class="nav-link">
-                                        <i class="nav-icon bi bi-circle"></i>
-                                        <p>Simple Tables</p>
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
-                        <li class="nav-header">EXAMPLES</li>
-                        <li class="nav-item">
-                            <a href="#" class="nav-link">
-                                <i class="nav-icon bi bi-box-arrow-in-right"></i>
-                                <p>
-                                    Auth
-                                    <i class="nav-arrow bi bi-chevron-right"></i>
-                                </p>
-                            </a>
-                            <ul class="nav nav-treeview">
-                                <li class="nav-item">
-                                    <a href="#" class="nav-link">
-                                        <i class="nav-icon bi bi-box-arrow-in-right"></i>
-                                        <p>
-                                            Version 1
-                                            <i class="nav-arrow bi bi-chevron-right"></i>
-                                        </p>
-                                    </a>
-                                    <ul class="nav nav-treeview">
-                                        <li class="nav-item">
-                                            <a href="<?= site_url('assets/admin') ?>/examples/login.html" class="nav-link">
-                                                <i class="nav-icon bi bi-circle"></i>
-                                                <p>Login</p>
-                                            </a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a href="<?= site_url('assets/admin') ?>/examples/register.html" class="nav-link">
-                                                <i class="nav-icon bi bi-circle"></i>
-                                                <p>Register</p>
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="#" class="nav-link">
-                                        <i class="nav-icon bi bi-box-arrow-in-right"></i>
-                                        <p>
-                                            Version 2
-                                            <i class="nav-arrow bi bi-chevron-right"></i>
-                                        </p>
-                                    </a>
-                                    <ul class="nav nav-treeview">
-                                        <li class="nav-item">
-                                            <a href="<?= site_url('assets/admin') ?>/examples/login-v2.html" class="nav-link">
-                                                <i class="nav-icon bi bi-circle"></i>
-                                                <p>Login</p>
-                                            </a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a href="<?= site_url('assets/admin') ?>/examples/register-v2.html" class="nav-link">
-                                                <i class="nav-icon bi bi-circle"></i>
-                                                <p>Register</p>
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="<?= site_url('assets/admin') ?>/examples/lockscreen.html" class="nav-link">
-                                        <i class="nav-icon bi bi-circle"></i>
-                                        <p>Lockscreen</p>
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
-                        <li class="nav-header">DOCUMENTATIONS</li>
-                        <li class="nav-item">
-                            <a href="<?= site_url('assets/admin') ?>/docs/introduction.html" class="nav-link">
-                                <i class="nav-icon bi bi-download"></i>
-                                <p>Installation</p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="<?= site_url('assets/admin') ?>/docs/layout.html" class="nav-link">
-                                <i class="nav-icon bi bi-grip-horizontal"></i>
-                                <p>Layout</p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="<?= site_url('assets/admin') ?>/docs/color-mode.html" class="nav-link">
-                                <i class="nav-icon bi bi-star-half"></i>
-                                <p>Color Mode</p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="#" class="nav-link">
-                                <i class="nav-icon bi bi-ui-checks-grid"></i>
-                                <p>
-                                    Components
-                                    <i class="nav-arrow bi bi-chevron-right"></i>
-                                </p>
-                            </a>
-                            <ul class="nav nav-treeview">
-                                <li class="nav-item">
-                                    <a href="<?= site_url('assets/admin') ?>/docs/components/main-header.html" class="nav-link">
-                                        <i class="nav-icon bi bi-circle"></i>
-                                        <p>Main Header</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="<?= site_url('assets/admin') ?>/docs/components/main-sidebar.html" class="nav-link">
-                                        <i class="nav-icon bi bi-circle"></i>
-                                        <p>Main Sidebar</p>
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
-                        <li class="nav-item">
-                            <a href="#" class="nav-link">
-                                <i class="nav-icon bi bi-filetype-js"></i>
-                                <p>
-                                    Javascript
-                                    <i class="nav-arrow bi bi-chevron-right"></i>
-                                </p>
-                            </a>
-                            <ul class="nav nav-treeview">
-                                <li class="nav-item">
-                                    <a href="<?= site_url('assets/admin') ?>/docs/javascript/treeview.html" class="nav-link">
-                                        <i class="nav-icon bi bi-circle"></i>
-                                        <p>Treeview</p>
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
-                        <li class="nav-item">
-                            <a href="<?= site_url('assets/admin') ?>/docs/browser-support.html" class="nav-link">
-                                <i class="nav-icon bi bi-browser-edge"></i>
-                                <p>Browser Support</p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="<?= site_url('assets/admin') ?>/docs/how-to-contribute.html" class="nav-link">
-                                <i class="nav-icon bi bi-hand-thumbs-up-fill"></i>
-                                <p>How To Contribute</p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="<?= site_url('assets/admin') ?>/docs/faq.html" class="nav-link">
-                                <i class="nav-icon bi bi-question-circle-fill"></i>
-                                <p>FAQ</p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="<?= site_url('assets/admin') ?>/docs/license.html" class="nav-link">
-                                <i class="nav-icon bi bi-patch-check-fill"></i>
-                                <p>License</p>
-                            </a>
-                        </li>
-                        <li class="nav-header">MULTI LEVEL EXAMPLE</li>
-                        <li class="nav-item">
-                            <a href="#" class="nav-link">
-                                <i class="nav-icon bi bi-circle-fill"></i>
-                                <p>Level 1</p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="#" class="nav-link">
-                                <i class="nav-icon bi bi-circle-fill"></i>
-                                <p>
-                                    Level 1
-                                    <i class="nav-arrow bi bi-chevron-right"></i>
-                                </p>
-                            </a>
-                            <ul class="nav nav-treeview">
-                                <li class="nav-item">
-                                    <a href="#" class="nav-link">
-                                        <i class="nav-icon bi bi-circle"></i>
-                                        <p>Level 2</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="#" class="nav-link">
-                                        <i class="nav-icon bi bi-circle"></i>
-                                        <p>
-                                            Level 2
-                                            <i class="nav-arrow bi bi-chevron-right"></i>
-                                        </p>
-                                    </a>
-                                    <ul class="nav nav-treeview">
-                                        <li class="nav-item">
-                                            <a href="#" class="nav-link">
-                                                <i class="nav-icon bi bi-record-circle-fill"></i>
-                                                <p>Level 3</p>
-                                            </a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a href="#" class="nav-link">
-                                                <i class="nav-icon bi bi-record-circle-fill"></i>
-                                                <p>Level 3</p>
-                                            </a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a href="#" class="nav-link">
-                                                <i class="nav-icon bi bi-record-circle-fill"></i>
-                                                <p>Level 3</p>
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="#" class="nav-link">
-                                        <i class="nav-icon bi bi-circle"></i>
-                                        <p>Level 2</p>
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
-                        <li class="nav-item">
-                            <a href="#" class="nav-link">
-                                <i class="nav-icon bi bi-circle-fill"></i>
-                                <p>Level 1</p>
-                            </a>
-                        </li>
-                        <li class="nav-header">LABELS</li>
-                        <li class="nav-item">
-                            <a href="#" class="nav-link">
-                                <i class="nav-icon bi bi-circle text-danger"></i>
-                                <p class="text">Important</p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="#" class="nav-link">
-                                <i class="nav-icon bi bi-circle text-warning"></i>
-                                <p>Warning</p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="#" class="nav-link">
-                                <i class="nav-icon bi bi-circle text-info"></i>
-                                <p>Informational</p>
                             </a>
                         </li>
                     </ul>

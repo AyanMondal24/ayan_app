@@ -46,13 +46,46 @@ class user_model extends CI_Model
         return $this->db->get()->row();
     }
 
-    public function getAllUsers($limit,$offset)
+    public function getAllUsers($limit, $offset, $sort_column = null, $sort_order = null, $searchval = null, $userType=null)
     {
+        $allowedSorts = [
+            'name'     => "CONCAT(fname, ' ', lname)",
+            'email'    => "email",
+            'mobile'   => "mobile",
+            'created_at'   => "created_at",
+            'id'       => "id"
+        ];
+
+        if (!$sort_column || !isset($allowedSorts[$sort_column])) {
+            $sort_column = 'id';
+        }
+
         $this->db->select('*');
         $this->db->from('users');
-        $this->db ->limit((int)$limit, (int)$offset);
-       return $this->db->get()->result();
+
+        if (!empty($sort_column) && !empty($sort_order)) {
+            $this->db->order_by($allowedSorts[$sort_column], $sort_order, false);
+        }
+
+        if (!empty($searchval)) {
+            $this->db->group_start()
+                ->like('id', $searchval)
+                ->or_like('fname', $searchval)
+                ->or_like('lname', $searchval)
+                ->or_like('email', $searchval)
+                ->or_like('mobile', $searchval)
+                ->group_end();
+        }
+
+        if ($userType !== '' && $userType !== null) {
+            $this->db->where('is_guest', (int)$userType);
+        }
+
+        $this->db->limit((int)$limit, (int)$offset);
+
+        return $this->db->get()->result();
     }
+
 
     public function update_status($user_id, $status)
     {
@@ -63,7 +96,24 @@ class user_model extends CI_Model
                 'updated_at' => date('Y-m-d H:i:s')
             ]);
     }
-    public function total_data(){
-        return $this->db->count_all('users');
+    public function total_data($searchval = null,$userType=null)
+    {
+        $this->db->from('users');
+
+        if (!empty($searchval)) {
+            $this->db->group_start()
+                ->like('id', $searchval)
+                ->or_like('fname', $searchval)
+                ->or_like('lname', $searchval)
+                ->or_like('email', $searchval)
+                ->or_like('mobile', $searchval)
+                ->group_end();
+        }
+
+        if ($userType !== '' && $userType !== null) {
+            $this->db->where('is_guest', (int)$userType);
+        }
+
+        return $this->db->count_all_results();
     }
 }
