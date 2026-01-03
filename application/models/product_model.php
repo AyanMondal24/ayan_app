@@ -19,7 +19,7 @@ class product_model extends CI_Model
         $this->db->from('products p');
         $this->db->join('category c', 'c.id=p.category', 'inner');
         $this->db->join('product_unit u', 'u.id=p.unit_id', 'inner');
-        
+
         $this->db->order_by('id', 'ASC');
         return $this->db->get()->result();
     }
@@ -33,7 +33,7 @@ class product_model extends CI_Model
         return $this->db->count_all_results('products');
     }
 
-    //admin single view 
+    //admin single view
     public function singleView($enc_id)
     {
         $this->db->select('p.id,p.name AS product_name,p.description,p.price,p.category,p.quantity,p.status,p.is_available,p.created_at,c.name AS category_name,u.short_name');
@@ -67,7 +67,7 @@ class product_model extends CI_Model
         ];
     }
 
-    // for showing data on  edit page 
+    // for showing data on  edit page
     public function getSingleProduct($id)
     {
         return $this->db->get_where('products', ['id' => $id])->row();
@@ -79,26 +79,26 @@ class product_model extends CI_Model
         return $this->db->update('products', $data);
     }
 
-    // delete query 
+    // delete query
     public function delete($id)
     {
         $this->db->where('id', $id);
         return $this->db->delete('products');
     }
 
-    // for uploading image  into product image 
+    // for uploading image  into product image
     public  function SetProductImages($data)
     {
         return $this->db->insert('product_image', $data);
     }
-    //show image details on update form 
+    //show image details on update form
     public function getProductImages($id)
     {
         $this->db->select('*');
         $this->db->from('product_image');
         return $this->db->where('product_id', $id)->get()->result();
     }
-    // get only featured image 
+    // get only featured image
     public function getFeaturedImages($id)
     {
         $this->db->select('*');
@@ -112,26 +112,26 @@ class product_model extends CI_Model
             ->update('product_image', $data);
     }
 
-    // in ptoduct update page only image table update 
+    // in ptoduct update page only image table update
     public function insertProductImage($data)
     {
         return $this->db->insert('product_image', $data);
     }
-    // in ptoduct update page when user click cross button delete image table  
+    // in ptoduct update page when user click cross button delete image table
     public function deleteProductImage($image_file_name)
     {
         $this->db->where('image_name', $image_file_name);
         return $this->db->delete('product_image');
     }
 
-    // update only single field in image table 
+    // update only single field in image table
     public function updateProductImageData($id, $image_data)
     {
         $this->db->where('id', $id);
         return $this->db->update('product_image', $image_data);
     }
 
-    // get old image from image table for unline from parmanent folder products/ 
+    // get old image from image table for unline from parmanent folder products/
     public function getOldImage($image_id)
     {
         return $this->db
@@ -166,6 +166,7 @@ class product_model extends CI_Model
         $this->db->join('product_image i', 'i.product_id=p.id', 'inner');
         // $this->db->where('i.image_type', 'main');
         $this->db->where('p.status', 0);
+        $this->db->where('p.is_available', 0);
         $this->db->where('i.is_featured', 0);
 
         if (!empty($category_name) && $category_name !== 'all') {
@@ -182,7 +183,7 @@ class product_model extends CI_Model
         return $this->db->get()->result();
     }
 
-    // shop page 
+    // shop page
     public function getShopProducts($limit, $offset, $category_name = null, $search = null, $price = null)
     {
         $this->db->select('
@@ -248,10 +249,12 @@ class product_model extends CI_Model
             $this->db->like('p.name', $search);
         }
 
+        $this->db->where('p.status', 0);
+        $this->db->where('p.is_available', 0);
         return $this->db->count_all_results();
     }
 
-    // make featured image 
+    // make featured image
     public function makeFeatured($product_id, $image_id)
     {
         // Set all to normal
@@ -313,15 +316,35 @@ class product_model extends CI_Model
     }
 
 
-    //  sum of all quantity 
+    //  sum of all quantity
     function totalProduct()
     {
         // Example using CodeIgniter / PHP
         $this->db->select_sum('quantity');
-        $this->db->where('status', 0); // optional
-        $this->db->where('is_available', 0); // optional
+        $this->db->where('status', 0);
+        $this->db->where('is_available', 0);
         $query = $this->db->get('products');
         $result = $query->row();
         return $total_available = $result->quantity;
+    }
+
+    public function getAdminHomeProducts()
+    {
+        $this->db->select('
+        p.id AS product_id,
+        p.name AS product_name,
+        p.description,
+        p.price,
+        pi.image_name as image,
+        pi.alt_text
+    ');
+        $this->db->from('products p');
+        $this->db->join('product_image pi', 'p.id = pi.product_id', 'left');
+        $this->db->order_by('p.id', 'DESC');
+        $this->db->where('pi.is_featured',0);
+        $this->db->where('status', 0);
+        $this->db->where('is_available', 0);
+        $this->db->limit(4);
+        return $this->db->get()->result();
     }
 }

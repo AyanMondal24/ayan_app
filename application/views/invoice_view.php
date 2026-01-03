@@ -32,11 +32,11 @@
 
         .left {
             float: left;
-            width: 60%;
+            width: 80%;
         }
 
         .right {
-            width: 40%;
+            width: 20%;
             /* text-align: right; */
         }
 
@@ -49,11 +49,15 @@
         }
 
         .invoice-box {
-            border: 1px dashed #000;
-            padding: 6px 10px;
-            margin-top: 10px;
-            display: inline-block;
+            background-color: #000;
+            color: #fff;
             font-weight: bold;
+            text-transform: uppercase;
+            padding: 10px 16px;
+            display: inline-block;
+            font-size: 22px;
+            border-radius: 4px;
+            text-align: center;
         }
 
         hr {
@@ -82,41 +86,6 @@
         .billing p {
             font-size: 12px !important;
         }
-
-        /* table {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 12px;
-        }
-
-        thead th {
-            border: 1px solid #000;
-            padding: 6px 5px;
-            line-height: 1.1;
-            height: auto;
-            vertical-align: middle;
-            text-align: center;
-            font-weight: bold;
-            background-color: #f2f2f2;
-            border-bottom: 2px solid #000;
-        }
-
-        tbody td {
-            border: 1px solid #000;
-            padding: 6px 5px;
-            line-height: 1.1;
-            vertical-align: middle;
-            text-align: center;
-        }
-
-
-        td:first-child {
-            text-align: left;
-        }
-
-        .total td {
-            font-weight: bold;
-        } */
 
 
         table {
@@ -181,7 +150,6 @@
             font-size: 14px;
             padding-top: 8px;
         }
-
     </style>
 </head>
 
@@ -190,7 +158,7 @@
     <div class="invoice">
 
         <!-- TITLE -->
-        <div class="title">Tax Invoice</div>
+        <!-- <div class="title">Tax Invoice</div> -->
 
         <!-- HEADER -->
         <div class="top">
@@ -212,13 +180,12 @@
                     <b>Ship-from Address:</b> <?= $address ?>
                     <!-- <b>CIN:</b> U51109KA2012PTC066107 -->
                 </p>
-                <p><b>GSTIN :</b> 29AACCF0683K1ZD</p>
+                <!-- <p><b>GSTIN :</b> 29AACCF0683K1ZD</p> -->
             </div>
 
             <div class="right">
-                <img src="qr.png" class="qr">
                 <div class="invoice-box">
-                    Invoice # BFF4025005897334
+                    Invoice
                 </div>
             </div>
         </div>
@@ -279,9 +246,9 @@
 
         <hr>
 
-      
+
         <?php $grandTotal = $subtotal - $discount ?>
-   
+
         <div class="summary-box">
             <div class="summary-row">
                 <span>Total</span>
@@ -303,11 +270,11 @@
 
         <!-- SIGN -->
         <div style="clear: both;"></div>
-        <div class="sign">
+        <!-- <div class="sign">
             <p>Ayan Internet Private Limited</p>
             <img src="sign.png">
             <p class="small">Authorized Signatory</p>
-        </div>
+        </div> -->
 
     </div>
 

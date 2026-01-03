@@ -29,7 +29,7 @@ if (!empty($products)) {
     ?>
 
     <?php
-    // show shop page on product 
+    // show shop page on product
     if (!empty($category_name)) {
     ?>
         <input type="hidden" value="<?= $category_name ?>" id="current_category">
@@ -61,7 +61,7 @@ if (!empty($products)) {
             </div>
         <?php }
     } else { ?>
-        <div class="text-center bg-secondary p-4 text-light fs-2 rounded">No data found</div>
+        <div class="text-center bg-secondary p-4 text-light fs-2 rounded">No items available</div>
 
 <?php   }
 }

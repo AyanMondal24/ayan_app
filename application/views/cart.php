@@ -123,11 +123,11 @@
                         <input type="submit" id="submit" class="btn border-secondary rounded-pill px-4 py-3 text-primary" value="<?= $is_applied ? 'Applied' : 'Apply Coupon' ?>">
                    <?php } else { ?>
                         <input type="submit" id="submit" class="btn border-secondary rounded-pill px-4 py-3 text-primary" value="Apply Coupon">
-                      
+
                   <?php  }
 
                     ?>
-                    <!-- <input type="submit" id="submit" class="btn border-secondary rounded-pill px-4 py-3 text-primary" value="<?= $is_applied ? 'Applied' : 'Apply Coupon' ?>"> -->
+        
                 </form>
                 <div id="response-msg" class="mt-0"></div>
             </div>
@@ -200,7 +200,7 @@
                 <a href="<?= base_url('Auth/login?redirect=checkout') ?>" type="button" class="btn btn-primary text-light float-end">Login</a>
             </div>
             <!-- <div class="modal-footer">
-               
+
             </div> -->
         </div>
     </div>
@@ -209,7 +209,7 @@
 <script>
     document.addEventListener('DOMContentLoaded', function() {
 
-        // quantity incease decrease 
+        // quantity incease decrease
         $(document).on("click", '.qty-btn', function(e) {
             e.preventDefault();
 
@@ -246,7 +246,7 @@
             });
         });
 
-        // remove from cart 
+        // remove from cart
         $(document).on('click', '.remove-btn', function(e) {
 
             let product_id = $(this).data('id');
@@ -265,7 +265,7 @@
         });
 
         lastApplied = "<?= $current_coupon_code ?>";
-        // coupons 
+        // coupons
         $('#coupon-form').on('submit', function(e) {
             e.preventDefault();
             const code = document.getElementById('coupon_code').value;
@@ -406,7 +406,7 @@
 
             $(product_cont).html(table_html);
         } else if (response.status === 'error') {
-            // cart empty 
+            // cart empty
             $("#coupon_code").val('');
             $("#subtotal").text('0.00');
             $("#grand_total").text('0.00');

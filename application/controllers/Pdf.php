@@ -47,6 +47,47 @@ class Pdf extends CI_Controller
 
         $mpdf->WriteHTML($html);
         $mpdf->Output('invoice-' . $order->order_number . '.pdf', 'I');
-
     }
+
+    // function invoiceTemplate($order)
+    // {
+    //     return "
+    // <h2>Invoice #{$order->order_number}</h2>
+    // <p><b>Name:</b> {$order->customer_name}</p>
+    // <p><b>Email:</b> {$order->email}</p>
+
+    // <table border='1' cellpadding='8' cellspacing='0' width='100%'>
+    //     <tr>
+    //         <th>Product</th>
+    //         <th>Qty</th>
+    //         <th>Price</th>
+    //     </tr>
+    //     {$order->items}
+    // </table>
+
+    // <h3>Total: ₹{$order->total_amount}</h3>
+    // <p>Thank you for shopping with us!</p>
+    // ";
+    // }
+    // public function confirmOrder($order_id)
+    // {
+    //     // 1. Update order status
+    //     $this->db->where('id', $order_id)
+    //         ->update('orders', ['order_status' => 'confirmed']);
+
+    //     // 2. Fetch order data
+    //     $order = $this->order_model->getOrderInvoice($order_id);
+
+    //     // 3. Generate invoice HTML
+    //     $invoiceHtml = invoiceTemplate($order);
+
+    //     // 4. Send email
+    //     sendInvoiceMail(
+    //         $order->email,
+    //         'Your Order Invoice - ' . $order->order_number,
+    //         $invoiceHtml
+    //     );
+
+    //     echo "Order confirmed & invoice sent";
+    // }
 }

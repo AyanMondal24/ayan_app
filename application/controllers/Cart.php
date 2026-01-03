@@ -85,7 +85,7 @@ class Cart extends CI_Controller
         }
 
         $data['coupon'] = $coupon;
-        
+
         load_views('cart', $data);
     }
 
@@ -143,17 +143,6 @@ class Cart extends CI_Controller
         }
 
         $discount = calculate_discount($subtotal, $coupon);
-
-        // Calculate discount
-        // if ($coupon->discount_type === 'fixed') {
-        //     $discount = $coupon->discount_value;
-        // } else {
-        //     $discount = ($subtotal * $coupon->discount_value) / 100;
-        // }
-
-        // if ($discount > $subtotal) {
-        //     $discount = $subtotal;
-        // }
 
         $this->session->set_userdata("applied_coupon", [
             "coupon_id" => $coupon->id
@@ -223,7 +212,7 @@ class Cart extends CI_Controller
             $subtotal += $itemSubtotal;
         }
 
-        // Coupons 
+        // Coupons
         $session_coupon = $this->session->userdata('applied_coupon');
 
         $discount = 0;
@@ -257,7 +246,7 @@ class Cart extends CI_Controller
         }
 
 
-        // coupon exist and also new coupon comes 
+        // coupon exist and also new coupon comes
         $input_coupon   = $this->input->post("code");
         if ($input_coupon) {
 

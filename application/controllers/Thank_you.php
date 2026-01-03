@@ -1,5 +1,5 @@
 <?php
-
+// pjbj djpw phik xrap
 use Stripe\Stripe;
 
 class Thank_you extends CI_Controller
@@ -9,6 +9,7 @@ class Thank_you extends CI_Controller
         parent::__construct();
         $this->load->model('order_model');
         $this->load->library('encryption');
+        $this->load->helper(['invoice', 'email', 'calc_discount']);
     }
 
     function index($enc_order_id = null)
@@ -21,8 +22,40 @@ class Thank_you extends CI_Controller
         $this->session->unset_userdata('order_success');
 
         $order_id = $this->encryption->decrypt(base64_decode(urldecode($enc_order_id)));
-        $data['order'] = $this->order_model->getOrderSummary($order_id);
-        
+       $order = $this->order_model->getOrderSummary($order_id);
+
+       if($order->payment_method=== 'Cash On Delivery'){
+            $order_details = $this->order_model->getOrderItems($order_id);
+            $subtotal=0;
+            foreach ($order_details as $order_detail) {
+                $subtotal+=$order_detail->price * $order_detail->quantity;
+            }
+            $coupon=(object)[
+                'discount_type'  => $order->discount_type,
+                'discount_value' => $order->discount_value
+            ];
+            $discount = calculate_discount($subtotal, $coupon);
+
+            $pdfPath = generateInvoicePdf($order, $order_details, $discount);
+
+            $emailHtml = "
+                    <h2>Thank you for your order!</h2>
+                    <p><b>Order No:</b> {$order->order_number}</p>
+                    <p>Please find your invoice attached.</p>
+                    ";
+            $mailSent = sendInvoiceMail(
+                $order->order_b_email,
+                'Invoice - ' . $order->order_number,
+                $emailHtml,
+                $pdfPath
+            );
+            if (!$mailSent) {
+                log_message('error', 'Invoice email failed for Order: ' . $order->order_number);
+            }
+        }
+
+
+        $data['order']=$order;
         load_views('thank_you', $data);
     }
 
@@ -63,9 +96,47 @@ class Thank_you extends CI_Controller
 
             // Handle based on status
             if ($status === 'succeeded') {
+
                 // Mark as success (idempotent)
                 $order_id = $this->order_model->markPaymentSuccess($payment_intent_id, $charge_id);
 
+                $order = $this->order_model->getOrderSummary($order_id);
+                $order_details = $this->order_model->getOrderItems($order_id);
+
+                // Calculate discount (same logic as PDF controller)
+                $subtotal = 0;
+                foreach ($order_details as $od) {
+                    $subtotal += $od->price * $od->quantity;
+                }
+
+                $coupon = (object)[
+                    'discount_type'  => $order->discount_type,
+                    'discount_value' => $order->discount_value
+                ];
+
+                $discount = calculate_discount($subtotal, $coupon);
+
+                // Generate PDF
+                $pdfPath = generateInvoicePdf($order, $order_details, $discount);
+
+                // Email body
+                $emailHtml = "
+                    <h2>Thank you for your order!</h2>
+                    <p>Your payment was successful.</p>
+                    <p><b>Order No:</b> {$order->order_number}</p>
+                    <p>Please find your invoice attached.</p>
+                    ";
+
+                // Send email
+                $mailSent = sendInvoiceMail(
+                    $order->order_b_email,
+                    'Invoice - ' . $order->order_number,
+                    $emailHtml,
+                    $pdfPath
+                );
+                if (!$mailSent) {
+                    log_message('error', 'Invoice email failed for Order: ' . $order->order_number);
+                }
                 // Cleanup session (only on success)
                 if ($this->session->has_userdata('applied_coupon')) {
                     $this->session->unset_userdata('applied_coupon');
@@ -120,7 +191,7 @@ class Thank_you extends CI_Controller
             'title' => 'Payment Already Completed'
         ];
         $data['order'] = $order;
-        $data['enc_order_id']=$enc_order_id;
+        $data['enc_order_id'] = $enc_order_id;
         load_views('already_paid', $data);
     }
 }

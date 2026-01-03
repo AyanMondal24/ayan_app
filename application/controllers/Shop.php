@@ -61,7 +61,7 @@ class Shop extends CI_Controller
         $data['total_product'] = $this->product_model->totalProducts();
         $data['category'] = $this->category_model->getAllCategoryWithProductCount();
         $data['pagination'] = $this->pagination->create_links();
-         $data['search'] = $this->input->post('home_search');
+        $data['search'] = $this->input->post('home_search');
         load_views('shop', $data);
     }
 }

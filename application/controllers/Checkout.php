@@ -66,7 +66,7 @@ class Checkout extends CI_Controller
             $guest = 1;
 
             $bill_email = $this->input->post('b_email');
-            // check email exist or not in user table 
+            // check email exist or not in user table
             $check_user = $this->user_model->getUserByEmailForGuest($bill_email, 'user');
             if ($check_user) {
                 $user_id = $check_user->id;
@@ -140,7 +140,7 @@ class Checkout extends CI_Controller
             $data["s_email"]  = '';
         }
 
-        // check guest or user 
+        // check guest or user
         if (empty($this->session->userdata('email'))) {
             if ($this->address_model->getAddressByUserIdcheck($user_id)) {
                 $existing_address = $this->address_model->getAddressByUserIdcheck($user_id);
@@ -154,7 +154,7 @@ class Checkout extends CI_Controller
         $address = false;
         $order = false;
         $order_details_check = false;
-        // new user 
+        // new user
         if (empty($address_id)) {
 
             $data['created_at'] = date("Y-m-d H:i:s");
@@ -171,7 +171,7 @@ class Checkout extends CI_Controller
                 return;
             }
         } else {
-            // old user update address 
+            // old user update address
             $data['updated_at'] = date("Y-m-d H:i:s");
             // echo $data['updated_at'];
             if ($this->address_model->update($data, $address_id)) {
@@ -186,18 +186,18 @@ class Checkout extends CI_Controller
             }
         }
 
-        // --------------------------- ORDER TABLE ---------------------- 
+        // --------------------------- ORDER TABLE ----------------------
 
         // $order_data['user_id'] = $user_id;
         // $order_data['address_id'] = $address_id;
-        // getting product price 
+        // getting product price
         $cart = $this->session->userdata('cart') ?? [];
         $subtotal = 0;
         foreach ($cart as $item) {
             $product = $this->product_model->getProductById($item['product_id']);
             $subtotal += $item['qty'] * $product->price;
         }
-        // getting coupons data 
+        // getting coupons data
         $applied_coupon = $this->session->userdata('applied_coupon');
 
         $coupon = null;
@@ -218,7 +218,7 @@ class Checkout extends CI_Controller
         $data['created_at'] = date("Y-m-d H:i:s");
         $data['updated_at'] = date("Y-m-d H:i:s");
 
-        // insert order data 
+        // insert order data
         $order_id = $this->order_model->create($data);
         // $this->session->set_userdata('order', [
         //     'order_id' => $order_id
@@ -231,14 +231,14 @@ class Checkout extends CI_Controller
 
             $order_number = 'ORD-' . date('Ymd') . '-' . $unique_6_digit . '-' . $order_id;
 
-            // update order number 
+            // update order number
             if ($this->order_model->updateOrderNumber($order_number, $order_id)) {
                 $order = true;
             }
         }
 
 
-        // order details 
+        // order details
         $cart = $this->session->userdata('cart') ?? [];
 
         foreach ($cart as $item) {
@@ -264,7 +264,7 @@ class Checkout extends CI_Controller
 
         // FINAL RESPONSE
         if ($address && $order && $order_details_check) {
-            // getting payment details 
+            // getting payment details
 
             $payment_method = $this->order_model->getPaymentMethod($order_id);
             if ($payment_method->payment_method == 'Card') {

@@ -17,12 +17,6 @@ class Payment extends CI_Controller
     function index($enc_order_id = null)
     {
 
-        // if (!$this->session->userdata('payment_pending')) {
-        //     redirect('Shop');
-        //     exit;
-        // }
-
-
         $order_id = $this->encryption->decrypt(base64_decode(urldecode($enc_order_id)));
 
         $order = $this->order_model->getOrderSummary($order_id);
@@ -37,51 +31,7 @@ class Payment extends CI_Controller
         load_views('payment', $data);
     }
 
-    // old 
-    // function get_intent()
-    // {
-    //     // STRIPE_KEY
-    //     // STRIPE_SECRET
-    //     Stripe::setApiKey(STRIPE_SECRET);
-
-    //     $order_id = $this->input->post('order_id');
-
-    //     $order_details = $this->order_model->getOrderItems($order_id);
-
-    //     $order = $this->order_model->getOrderSummary($order_id);
-
-    //     $subtotal = 0;
-    //     foreach ($order_details as $od) {
-    //         $subtotal += $od->price * $od->quantity;
-    //     }
-
-    //     $coupon = (object) [
-    //         'discount_type'  => $order->discount_type,
-    //         'discount_value' => $order->discount_value
-    //     ];
-
-    //     $discount = calculate_discount($subtotal, $coupon);
-    //     $grand_total = $subtotal - $discount;
-    //     $amount = (int) round($grand_total * 100);
-
-    //     $intent = PaymentIntent::create([
-    //         'amount' => $amount, // amount in cents
-    //         'currency' => 'inr',
-    //         'automatic_payment_methods' => [
-    //             'enabled' => true,
-    //         ],
-    //     ]);
-
-    //     // store intent in db 
-    //     $this->order_model->updatePaymentIntent($order_id, $intent->id);
-
-    //     $this->output
-    //         ->set_content_type('application/json')
-    //         ->set_output(json_encode([
-    //             'clientSecret' => $intent->client_secret
-    //         ]));
-    // }
-    // new 
+  
     function get_intent()
     {
         \Stripe\Stripe::setApiKey(STRIPE_SECRET);

@@ -81,82 +81,13 @@
                     </thead>
 
                     <tbody id="order-tbody">
-                        <?php if (!empty($orders)) : ?>
-                            <?php $i = 1;
-                            foreach ($orders as $order) :
-                                $order_id = urlencode(base64_encode($this->encryption->encrypt($order->order_id)));
-                                $offset = $offset + 1;
-                            ?>
-                                <tr>
-                                    <td><?= $offset++; ?></td>
-                                    <td><?= $order->order_number ?: '#' . $order->order_id; ?></td>
-                                    <td><?= $order->customer_name ?? 'Guest'; ?></td>
-                                    <td><?= $order->total_items; ?></td>
-                                    <td>₹<?= number_format($order->total_amount, 2); ?></td>
-                                    <td>₹<?= number_format($order->coupon_discount, 2); ?></td>
-                                    <td><strong>₹<?= number_format($order->final_amount, 2); ?></strong></td>
-
-                                    <td>
-                                        <span class="badge bg-info">
-                                            <?= ucfirst($order->payment_method); ?>
-                                        </span>
-                                    </td>
-
-                                    <td>
-                                        <span class="badge
-                                            <?= $order->payment_status == 'paid' ? 'bg-success' : 'bg-warning'; ?>">
-                                            <?= ucfirst($order->payment_status); ?>
-                                        </span>
-                                    </td>
-
-                                    <?php
-                                    switch (strtolower($order->order_status)) {
-                                        case 'pending':
-                                            $badgeClass = 'bg-warning';   // yellow
-                                            break;
-
-                                        case 'confirmed':
-                                            $badgeClass = 'bg-primary';   // blue
-                                            break;
-
-                                        case 'delivered':
-                                            $badgeClass = 'bg-success';   // green
-                                            break;
-
-                                        case 'cancelled':
-                                            $badgeClass = 'bg-danger';    // red
-                                            break;
-
-                                        default:
-                                            $badgeClass = 'bg-secondary'; // gray
-                                    }
-                                    ?>
-
-                                    <td>
-                                        <span class="badge <?= $badgeClass ?>">
-                                            <?= ucfirst($order->order_status); ?>
-                                        </span>
-                                    </td>
-
-
-                                    <td><?= date('d M Y', strtotime($order->created_at)); ?></td>
-
-                                    <td>
-                                        <a href="<?= base_url('admin/orders/view/' . $order_id); ?>"
-                                            class="btn btn-sm btn-primary">
-                                            View
-                                        </a>
-                                    </td>
-                                </tr>
-                            <?php endforeach; ?>
-                        <?php else : ?>
-                            <tr>
-                                <td colspan="12" class="text-center text-danger">
-                                    No orders found
-                                </td>
-                            </tr>
-                        <?php endif; ?>
+                        <tr>
+                            <td colspan="12" class="text-center text-muted">
+                                Loading orders...
+                            </td>
+                        </tr>
                     </tbody>
+
                 </table>
             </div>
 
@@ -180,8 +111,10 @@
         let pageno = 1;
         let filterBy = '';
         let filterValue = '';
-        let sortOrder = '';
-        let sortColumn = '';
+
+        let sortOrder = 'desc'; // ✅ default DESC
+        let sortColumn = 'id'; // ✅ default column
+
         let per_page = 5;
 
         // get entries per page
@@ -338,7 +271,9 @@
             const offset = parseInt(response.offset);
             const perPage = parseInt(response.per_page);
 
-            if (response.sortOrder === 'desc') {
+            let sortOrder = response.sortOrder ?? 'desc'; // default DESC
+
+            if (sortOrder === 'desc') {
                 index = total - offset;
                 start = total - offset;
                 end = Math.max(total - (offset + perPage) + 1, 1);

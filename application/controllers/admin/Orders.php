@@ -50,12 +50,12 @@ class Orders extends MY_Controller
         $search = '';
         $filterBy = '';
         $filterValue = '';
-        $sortOrder='';
-        $sortColumn='';
+        $sortOrder = '';
+        $sortColumn = '';
 
         $pageno = (int) ($this->input->post('pageno') ?? 1);
         $search = $this->input->post('search') ?? '';
-        $sortOrder = ($this->input->post('sortOrder')=='desc') ? 'desc': 'asc';
+        $sortOrder = ($this->input->post('sortOrder') == 'desc') ? 'desc' : 'asc';
 
         $sortColumn = $this->input->post('sortColumn') ?? '';
         $filterBy = $this->input->post('filterBy') ?? '';
@@ -147,8 +147,8 @@ class Orders extends MY_Controller
                 'orders' => $orders,
                 'pagination' => $pagination,
                 'offset' => $offset,
-                'per_page'=>$per_page,
-                'total_item'=>$total_item,
+                'per_page' => $per_page,
+                'total_item' => $total_item,
                 'pageno' => $pageno,
                 'sortOrder' => $sortOrder,
                 'sortColumn' => $sortColumn,
@@ -163,7 +163,8 @@ class Orders extends MY_Controller
         load_admin_views('view_orders', $data);
     }
 
-    function getEntriesPerPage(){
+    function getEntriesPerPage()
+    {
         $total_item = $this->order_model->countTotalOrder();
         echo json_encode([
             'status' => 'success',

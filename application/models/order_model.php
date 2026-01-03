@@ -159,7 +159,7 @@ class order_model extends CI_Model
             }
         } else {
             // DEFAULT
-            $this->db->order_by('o.created_at', 'asc');
+            $this->db->order_by('o.id', 'desc');
         }
 
         //filtering
@@ -268,31 +268,7 @@ class order_model extends CI_Model
         return $this->db->update('orders', $data); // returns true or false
     }
 
-    // old
-    // public function markPaymentSuccess($intent_id, $txn_id)
-    // {
-    //     $order = $this->db
-    //         ->where('payment_intent_id', $intent_id)
-    //         ->get('orders')
-    //         ->row();
 
-    //     if (!$order) {
-    //         return false;
-    //     }
-
-    //     $this->db
-    //         ->where('payment_intent_id', $intent_id)
-    //         ->update('orders', [
-    //             'order_status'   => 'confirmed',
-    //             'transaction_id' => $txn_id,
-    //             'payment_status' => 'paid'
-    //         ]);
-
-    //     return $order->id;
-    // }
-
-
-    // new
     public function markPaymentSuccess($payment_intent_id, $charge_id)
     {
         // Use a transaction for atomicity (prevents race conditions)
@@ -388,5 +364,25 @@ class order_model extends CI_Model
     {
         $this->db->where('id', $order_id);
         return  $this->db->update('orders', $data);
+    }
+
+    public function getAdminHomeOrders()
+    {
+        $this->db->select("
+        o.id AS order_id,
+        o.order_number,
+        o.order_status,
+        GROUP_CONCAT(p.name SEPARATOR ', ') AS products
+    ");
+        $this->db->from('order_details od');
+        $this->db->join('orders o', 'o.id = od.order_id', 'inner');
+        $this->db->join('products p', 'p.id = od.product_id', 'inner');
+        $this->db->group_by('o.id');
+
+        // ORDER BY latest orders first
+        $this->db->order_by('o.id', 'DESC');
+
+        $this->db->limit(6);
+        return $this->db->get()->result();
     }
 }
