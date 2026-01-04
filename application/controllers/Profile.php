@@ -177,7 +177,7 @@ class Profile extends CI_Controller
             $errors = [];
 
             if ($isBilling) {
-                $fields = ['b_fname', 'b_lname', 'b_address', 'b_city', 'b_country','b_landmark', 'b_pin', 'b_phone', 'b_email', 's_fname', 's_lname', 's_address', 's_city', 's_country','s_landmark', 's_pin', 's_phone', 's_email'];
+                $fields = ['b_fname', 'b_lname', 'b_address', 'b_city', 'b_country', 'b_landmark', 'b_pin', 'b_phone', 'b_email', 's_fname', 's_lname', 's_address', 's_city', 's_country', 's_landmark', 's_pin', 's_phone', 's_email'];
                 foreach ($fields as $field) {
                     if ($msg = form_error($field)) {
                         $errors[$field] = $msg;
@@ -186,7 +186,7 @@ class Profile extends CI_Controller
             }
 
             if ($isShipping) {
-                $fields = ['s_fname', 's_lname', 's_address', 's_city', 's_country','s_landmark', 's_pin', 's_phone', 's_email'];
+                $fields = ['s_fname', 's_lname', 's_address', 's_city', 's_country', 's_landmark', 's_pin', 's_phone', 's_email'];
                 foreach ($fields as $field) {
                     if ($msg = form_error($field)) {
                         $errors[$field] = $msg;
@@ -205,7 +205,7 @@ class Profile extends CI_Controller
         $address_id = $this->input->post('address_id');
 
         if ($this->input->post('is_shipping') == '1') {
-            $shipping = 0;  
+            $shipping = 0;
         } else {
             $shipping = 1;
         }
@@ -261,9 +261,9 @@ class Profile extends CI_Controller
             $data["s_email"]  = $this->input->post('s_email');
         }
 
-        if(!empty($order_id)){
-            $update=$this->order_model->update($data,$order_id);
-        }else{
+        if (!empty($order_id)) {
+            $update = $this->order_model->update($data, $order_id);
+        } else {
             $update = $this->address_model->update($data, $address_id);
         }
         if ($update) {

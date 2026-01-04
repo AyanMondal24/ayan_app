@@ -137,16 +137,36 @@
             if (!empty($orders)) {
 
             ?>
-                <table class="table table-bordered show-order">
-                    <thead>
+                <!-- <div class="row mb-3">
+                    <div class="col-md-3 ">
+                        <select id="paymentFilter" class="form-select form-select-sm">
+                            <option value="">All Payments</option>
+                            <option value="Paid">Paid</option>
+                            <option value="Pending">Pending</option>
+                            <option value="Cancelled">Cancelled</option>
+                        </select>
+                    </div>
+
+                    <div class="col-md-3">
+                        <select id="statusFilter" class="form-select form-select-sm">
+                            <option value="">All Status</option>
+                            <option value="confirmed">Confirmed</option>
+                            <option value="pending">Pending</option>
+                            <option value="cancelled">Cancelled</option>
+                        </select>
+                    </div>
+                </div> -->
+
+                <table class="table table-bordered show-order" id="profile-order-table">
+                    <thead class="text-center">
                         <tr>
-                            <th>Order No</th>
-                            <th>Date</th>
-                            <th>Items</th>
-                            <th>Total</th>
-                            <th>Payment</th>
-                            <th>Status</th>
-                            <th>Action</th>
+                            <th class="text-center">Order No</th>
+                            <th class="text-center">Date</th>
+                            <th class="text-center">Items</th>
+                            <th class="text-center">Total</th>
+                            <th class="text-center">Payment</th>
+                            <th class="text-center">Status</th>
+                            <th class="text-center">Action</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -156,7 +176,10 @@
                         ?>
                             <tr>
                                 <td><?= $order->order_number ?></td>
-                                <td><?= date('d M Y', strtotime($order->created_at)) ?></td>
+                                <td data-order="<?= strtotime($order->created_at) ?>">
+                                    <?= date('d M Y', strtotime($order->created_at)) ?>
+                                </td>
+
                                 <td>
                                     <?php
                                     $products = explode(', ', $order->product_names);   // string → array
@@ -170,7 +193,7 @@
                                     ?>
 
                                 </td>
-                                <td>
+                                <td data-order="<?= $order->final_amount ?>">
                                     ₹<?= number_format($order->final_amount, 2) ?></td>
                                 <td>
                                     <span class="badge bg-<?= $order->payment_status == 'paid' ? 'success' : ($order->payment_status == 'cancelled' ? 'danger' : 'warning') ?>">
@@ -307,7 +330,7 @@
 <script>
     document.addEventListener('DOMContentLoaded', function() {
 
-        // profile 
+        // profile
         const fname = document.querySelector('#fname');
         const lname = document.querySelector('#lname');
         const email = document.querySelector('#email');
@@ -315,7 +338,7 @@
         numberField('#phone', 10, 10, "#phone_error");
         $("#edit-user").on('submit', function(e) {
             e.preventDefault();
-            // validate profile 
+            // validate profile
             const fields = [{
                     element: fname,
                     rules: [{
@@ -430,6 +453,9 @@
             if (section === 'orders') {
                 ordersSection.classList.remove('d-none');
                 ordersMenu.closest('li').classList.add('active');
+                $("#profile-order-table_wrapper").append(`
+
+                `)
             } else if (section === 'profile') {
                 profileSection.classList.remove('d-none');
                 profileMenu.closest('li').classList.add('active');
@@ -458,7 +484,7 @@
         }
 
 
-        // order cancel btn 
+        // order cancel btn
         let currentOrderId = null;
 
 
@@ -522,5 +548,97 @@
             }
 
         });
+
+        // datatble
+        // let table = new DataTable('#profile-order-table');
+        const totalRows = document.querySelectorAll('#profile-order-table tbody tr').length;
+
+        let lengthMenu = [5, 10, 25];
+
+        if (totalRows <= 10) {
+            lengthMenu = [5, totalRows];
+        } else if (totalRows <= 25) {
+            lengthMenu = [5, 10, totalRows];
+        } else if (totalRows <= 50) {
+            lengthMenu = [5, 10, 25, totalRows];
+        } else {
+            lengthMenu = [5, 10, 25, 50, totalRows];
+        }
+
+        let table = new DataTable('#profile-order-table', {
+
+            pageLength: lengthMenu[0],
+            lengthMenu: lengthMenu,
+
+            order: [
+                [1, 'desc']
+            ], // Date DESC
+
+            columnDefs: [{
+                    targets: [2, 4, 5, 6], // Items & Action
+                    orderable: false
+                },
+                {
+                    targets: 3, // Total column (₹ sorting fix)
+                    render: function(data, type) {
+                        if (type === 'sort' || type === 'type') {
+                            return data.replace('₹', '').replace(/,/g, '');
+                        }
+                        return data;
+                    }
+                }
+            ],
+
+            ordering: true,
+            searching: true,
+            responsive: true,
+
+            dom: "<'row mb-3 align-items-center'" +
+                "<'col-md-4 d-flex align-items-center gap-2'l>" +
+                "<'col-md-4 d-flex gap-2 order-filters'>" +
+                "<'col-md-4 text-end'f>" +
+                ">" +
+                "<'row'<'col-12'tr>>" +
+                "<'row mt-3'<'col-md-5'i><'col-md-7'p>>",
+
+            language: {
+                lengthMenu: "_MENU_ entries per page",
+                search: "Search:"
+            }
+        });
+
+        document.querySelector('.order-filters').innerHTML = `
+    <div class="d-flex align-items-center gap-1">
+        <select id="paymentFilter" class="form-select form-select-sm">
+            <option value="">Payment</option>
+            <option value="paid">Paid</option>
+            <option value="pending">Pending</option>
+            <option value="cancelled">Cancelled</option>
+        </select>
+    </div>
+
+    <div class="d-flex align-items-center gap-1">
+        <select id="statusFilter" class="form-select form-select-sm">
+            <option value="">Status</option>
+            <option value="confirmed">Confirmed</option>
+            <option value="pending">Pending</option>
+            <option value="cancelled">Cancelled</option>
+        </select>
+    </div>
+`;
+
+
+
+        // Payment filter
+        document.getElementById('paymentFilter')?.addEventListener('change', function() {
+            table.column(4).search(this.value).draw();
+        });
+
+        // // Status filter
+        document.getElementById('statusFilter')?.addEventListener('change', function() {
+            table.column(5).search(this.value).draw();
+        });
+
+
     });
 </script>

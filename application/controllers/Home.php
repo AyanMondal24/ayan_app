@@ -9,13 +9,13 @@ class Home extends CI_Controller
 		$this->load->helper('common');
 		$this->load->model('product_model');
 		$this->load->model('category_model');
+		$this->load->model('order_details_model');
 		$this->load->library('pagination');
 	}
 	public function index()
 	{
 		$category_name = $this->input->post('category_name');
-		// var_dump($category_name);
-		// die;
+
 		if (empty($category_name)) {
 			$data['products'] = $this->product_model->getAllproducts(null, 8);
 			$data['category'] = $this->category_model->getAllCategory();
@@ -30,7 +30,9 @@ class Home extends CI_Controller
 		}
 		$data['vegetables'] = $this->product_model->getAllproducts('vegetables');
 		$data['featured'] = $this->product_model->getAllproducts(null, null, '0');
-		$data['total_product']=$this->product_model->totalProduct();
+		$data['total_product'] = $this->product_model->totalProduct();
+		$data['slider_category'] = $this->category_model->getAllCategory();
+		$data['best_sales_product']=$this->order_details_model->getBestSellingProduct();
 		load_views('home', $data);
 	}
 	// public function contact()
@@ -112,10 +114,10 @@ class Home extends CI_Controller
 	// 	foreach ($cart as &$item) {
 	// 		if ($item['product_id'] == $id) {
 	// 			if ($update_mode === 'add') {
-	// 				// If product exists increase qty  
+	// 				// If product exists increase qty
 	// 				$item['qty'] += $quantity;
 	// 			} else {
-	// 				// update quantity 
+	// 				// update quantity
 	// 				$item['qty'] = $quantity;
 	// 			}
 	// 			$found = true;

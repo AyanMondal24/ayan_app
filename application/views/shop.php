@@ -63,98 +63,11 @@
                             <div class="col-lg-12">
                                 <div class="mb-3">
                                     <h4 class="mb-2">Price</h4>
-                                    <input type="range" class="form-range w-100" id="rangeInput" name="rangeInput" min="0" max="2000" value="0" oninput="amount.value=rangeInput.value">
-                                    &#8377;<output id="amount" name="amount" min-velue="0" max-value="2000" for="rangeInput">0</output>
+                                    <input type="range" class="form-range w-100" id="rangeInput" name="rangeInput" min="0" max="<?= $max_price ?>" value="0" oninput="amount.value=rangeInput.value">
+                                    &#8377;<output id="amount" name="amount" min-velue="0" max-value="<?= $max_price ?>" for="rangeInput">0</output>
                                 </div>
                             </div>
-                            <!-- <div class="col-lg-12">
-                                <div class="mb-3">
-                                    <h4>Additional</h4>
-                                    <div class="mb-2">
-                                        <input type="radio" class="me-2" id="Categories-1" name="Categories-1" value="Beverages">
-                                        <label for="Categories-1"> Organic</label>
-                                    </div>
-                                    <div class="mb-2">
-                                        <input type="radio" class="me-2" id="Categories-2" name="Categories-1" value="Beverages">
-                                        <label for="Categories-2"> Fresh</label>
-                                    </div>
-                                    <div class="mb-2">
-                                        <input type="radio" class="me-2" id="Categories-3" name="Categories-1" value="Beverages">
-                                        <label for="Categories-3"> Sales</label>
-                                    </div>
-                                    <div class="mb-2">
-                                        <input type="radio" class="me-2" id="Categories-4" name="Categories-1" value="Beverages">
-                                        <label for="Categories-4"> Discount</label>
-                                    </div>
-                                    <div class="mb-2">
-                                        <input type="radio" class="me-2" id="Categories-5" name="Categories-1" value="Beverages">
-                                        <label for="Categories-5"> Expired</label>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-lg-12">
-                                <h4 class="mb-3">Featured products</h4>
-                                <div class="d-flex align-items-center justify-content-start">
-                                    <div class="rounded me-4" style="width: 100px; height: 100px;">
-                                        <img src="<?= base_url('assets/') ?>img/featur-1.jpg" class="img-fluid rounded" alt="">
-                                    </div>
-                                    <div>
-                                        <h6 class="mb-2">Big Banana</h6>
-                                        <div class="d-flex mb-2">
-                                            <i class="fa fa-star text-secondary"></i>
-                                            <i class="fa fa-star text-secondary"></i>
-                                            <i class="fa fa-star text-secondary"></i>
-                                            <i class="fa fa-star text-secondary"></i>
-                                            <i class="fa fa-star"></i>
-                                        </div>
-                                        <div class="d-flex mb-2">
-                                            <h5 class="fw-bold me-2">2.99 $</h5>
-                                            <h5 class="text-danger text-decoration-line-through">4.11 $</h5>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="d-flex align-items-center justify-content-start">
-                                    <div class="rounded me-4" style="width: 100px; height: 100px;">
-                                        <img src="<?= base_url('assets/') ?>img/featur-2.jpg" class="img-fluid rounded" alt="">
-                                    </div>
-                                    <div>
-                                        <h6 class="mb-2">Big Banana</h6>
-                                        <div class="d-flex mb-2">
-                                            <i class="fa fa-star text-secondary"></i>
-                                            <i class="fa fa-star text-secondary"></i>
-                                            <i class="fa fa-star text-secondary"></i>
-                                            <i class="fa fa-star text-secondary"></i>
-                                            <i class="fa fa-star"></i>
-                                        </div>
-                                        <div class="d-flex mb-2">
-                                            <h5 class="fw-bold me-2">2.99 $</h5>
-                                            <h5 class="text-danger text-decoration-line-through">4.11 $</h5>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="d-flex align-items-center justify-content-start">
-                                    <div class="rounded me-4" style="width: 100px; height: 100px;">
-                                        <img src="<?= base_url('assets/') ?>img/featur-3.jpg" class="img-fluid rounded" alt="">
-                                    </div>
-                                    <div>
-                                        <h6 class="mb-2">Big Banana</h6>
-                                        <div class="d-flex mb-2">
-                                            <i class="fa fa-star text-secondary"></i>
-                                            <i class="fa fa-star text-secondary"></i>
-                                            <i class="fa fa-star text-secondary"></i>
-                                            <i class="fa fa-star text-secondary"></i>
-                                            <i class="fa fa-star"></i>
-                                        </div>
-                                        <div class="d-flex mb-2">
-                                            <h5 class="fw-bold me-2">2.99 $</h5>
-                                            <h5 class="text-danger text-decoration-line-through">4.11 $</h5>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="d-flex justify-content-center my-4">
-                                    <a href="#" class="btn border border-secondary px-4 py-3 rounded-pill text-primary w-100">Vew More</a>
-                                </div>
-                            </div> -->
+
                             <div class="col-lg-12">
                                 <div class="position-relative">
                                     <img src="<?= base_url('assets/') ?>img/banner-fruits.jpg" class="img-fluid w-100 rounded" alt="">
@@ -337,7 +250,7 @@
     document.addEventListener('DOMContentLoaded', function() {
         let category_name = 'all';
 
-        // add to cart 
+        // add to cart
         $(document).on("click", ".add-to-cart", function(e) {
             e.preventDefault();
 
@@ -366,7 +279,7 @@
                 }
             });
         });
-        // pagination 
+        // pagination
         $(document).on('click', '.pagination a', function(e) {
             e.preventDefault();
             let url = $(this).attr('href');
@@ -380,7 +293,7 @@
             loadTable(url, offset, category_name, search, price)
         });
 
-        // fetch data based on category 
+        // fetch data based on category
         $('#categories a').on('click', function(e) {
             e.preventDefault();
             $('#categories a').removeClass('active-category');

@@ -7,33 +7,55 @@
                 <h1 class="mb-5 display-3 text-primary">Organic Veggies & Fruits Foods</h1>
                 <div class="position-relative mx-auto">
                     <form action="<?= base_url('Shop/index') ?>" method="POST">
-                    <input class="form-control border-2 border-secondary w-75 py-3 px-4 rounded-pill" type="text" name="home_search" id="home-search" placeholder="Search">
-                    <button type="submit" class="btn btn-primary border-2 border-secondary py-3 px-4 position-absolute rounded-pill text-white h-100" style="top: 0; right: 25%;">Submit Now</button>
+                        <input class="form-control border-2 border-secondary w-75 py-3 px-4 rounded-pill" type="text" name="home_search" id="home-search" placeholder="Search">
+                        <button type="submit" class="btn btn-primary border-2 border-secondary py-3 px-4 position-absolute rounded-pill text-white h-100" style="top: 0; right: 25%;">Submit Now</button>
                     </form>
                 </div>
             </div>
+
             <div class="col-md-12 col-lg-5">
                 <div id="carouselId" class="carousel slide position-relative" data-bs-ride="carousel">
                     <div class="carousel-inner" role="listbox">
-                        <div class="carousel-item active rounded">
-                            <img src="<?= base_url('assets/img/hero-img-1.png') ?>" class="img-fluid w-100 h-100 bg-secondary rounded" alt="First slide">
-                            <a href="#" class="btn px-4 py-2 text-white rounded">Fruites</a>
-                        </div>
-                        <div class="carousel-item rounded">
-                            <img src="<?= base_url('assets/img/hero-img-2.jpg') ?>" class="img-fluid w-100 h-100 rounded" alt="Second slide">
-                            <a href="#" class="btn px-4 py-2 text-white rounded">Vesitables</a>
-                        </div>
+
+                        <?php if (!empty($slider_category)): ?>
+                            <?php $i = 0; ?>
+                            <?php foreach ($slider_category as $slider_cat): ?>
+                                <div class="carousel-item <?= ($i == 0) ? 'active' : '' ?> rounded">
+                                    <img
+                                        src="<?= base_url('assets/uploads/category/medium/' . $slider_cat->image) ?>"
+                                        class="img-fluid w-100 h-100 bg-secondary rounded"
+                                        alt="<?= htmlspecialchars($slider_cat->image_alt) ?>" style="width: 100%; height:330px !important;">
+                                    <a href="#" class="btn px-4 py-2 text-white rounded">
+                                        <?= $slider_cat->name ?>
+                                    </a>
+                                </div>
+                                <?php $i++; ?>
+                            <?php endforeach; ?>
+                        <?php else: ?>
+                            <!-- Fallback slide -->
+                            <div class="carousel-item active rounded">
+                                <img src="<?= base_url('assets/img/hero-img-2.jpg') ?>"
+                                    class="img-fluid w-100 h-100 rounded"
+                                    alt="Default slide">
+                                <a href="#" class="btn px-4 py-2 text-white rounded">
+                                    Vegetables
+                                </a>
+                            </div>
+                        <?php endif; ?>
+
                     </div>
+
+                    <!-- Controls -->
                     <button class="carousel-control-prev" type="button" data-bs-target="#carouselId" data-bs-slide="prev">
-                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                        <span class="visually-hidden">Previous</span>
+                        <span class="carousel-control-prev-icon"></span>
                     </button>
+
                     <button class="carousel-control-next" type="button" data-bs-target="#carouselId" data-bs-slide="next">
-                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                        <span class="visually-hidden">Next</span>
+                        <span class="carousel-control-next-icon"></span>
                     </button>
                 </div>
             </div>
+
         </div>
     </div>
 </div>
@@ -129,7 +151,7 @@
                         <div class="col-lg-12">
                             <div class="row g-4" id="show-product-by-category">
                                 <?php
-                                // if(empty($products)){ 
+                                // if(empty($products)){
                                 ?>
                                 <!-- <div class="p-4 text-center text-light rounded" style="background-color:#81c408;">
                                             No Data Found
@@ -296,132 +318,37 @@
             <p>Latin words, combined with a handful of model sentence structures, to generate Lorem Ipsum which looks reasonable.</p>
         </div>
         <div class="row g-4">
-            <div class="col-lg-6 col-xl-4">
-                <div class="p-4 rounded bg-light">
-                    <div class="row align-items-center">
-                        <div class="col-6">
-                            <img src="<?= base_url('assets/img') ?>/best-product-1.jpg" class="img-fluid rounded-circle w-100" alt="">
-                        </div>
-                        <div class="col-6">
-                            <a href="#" class="h5">Organic Tomato</a>
-                            <div class="d-flex my-3">
-                                <i class="fas fa-star text-primary"></i>
-                                <i class="fas fa-star text-primary"></i>
-                                <i class="fas fa-star text-primary"></i>
-                                <i class="fas fa-star text-primary"></i>
-                                <i class="fas fa-star"></i>
+            <?php
+            if (!empty($best_sales_product)) {
+                foreach ($best_sales_product as $product) {
+            ?>
+                    <div class="col-lg-6 col-xl-4">
+                        <div class="p-4 rounded bg-light">
+                            <div class="row align-items-center">
+                                <div class="col-6">
+                                    <img src="<?= base_url('assets/uploads/products/medium/' . $product->image) ?>" class="img-fluid rounded-circle w-100" alt="<?= $product->alt_text ?>">
+                                </div>
+                                <div class="col-6">
+                                    <a href="#" class="h5"><?= $product->name ?></a>
+                                    <div class="d-flex my-3">
+                                        <i class="fas fa-star text-primary"></i>
+                                        <i class="fas fa-star text-primary"></i>
+                                        <i class="fas fa-star text-primary"></i>
+                                        <i class="fas fa-star text-primary"></i>
+                                        <i class="fas fa-star"></i>
+                                    </div>
+                                    <h4 class="mb-3">&#8377; <?= number_format((float)$product->price, 2) ?></h4>
+                                    <!-- <a href="#" class="btn border border-secondary rounded-pill px-3 text-primary"><i class="fa fa-shopping-bag me-2 text-primary"></i> Add to cart</a> -->
+                                    <a href="#" class="btn border border-secondary rounded-pill px-3 text-primary add-to-cart mt-0" data-id="<?= $product->id ?>"><i class="fa fa-shopping-bag me-2 text-primary"></i> Add to cart</a>
+                                </div>
                             </div>
-                            <h4 class="mb-3">3.12 $</h4>
-                            <a href="#" class="btn border border-secondary rounded-pill px-3 text-primary"><i class="fa fa-shopping-bag me-2 text-primary"></i> Add to cart</a>
                         </div>
                     </div>
-                </div>
-            </div>
-            <div class="col-lg-6 col-xl-4">
-                <div class="p-4 rounded bg-light">
-                    <div class="row align-items-center">
-                        <div class="col-6">
-                            <img src="<?= base_url('assets/img') ?>/best-product-2.jpg" class="img-fluid rounded-circle w-100" alt="">
-                        </div>
-                        <div class="col-6">
-                            <a href="#" class="h5">Organic Tomato</a>
-                            <div class="d-flex my-3">
-                                <i class="fas fa-star text-primary"></i>
-                                <i class="fas fa-star text-primary"></i>
-                                <i class="fas fa-star text-primary"></i>
-                                <i class="fas fa-star text-primary"></i>
-                                <i class="fas fa-star"></i>
-                            </div>
-                            <h4 class="mb-3">3.12 $</h4>
-                            <a href="#" class="btn border border-secondary rounded-pill px-3 text-primary"><i class="fa fa-shopping-bag me-2 text-primary"></i> Add to cart</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-6 col-xl-4">
-                <div class="p-4 rounded bg-light">
-                    <div class="row align-items-center">
-                        <div class="col-6">
-                            <img src="<?= base_url('assets/img') ?>/best-product-3.jpg" class="img-fluid rounded-circle w-100" alt="">
-                        </div>
-                        <div class="col-6">
-                            <a href="#" class="h5">Organic Tomato</a>
-                            <div class="d-flex my-3">
-                                <i class="fas fa-star text-primary"></i>
-                                <i class="fas fa-star text-primary"></i>
-                                <i class="fas fa-star text-primary"></i>
-                                <i class="fas fa-star text-primary"></i>
-                                <i class="fas fa-star"></i>
-                            </div>
-                            <h4 class="mb-3">3.12 $</h4>
-                            <a href="#" class="btn border border-secondary rounded-pill px-3 text-primary"><i class="fa fa-shopping-bag me-2 text-primary"></i> Add to cart</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-6 col-xl-4">
-                <div class="p-4 rounded bg-light">
-                    <div class="row align-items-center">
-                        <div class="col-6">
-                            <img src="<?= base_url('assets/img') ?>/best-product-4.jpg" class="img-fluid rounded-circle w-100" alt="">
-                        </div>
-                        <div class="col-6">
-                            <a href="#" class="h5">Organic Tomato</a>
-                            <div class="d-flex my-3">
-                                <i class="fas fa-star text-primary"></i>
-                                <i class="fas fa-star text-primary"></i>
-                                <i class="fas fa-star text-primary"></i>
-                                <i class="fas fa-star text-primary"></i>
-                                <i class="fas fa-star"></i>
-                            </div>
-                            <h4 class="mb-3">3.12 $</h4>
-                            <a href="#" class="btn border border-secondary rounded-pill px-3 text-primary"><i class="fa fa-shopping-bag me-2 text-primary"></i> Add to cart</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-6 col-xl-4">
-                <div class="p-4 rounded bg-light">
-                    <div class="row align-items-center">
-                        <div class="col-6">
-                            <img src="<?= base_url('assets/img') ?>/best-product-5.jpg" class="img-fluid rounded-circle w-100" alt="">
-                        </div>
-                        <div class="col-6">
-                            <a href="#" class="h5">Organic Tomato</a>
-                            <div class="d-flex my-3">
-                                <i class="fas fa-star text-primary"></i>
-                                <i class="fas fa-star text-primary"></i>
-                                <i class="fas fa-star text-primary"></i>
-                                <i class="fas fa-star text-primary"></i>
-                                <i class="fas fa-star"></i>
-                            </div>
-                            <h4 class="mb-3">3.12 $</h4>
-                            <a href="#" class="btn border border-secondary rounded-pill px-3 text-primary"><i class="fa fa-shopping-bag me-2 text-primary"></i> Add to cart</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-6 col-xl-4">
-                <div class="p-4 rounded bg-light">
-                    <div class="row align-items-center">
-                        <div class="col-6">
-                            <img src="<?= base_url('assets/img') ?>/best-product-6.jpg" class="img-fluid rounded-circle w-100" alt="">
-                        </div>
-                        <div class="col-6">
-                            <a href="#" class="h5">Organic Tomato</a>
-                            <div class="d-flex my-3">
-                                <i class="fas fa-star text-primary"></i>
-                                <i class="fas fa-star text-primary"></i>
-                                <i class="fas fa-star text-primary"></i>
-                                <i class="fas fa-star text-primary"></i>
-                                <i class="fas fa-star"></i>
-                            </div>
-                            <h4 class="mb-3">3.12 $</h4>
-                            <a href="#" class="btn border border-secondary rounded-pill px-3 text-primary"><i class="fa fa-shopping-bag me-2 text-primary"></i> Add to cart</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <?php  }
+            }
+            ?>
+
+
 
         </div>
     </div>
@@ -607,11 +534,7 @@
             });
         });
 
-
-
         let currentCategory = "all";
-
-
 
         $(document).on('click', '.category a', function(e) {
             e.preventDefault();
@@ -639,5 +562,5 @@
                 }
             });
         }
-    }); // main 
+    }); // main
 </script>

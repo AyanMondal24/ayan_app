@@ -20,7 +20,7 @@ class product_model extends CI_Model
         $this->db->join('category c', 'c.id=p.category', 'inner');
         $this->db->join('product_unit u', 'u.id=p.unit_id', 'inner');
 
-        $this->db->order_by('id', 'ASC');
+        $this->db->order_by('id', 'DESC');
         return $this->db->get()->result();
     }
 
@@ -341,10 +341,20 @@ class product_model extends CI_Model
         $this->db->from('products p');
         $this->db->join('product_image pi', 'p.id = pi.product_id', 'left');
         $this->db->order_by('p.id', 'DESC');
-        $this->db->where('pi.is_featured',0);
+        $this->db->where('pi.is_featured', 0);
         $this->db->where('status', 0);
         $this->db->where('is_available', 0);
         $this->db->limit(4);
         return $this->db->get()->result();
+    }
+    // getting max price
+    public function getMaxPrice()
+    {
+        $row = $this->db
+            ->select_max('price', 'max_price')
+            ->get('products')
+            ->row();
+
+        return $row ? (float)$row->max_price : 0;
     }
 }

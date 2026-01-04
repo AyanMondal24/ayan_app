@@ -23,15 +23,15 @@ class Product extends MY_Controller
     public function index()
     {
 
-        $total_item= $this->product_model->totalProducts(); //total records
+        $total_item = $this->product_model->totalProducts(); //total records
         // $per_page=5;
         // $offset=0;
         $data['products'] = $this->product_model->getProducts();
-     
-        $data['totalRows']=$total_item;
+
+        $data['totalRows'] = $total_item;
         load_admin_views('view_products', $data);
     }
-    // make featured 
+    // make featured
     public function make_featured()
     {
         $image_id = $this->input->post('image_id');
@@ -104,7 +104,7 @@ class Product extends MY_Controller
             $this->form_validation->set_rules('uploaded_alt_featured_text', 'Featured Alt Text', 'required');
         }
 
-        // modify 
+        // modify
         $image_fields = ['images', 'uploadchangeimage'];
 
         foreach ($image_fields as $field) {
@@ -186,7 +186,7 @@ class Product extends MY_Controller
             //     }
             // }
 
-            // for update page start 
+            // for update page start
             if (!empty($this->input->post('id'))) {
                 $alt_err = form_error('uploaded_alt_featured_text');
                 $errors["uploaded_alt_featured_text"] = $alt_err;
@@ -200,13 +200,13 @@ class Product extends MY_Controller
                     }
                 }
             }
-            // for update page end 
+            // for update page end
 
             echo json_encode(["status" => "error", "errors" => $errors]);
             return;
         }
 
-       
+
         $featured_product = ($this->input->post('is_featured') !== null) ? "0" : "1";
         // 🔹 Prepare product data
         $data = [
@@ -240,7 +240,7 @@ class Product extends MY_Controller
 
 
 
-                // insert other image 
+                // insert other image
                 $rowImages = isset($_FILES['images']['name']) ?
                     str_replace(' ', '_', $_FILES['images']['name']) : [];
                 $alt = $this->input->post('new_alt_text');
@@ -267,7 +267,7 @@ class Product extends MY_Controller
 
 
 
-                // add new featured image 
+                // add new featured image
                 $featured_img = isset($_FILES['is_featured']['name']) ?
                     str_replace(' ', '_', $_FILES['is_featured']['name']) : '';
 
@@ -325,7 +325,7 @@ class Product extends MY_Controller
                     }
                 }
 
-                // add main product 
+                // add main product
                 $insert_product_status = true;
                 // echo json_encode(["status" => "success", "product_id" => $product_instant_id]);
             } else {
@@ -352,7 +352,7 @@ class Product extends MY_Controller
             //         'status' => 'error',
             //         'message' => 'Others Image Not inserted.'
             //     ];
-            // } 
+            // }
             elseif (($insert_featured_image_status == false) || ($insert_others_image_status == false)) {
                 $response = [
                     'status' => 'error',
@@ -599,7 +599,7 @@ class Product extends MY_Controller
                 }
             }
 
-            // end inserted image  
+            // end inserted image
 
             if (!empty($image_ids)) {
                 foreach ($image_ids as $index => $img_id) {
@@ -620,7 +620,7 @@ class Product extends MY_Controller
 
 
 
-            // update page change ohters image and alt text  
+            // update page change ohters image and alt text
             $update_images = isset($_FILES['uploadchangeimage']['name']) ?
                 str_replace(' ', '_', $_FILES['uploadchangeimage']['name']) : []; //new update image
 
@@ -745,7 +745,7 @@ class Product extends MY_Controller
         }
     }
 
-    // desceription text length validation 
+    // desceription text length validation
     public function min_desc($str)
     {
         $plain = strip_tags($str); // remove HTML tags
@@ -756,7 +756,7 @@ class Product extends MY_Controller
         return TRUE;
     }
 
-    // Callback for form_validation for multiple image 
+    // Callback for form_validation for multiple image
     public function file_check($str, $param)
     {
         $allowed_ext = ['jpg', 'jpeg', 'png', 'gif'];
@@ -896,7 +896,7 @@ class Product extends MY_Controller
         }
     }
 
-    // delete product 
+    // delete product
     public function delete($enc_id)
     {
         // $enc_id=$this->input->post('id');
@@ -926,11 +926,11 @@ class Product extends MY_Controller
         }
     }
 
-    // delete tmp image from tmp folder 
+    // delete tmp image from tmp folder
     public function delete_image()
     {
         $filename = $this->input->post('filename');
-        // when user click cross btn the delete from database also 
+        // when user click cross btn the delete from database also
         $id = $this->input->post('id');
         if (!empty($id)) {
             $this->product_model->deleteProductImage($filename);

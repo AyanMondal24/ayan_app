@@ -7,13 +7,14 @@
                 </div>
                 <!-- /.card-header -->
                 <div class="card-body product-view">
+
                     <table class="table table-bordered table-responsive" id="product-table">
                         <thead>
                             <tr>
                                 <th width="5%">#</th>
                                 <th width="20%">Name</th>
                                 <th width="20%">Category</th>
-                                <th width="15%">Price</th>
+                                <th width="15%" class="text-center">Price</th>
                                 <th width="15%" class="quantity">Quantity</th>
                                 <th width="20%">Status</th>
                                 <th width="20%">Action</th>
@@ -35,34 +36,29 @@
                                     // $is_available=(int) $product->is_available;
                                     $combine_status = $product->status_combine;
                                     // 0/0 means first 0 (active/deactive) and the second 0 (available/unavailable)
-                                    if ($product->status == "0" && $product->is_available == "0") {
-                                        $store_status .= "
-                                    <span class='badge bg-success badge-status'>Active</span>  
-                                    <span class='badge bg-success badge-status'>Available</span>";
-                                    } else if ($product->status == "1" && $product->is_available == "1") {
-                                        $store_status .= "
-                                    <span class='badge bg-danger badge-status'>Inactive</span>
-                                    <span class='badge bg-danger badge-status'>Unavailable</span>
-                                    ";
-                                    } else if ($product->status == "0" && $product->is_available == "1") {
-                                        $store_status .= "
-                                    <span class='badge bg-success badge-status'>Active</span>  
-                                    <span class='badge bg-danger badge-status'>Unavailable</span>";
-                                    } else if ($product->status == "1" && $product->is_available == "0") {
-                                        $store_status .= "
-                                    <span class='badge bg-danger badge-status'>Inactive</span>
-                                    <span class='badge bg-success badge-status'>Available</span>";
-                                    }
+
+                                    $statusText = ($product->status == 0) ? 'Active' : 'Inactive';
+                                    $statusClass = ($product->status == 0) ? 'bg-success' : 'bg-danger';
+
+                                    $availText = ($product->is_available == 0) ? 'Available' : 'Unavailable';
+                                    $availClass = ($product->is_available == 0) ? 'bg-success' : 'bg-danger';
                             ?>
 
-                                    <tr class='align-middle'>
+
+
+
+                                    <tr class="align-middle"
+                                        data-status="<?= $product->status ?>"
+                                        data-available="<?= $product->is_available ?>">
+
                                         <td> <?= $i++ ?></td>
                                         <td> <?= $name ?></td>
                                         <td> <?= $product->category_name ?></td>
-                                        <td> <?= $product->price ?>/ <?= $product->short_name ?></td>
+                                        <td data-order="<?= $product->price ?>"> <?= $product->price ?>/ <?= $product->short_name ?></td>
                                         <td class="quantity"> <?= $product->quantity ?></td>
                                         <td>
-                                            <?= $store_status ?>
+                                            <span class="badge <?= $availClass ?>"><?= $availText ?></span>
+                                            <span class="badge <?= $statusClass ?>"><?= $statusText ?></span>
                                         </td>
                                         <td class='d-flex align-items-center justify-content-center'>
                                             <a href="<?= base_url('admin/Product/view/' . urlencode($enc_id)) ?>" role='button' class='btn btn-primary btn-sm me-1'><i class='fa-solid fa-eye'></i>
@@ -96,7 +92,7 @@
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-        // add data table 
+        // add data table
         const totalRows = document.querySelectorAll('#product-table tbody tr').length;
         let lengthMenu = [5, 10, 25];
 
@@ -111,10 +107,64 @@
         }
 
         let table = new DataTable('#product-table', {
-            pageLength: lengthMenu[0], // default first option
+            pageLength: lengthMenu[0],
             lengthMenu: lengthMenu,
+            columnDefs: [{
+                targets: [5, 6], // Items & Action
+                orderable: false
+            }],
             ordering: true,
-            searching: true
+            searching: true,
+            dom: "<'row mb-3 align-items-center'" +
+                "<'col-md-4 d-flex align-items-center gap-2'l>" +
+                "<'col-md-4 d-flex gap-2 product-filters'>" +
+                "<'col-md-4 text-end'f>" +
+                ">" +
+                "<'row'<'col-12'tr>>" +
+                "<'row mt-3'<'col-md-5'i><'col-md-7'p>>",
+
+            initComplete: function() {
+                document.getElementById('product-table').style.visibility = 'visible';
+            }
+        });
+
+        document.querySelector('.product-filters').innerHTML = `
+            <div class="d-flex align-items-center gap-2">
+                <label class="small mb-0 fw-semibold text-muted">Status:</label>
+                <select id="statusFilter" class="form-select form-select-sm">
+                    <option value="">All</option>
+                    <option value="0_0">Available / Active</option>
+                    <option value="0_1">Available / Inactive</option>
+                    <option value="1_0">Unavailable / Active</option>
+                    <option value="1_1">Unavailable / Inactive</option>
+                </select>
+            </div>
+`;
+
+
+        document.getElementById('statusFilter').addEventListener('change', function() {
+
+            const value = this.value;
+            const rows = document.querySelectorAll('#product-table tbody tr');
+
+            rows.forEach(row => {
+
+                const available = row.dataset.available; // 0 / 1
+                const status = row.dataset.status; // 0 / 1
+
+                if (value === '') {
+                    row.style.display = '';
+                    return;
+                }
+
+                const [filterAvailable, filterStatus] = value.split('_');
+
+                const match =
+                    available === filterAvailable &&
+                    status === filterStatus;
+
+                row.style.display = match ? '' : 'none';
+            });
         });
 
 

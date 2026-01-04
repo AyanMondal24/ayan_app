@@ -25,11 +25,8 @@ class order_model extends CI_Model
         or.id AS order_id,
 
         GROUP_CONCAT(p.name SEPARATOR ", ") AS product_names,
-
-        /* SAFE subtotal */
         SUM(ord.quantity * ord.price) AS subtotal,
 
-        /* SAFE coupon calculation */
         CASE
             WHEN coupon.id IS NULL THEN SUM(ord.quantity * ord.price)
 
@@ -60,6 +57,8 @@ class order_model extends CI_Model
         $this->db->where('or.user_id', $user_id);
         $this->db->where('or.order_status !=', 'canceled');
         $this->db->group_by('or.id');
+
+        $this->db->order_by('or.created_at','DESC');
 
         return $this->db->get()->result();
     }

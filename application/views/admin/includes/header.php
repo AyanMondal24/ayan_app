@@ -294,6 +294,17 @@ if ($CI->session->userdata('admin_logged_in')) {
             <div class="sidebar-wrapper">
                 <nav class="mt-2">
                     <!--begin::Sidebar Menu-->
+                    <?php
+                    $segment1 = strtolower($this->uri->segment(1));
+                    $segment2 = strtolower($this->uri->segment(2));
+                    $segment3 = strtolower($this->uri->segment(3));
+
+                    $isProductMenu  = ($segment2 == 'product');
+                    $isCategoryMenu = ($segment2 == 'category');
+                    $isUnitMenu     = ($segment2 == 'units');
+                    $isCouponMenu   = ($segment2 == 'coupons');
+                    ?>
+
                     <ul
                         class="nav sidebar-menu flex-column"
                         data-lte-toggle="treeview"
@@ -301,34 +312,37 @@ if ($CI->session->userdata('admin_logged_in')) {
                         aria-label="Main navigation"
                         data-accordion="false"
                         id="navigation">
-                        <li class="nav-item menu-open">
-                            <a href="<?= base_url('/admin') ?>" class="nav-link active">
+                        <li class="nav-item">
+                            <a href="<?= base_url('/admin') ?>" class="nav-link <?= ($segment1 == 'admin' && $segment2 == '') ? 'active' : '' ?>">
                                 <i class="nav-icon bi bi-speedometer"></i>
                                 <p>
                                     Dashboard
-                                    <!-- <i class="nav-arrow bi bi-chevron-right"></i> -->
                                 </p>
                             </a>
 
 
                             <!-- product section start  -->
-                        <li class="nav-item">
-                            <a href="#" class="nav-link">
+                        <li class="nav-item <?= $isProductMenu ? 'menu-open' : '' ?>">
+                            <a href="#" class="nav-link <?= $isProductMenu ? 'active' : '' ?>">
                                 <i class="nav-icon bi bi-box-seam-fill"></i>
                                 <p>
                                     Products
                                     <i class="nav-arrow bi bi-chevron-right"></i>
                                 </p>
                             </a>
+
                             <ul class="nav nav-treeview">
                                 <li class="nav-item">
-                                    <a href="<?= site_url('admin/Product/add') ?>" class="nav-link">
+                                    <a href="<?= site_url('admin/Product/add') ?>"
+                                        class="nav-link <?= ($segment3 == 'add') ? 'active' : '' ?>">
                                         <i class="bi bi-plus-circle-fill"></i>
                                         <p>Add Products</p>
                                     </a>
                                 </li>
+
                                 <li class="nav-item">
-                                    <a href="<?= site_url('admin/Product') ?>" class="nav-link">
+                                    <a href="<?= site_url('admin/Product') ?>"
+                                        class="nav-link <?= ($segment2 == 'product' && $segment3 == '') ? 'active' : '' ?>">
                                         <i class="bi bi-eye-fill"></i>
                                         <p>View Products</p>
                                     </a>
@@ -339,8 +353,8 @@ if ($CI->session->userdata('admin_logged_in')) {
                         <!-- product section end  -->
 
                         <!-- product CATEGORY section start  -->
-                        <li class="nav-item">
-                            <a href="#" class="nav-link">
+                        <li class="nav-item <?= $isCategoryMenu ? 'menu-open' : '' ?>">
+                            <a href="#" class="nav-link <?= $isCategoryMenu ? 'active' : '' ?>">
                                 <i class="nav-icon bi bi-tags"></i>
                                 <p>
                                     Products Category
@@ -349,13 +363,13 @@ if ($CI->session->userdata('admin_logged_in')) {
                             </a>
                             <ul class="nav nav-treeview">
                                 <li class="nav-item">
-                                    <a href="<?= site_url('admin/Category/add') ?>" class="nav-link">
+                                    <a href="<?= site_url('admin/Category/add') ?>" class="nav-link <?= ($segment2 == 'category' && $segment3 == 'add') ? 'active' : '' ?>">
                                         <i class="bi bi-plus-circle-fill"></i>
                                         <p>Add Catgeory</p>
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="<?= site_url('admin/Category') ?>" class="nav-link">
+                                    <a href="<?= site_url('admin/Category') ?>" class="nav-link <?= ($segment2 == 'category' && $segment3 == '') ? 'active' : '' ?>">
                                         <i class="bi bi-eye-fill"></i>
                                         <p>View Category</p>
                                     </a>
@@ -365,8 +379,8 @@ if ($CI->session->userdata('admin_logged_in')) {
                         <!-- product CATEGORY section end  -->
                         <!-- product unit section start  -->
 
-                        <li class="nav-item">
-                            <a href="#" class="nav-link">
+                        <li class="nav-item <?= $isUnitMenu ? 'menu-open' : '' ?>">
+                            <a href="#" class="nav-link <?= $isUnitMenu ? 'active' : '' ?>">
                                 <i class="nav-icon bi bi-rulers"></i>
                                 <p>
                                     Products Unit
@@ -375,13 +389,13 @@ if ($CI->session->userdata('admin_logged_in')) {
                             </a>
                             <ul class="nav nav-treeview">
                                 <li class="nav-item">
-                                    <a href="<?= site_url('admin/Units/add') ?>" class="nav-link">
+                                    <a href="<?= site_url('admin/Units/add') ?>" class="nav-link <?= ($segment2 == 'units' && $segment3 == 'add') ? 'active' : '' ?>">
                                         <i class="bi bi-plus-circle-fill"></i>
                                         <p>Add Product Unit</p>
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="<?= site_url('admin/Units') ?>" class="nav-link">
+                                    <a href="<?= site_url('admin/Units') ?>" class="nav-link <?= ($segment2 == 'units' && $segment3 == '') ? 'active' : '' ?>">
                                         <i class="bi bi-eye-fill"></i>
                                         <p>View Product Unit</p>
                                     </a>
@@ -391,23 +405,23 @@ if ($CI->session->userdata('admin_logged_in')) {
                         <!-- product unit section end  -->
 
                         <!-- coupon section start  -->
-                        <li class="nav-item">
-                            <a href="#" class="nav-link">
+                        <li class="nav-item <?= $isCouponMenu ? 'menu-open' : '' ?>">
+                            <a href="#" class="nav-link <?= $isCouponMenu ? 'active' : '' ?>">
                                 <i class="nav-icon bi bi-ticket-perforated"></i>
                                 <p>
-                                    Coupon
+                                    Coupons
                                     <i class="nav-arrow bi bi-chevron-right"></i>
                                 </p>
                             </a>
                             <ul class="nav nav-treeview">
                                 <li class="nav-item">
-                                    <a href="<?= site_url('admin/Coupons/add') ?>" class="nav-link">
+                                    <a href="<?= site_url('admin/Coupons/add') ?>" class="nav-link <?= ($segment2 == 'coupons' && $segment3 == 'add') ? 'active' : '' ?>">
                                         <i class="bi bi-plus-circle-fill"></i>
                                         <p>Add Coupon</p>
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="<?= base_url('admin/Coupons') ?>" class="nav-link">
+                                    <a href="<?= base_url('admin/Coupons') ?>" class="nav-link <?= ($segment2 == 'coupons' && $segment3 == '') ? 'active' : '' ?>">
                                         <i class="bi bi-eye-fill"></i>
                                         <p>View Coupon</p>
                                     </a>
@@ -418,7 +432,7 @@ if ($CI->session->userdata('admin_logged_in')) {
 
                         <!-- order section  -->
                         <li class="nav-item">
-                            <a href="<?= base_url('admin/Orders/index') ?>" class="nav-link">
+                            <a href="<?= base_url('admin/Orders/index') ?>" class="nav-link <?= ($segment2 == 'orders') ? 'active' : '' ?>">
                                 <i class="nav-icon bi bi-cart-check"></i>
                                 <p>
                                     Orders
@@ -426,7 +440,7 @@ if ($CI->session->userdata('admin_logged_in')) {
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="<?= base_url('admin/Users/index') ?>" class="nav-link">
+                            <a href="<?= base_url('admin/Users/index') ?>" class="nav-link <?= ($segment2 == 'users') ? 'active' : '' ?>">
                                 <i class="nav-icon bi bi-person"></i>
                                 <p>
                                     Users

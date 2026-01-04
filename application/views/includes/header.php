@@ -31,6 +31,8 @@ $cart_count = is_array($cart) ? count($cart) : 0;
     <!-- Customized Bootstrap Stylesheet -->
     <link href="<?= base_url('assets/css/bootstrap.min.css') ?>" rel="stylesheet">
 
+    <!-- datatables css  -->
+    <link rel="stylesheet" href="//cdn.datatables.net/2.3.6/css/dataTables.dataTables.min.css">
     <!-- Template Stylesheet -->
     <link href="<?= base_url('assets/css/style.css') ?>" rel="stylesheet">
     <!-- my css  -->
@@ -77,11 +79,11 @@ $cart_count = is_array($cart) ? count($cart) : 0;
                         <a href="<?= site_url('Shop/index') ?>"
                             class="nav-item nav-link <?= ($this->uri->segment(1) == 'Shop') ? 'active' : '' ?>">Shop</a>
 
-                        <a href="<?= site_url('Cart/index') ?>"
-                            class="nav-item nav-link <?= ($this->uri->segment(1) == 'Cart') ? 'active' : '' ?>">Shop Cart</a>
+                        <!-- <a href="<?= site_url('Cart/index') ?>"
+                            class="nav-item nav-link <?= ($this->uri->segment(1) == 'Cart') ? 'active' : '' ?>">Shop Cart</a> -->
 
-                        <a href="<?= site_url('Checkout/index') ?>"
-                            class="nav-item nav-link <?= ($this->uri->segment(1) == 'Checkout') ? 'active' : '' ?>">Checkout</a>
+                        <!-- <a href="<?= site_url('Checkout/index') ?>"
+                            class="nav-item nav-link <?= ($this->uri->segment(1) == 'Checkout') ? 'active' : '' ?>">Checkout</a> -->
 
                         <a href="<?= site_url('Contact/index') ?>"
                             class="nav-item nav-link <?= ($this->uri->segment(1) == 'Contact') ? 'active' : '' ?>">Contact</a>
@@ -147,11 +149,11 @@ $cart_count = is_array($cart) ? count($cart) : 0;
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
 
-               <div class="modal-body d-flex align-items-center">
+                <div class="modal-body d-flex align-items-center">
                     <form action="<?= base_url('Shop/index') ?>" method="POST" class="w-100">
                         <div class="input-group w-75 mx-auto">
 
-                            <input type="search" name="home_search" class="form-control p-3" placeholder="keywords" 
+                            <input type="search" name="home_search" class="form-control p-3" placeholder="keywords"
                                 aria-label="Search">
 
                             <button type="submit" class="input-group-text p-3 bg-white" style="cursor:pointer;">
@@ -160,7 +162,7 @@ $cart_count = is_array($cart) ? count($cart) : 0;
 
                         </div>
                     </form>
-                </div> 
+                </div>
 
             </div>
         </div>

@@ -6,21 +6,21 @@ class category_model extends CI_Model
     {
         parent::__construct();
     }
-    // product add form dropdown 
+    // product add form dropdown
     function getAllCategory()
     {
-        $this->db->select('name, MIN(id) as id');
+        $this->db->select('*');
         $this->db->from('category');
         $this->db->group_by('name');
         return $this->db->get()->result();
     }
-    // insert new category 
+    // insert new category
     function setCategory($data)
     {
         return $this->db->insert('category', $data);
     }
 
-    // category view 
+    // category view
     function getCategory($limit, $offset)
     {
         $this->db->select('id,name,image');
@@ -30,7 +30,7 @@ class category_model extends CI_Model
         return $this->db->get()->result();
     }
 
-    // for pagination get total data 
+    // for pagination get total data
     function getTotalCategory()
     {
         return $this->db->count_all('category');
@@ -41,7 +41,7 @@ class category_model extends CI_Model
         $this->db->where('id', $id);
         return $this->db->get('category')->row();
     }
-    // delete category 
+    // delete category
     function deleteCategory($id)
     {
         $this->db->where('id', $id);
@@ -54,7 +54,7 @@ class category_model extends CI_Model
         return $this->db->update('category', $data);
     }
 
-    // shop page use 
+    // shop page use
     function getAllCategoryWithProductCount()
     {
         $this->db->select('c.id, c.name, COUNT(p.id) AS total_products');
