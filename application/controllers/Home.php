@@ -32,7 +32,7 @@ class Home extends CI_Controller
 		$data['featured'] = $this->product_model->getAllproducts(null, null, '0');
 		$data['total_product'] = $this->product_model->totalProduct();
 		$data['slider_category'] = $this->category_model->getAllCategory();
-		$data['best_sales_product']=$this->order_details_model->getBestSellingProduct();
+		$data['best_sales_product'] = $this->order_details_model->getBestSellingProduct();
 		load_views('home', $data);
 	}
 	// public function contact()

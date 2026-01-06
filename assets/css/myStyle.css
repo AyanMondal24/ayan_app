@@ -1255,3 +1255,115 @@ header auth end
 } */
 /* end profile  */
 /* --------------------------------------------------------------------- */
+
+/* start product single view  */
+
+/* start single product  */
+.product-single-view {
+    background: #f1f3f6;
+}
+
+.product-single-view .thumb-column {
+    width: 70px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.product-single-view .thumb {
+    width: 70px;
+    height: 70px;
+    object-fit: cover;
+    border: 1px solid #ddd;
+    cursor: pointer;
+    padding: 3px;
+    transition: 0.3s;
+}
+
+.product-single-view .thumb:hover,
+.product-single-view .thumb.active {
+    border: 2px solid #2874f0;
+}
+
+.product-single-view .main-image {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #eee;
+    padding: 15px;
+}
+
+.product-single-view .main-image img {
+    max-width: 100%;
+    max-height: 350px;
+    object-fit: contain;
+}
+
+.product-single-view .product-details h3 {
+    font-size: 24px;
+}
+
+/* .product-single-view .description-box {
+    font-size: 15px !important;
+    line-height: 1.6;
+    color: #555;
+    word-wrap: break-word !important;
+    overflow-wrap: break-word !important;
+    word-break: break-word;
+    white-space: normal;
+} */
+
+.product-single-view .description-box * {
+    max-width: 100%;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+}
+.product-single-view .description-box h1 {
+    font-size: 20px;
+    font-weight: 600;
+}
+
+.product-single-view .description-box h2 {
+    font-size: 18px;
+}
+
+.product-single-view .description-box h3,
+.product-single-view .description-box h4,
+.product-single-view .description-box h5,
+.product-single-view .description-box h6 {
+    font-size: 16px;
+}
+.product-single-view .description-box p {
+    margin-bottom: 8px;
+    line-height: 1.6;
+    color: #555;
+}
+
+.product-single-view .description-box ul,
+.product-single-view .description-box ol {
+    padding-left: 18px;
+    margin-bottom: 10px;
+}
+
+.product-single-view .description-box li {
+    margin-bottom: 6px;
+}
+
+.product-single-view .description-box strong,
+.product-single-view .description-box b {
+    font-weight: 600;
+}
+.product-single-view .description-box {
+    word-break: break-word;
+}
+.product-single-view .description-box img,
+.product-single-view .description-box table {
+    max-width: 100%;
+    height: auto;
+}
+.product-single-view .description-box {
+    max-height: 180px;
+    overflow: hidden;
+    position: relative;
+}
+

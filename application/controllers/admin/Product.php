@@ -19,8 +19,6 @@ class Product extends MY_Controller
         $this->load->helper('slug');
     }
 
-
-
     public function index()
     {
 
@@ -187,7 +185,7 @@ class Product extends MY_Controller
         $product_name = $this->input->post('name');
 
         // generate slug
-        $slug = generate_unique_slug($product_name, 'products');
+        $slug = generate_unique_slug($product_name, 'products','slug');
 
         // 🔹 Prepare product data
         $data = [
@@ -326,9 +324,7 @@ class Product extends MY_Controller
                     'status' => 'success',
                     'message' => 'Insert successfully.'
                 ];
-            }
-
-            elseif (($insert_featured_image_status == false) || ($insert_others_image_status == false)) {
+            } elseif (($insert_featured_image_status == false) || ($insert_others_image_status == false)) {
                 $response = [
                     'status' => 'error',
                     'message' => 'Image Not inserted.'
@@ -364,7 +360,7 @@ class Product extends MY_Controller
 
             if ($old_product && $old_product->name !== $product_name) {
                 // name changed → regenerate slug
-                $data['slug'] = generate_unique_slug($product_name, 'products');
+                $data['slug'] = generate_unique_slug($product_name, 'products','slug');
             } else {
                 // name not changed → remove slug from update
                 unset($data['slug']);

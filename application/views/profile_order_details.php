@@ -164,6 +164,9 @@
 
         </div>
 
+        <div class="text-end">
+            <a href="<?= base_url('profile#orders') ?>" class="btn btn-primary text-light">Back</a>
+        </div>
     </div>
 
 </div>

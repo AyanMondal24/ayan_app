@@ -153,7 +153,9 @@ class product_model extends CI_Model
         p.price,
         p.is_available,
         p.status,
+        p.slug,
         c.name AS category_name,
+        c.category_slug,
         u.short_name,
         u.name AS unit_name,
         i.image_name,
@@ -193,7 +195,9 @@ class product_model extends CI_Model
         p.price,
         p.is_available,
         p.status,
+        p.slug,
         c.name AS category_name,
+        c.category_slug,
         u.short_name,
         u.name AS unit_name,
         i.image_name,
@@ -356,5 +360,60 @@ class product_model extends CI_Model
             ->row();
 
         return $row ? (float)$row->max_price : 0;
+    }
+
+    // getBySlug
+    public function getBySlug($product_slug,$category_id){
+        $this->db->select('
+        p.id as product_id,
+        p.name as product_name,
+        p.description,
+        p.price,
+        p.slug,
+        p.created_at,
+        pi.image_name,
+        pi.alt_text,
+        pi.is_featured as featured_image,
+        c.name as category_name,
+        c.category_slug,
+        pu.short_name,
+        pu.name as unit_name
+        ');
+        $this->db->from('products p');
+        $this->db->join('product_image pi','pi.product_id = p.id','left');
+        $this->db->join('category c','c.id = p.category','left');
+        $this->db->join('product_unit pu','pu.id = p.unit_id','left');
+        $this->db->where('p.status',0);
+        $this->db->where('p.is_available',0);
+        $this->db->where('p.category',$category_id);
+        $this->db->where('p.slug',$product_slug);
+        return $this->db->get()->row();
+    }
+    public function getProductBasedOnCategory($category_id,$product_id){
+        $this->db->select('
+        p.id as product_id,
+        p.name as product_name,
+        p.description,
+        p.price,
+        p.slug,
+        p.created_at,
+        pi.image_name,
+        pi.alt_text,
+        pi.is_featured as featured_image,
+        c.name as category_name,
+        c.category_slug,
+        pu.short_name,
+        pu.name as unit_name
+        ');
+        $this->db->from('products p');
+        $this->db->join('product_image pi', 'pi.product_id = p.id', 'left');
+        $this->db->join('category c', 'c.id = p.category', 'left');
+        $this->db->join('product_unit pu', 'pu.id = p.unit_id', 'left');
+        $this->db->where('p.status', 0);
+        $this->db->where('p.is_available', 0);
+        $this->db->where('pi.is_featured', 0);
+        $this->db->where('p.category', $category_id);
+        $this->db->where('p.id !=', $product_id);
+        return $this->db->get()->result();
     }
 }

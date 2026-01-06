@@ -14,18 +14,19 @@ class Category extends MY_Controller
         $this->load->library('encryption');
         $this->load->library('form_validation');
         $this->load->helper('image');
+        $this->load->helper('slug');
     }
 
     public function add($enc_id = null)
     {
         $id = $this->encryption->decrypt(base64_decode(urldecode($enc_id)));
         if (!empty($id)) {
-            // edit page 
+            // edit page
             $data['category'] = $this->category_model->getSingleCategory($id);
             $data['title'] = 'Updating Category';
             // load_admin_views('add_category', $data);
         } else {
-            // add page 
+            // add page
             $data['category'] = null;
             $data['title'] = 'Adding Category';
         }
@@ -40,10 +41,10 @@ class Category extends MY_Controller
         $this->form_validation->set_rules('alt_text', 'Alt Text', 'required|trim');
 
         if (empty($this->input->post('id'))) {
-            // add 
+            // add
             $this->form_validation->set_rules('image', 'Category Image', "callback_file_check[image]");
         } else {
-            // update 
+            // update
             if (!empty($_FILES['changeImage']['name'])) {
                 $this->form_validation->set_rules('changeImage', 'Category Image', "callback_file_check[changeImage]");
             }
@@ -99,11 +100,13 @@ class Category extends MY_Controller
                         600,
                         'medium'
                     );
-
+                    $cat_name= $this->input->post('name');
+                    $category_slug= generate_unique_slug($cat_name, 'category','category_slug');
                     $data = [
                         'name' => $this->input->post('name'),
                         'image' => $new_file,
-                        'image_alt' => $this->input->post('alt_text')
+                        'image_alt' => $this->input->post('alt_text'),
+                        'category_slug'=> $category_slug
                     ];
 
                     if ($this->category_model->setCategory($data)) {
@@ -122,8 +125,7 @@ class Category extends MY_Controller
                 }
             }
         } else {
-            // update page code 
-
+            // update page code
             $changeImage = isset($_FILES['changeImage']['name']) ?
                 str_replace(' ', '_', $_FILES['changeImage']['name']) : '';
 
@@ -160,10 +162,14 @@ class Category extends MY_Controller
 
                     $oldImageName = $this->input->post('old_img');
                     $category_id = $this->input->post('id');
+                    $cat_name = $this->input->post('name');
+                    $category_slug = generate_unique_slug($cat_name, 'category', 'category_slug');
+
                     $data = [
                         'name' => $this->input->post('name'),
                         'image' => $new_file,
-                        'image_alt' => $this->input->post('alt_text')
+                        'image_alt' => $this->input->post('alt_text'),
+                        'category_slug'=> $category_slug
                     ];
 
 
@@ -195,10 +201,12 @@ class Category extends MY_Controller
                 $category_id = $this->input->post('id');
                 $alt_text = $this->input->post('alt_text');
                 $category_name = $this->input->post('name');
+                $category_slug = generate_unique_slug($category_name, 'category', 'category_slug');
                 $data = [
                     'name' => $category_name,
                     'image' => $oldImageName,
-                    'image_alt' => $alt_text
+                    'image_alt' => $alt_text,
+                    'category_slug'=> $category_slug
                 ];
                 if ($this->category_model->updateCategory($category_id, $data)) {
                     echo  json_encode(["status" => "update"]);

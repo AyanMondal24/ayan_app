@@ -88,10 +88,19 @@
                             </div>
                         <?php  } ?>
 
+                        <?php if (!empty($profile)) { ?>
+                            <div class="form-item main-div">
+                                <input type="hidden" name="profile" value="profile">
+                                <label class="form-label my-3">Email Address<sup>*</sup></label>
+                                <input type="email" class="form-control" id="b_email_profile" name="b_email">
+                                <span class="error" id="b_email_error_profile"><?= form_error('b_email') ?></span>
+                            </div>
+                        <?php  } ?>
+
                         <?php if (!empty($address->id) && $address->is_shipping_same == 1) { ?>
                             <hr>
                             <div class="form-check my-3">
-                                <input class="form-check-input" type="checkbox" id="is_shipping" name="is_shipping" value="1"
+                                <input class="form-check-input is-shipping-check" type="checkbox" id="is_shipping" name="is_shipping" value="1"
                                     <?= (isset($address->is_shipping_same) && $address->is_shipping_same == 0 ? 'checked' : '') ?>>
 
                                 <label class="form-check-label" for="is_shipping">Ship to a different address?</label>
@@ -104,7 +113,11 @@
 
                                 <label class="form-check-label" for="is_shipping">Ship to a different address?</label>
                             </div>
-                        <?php } else { ?>
+                        <?php } else if (!empty($profile)) { ?>
+                            <hr>
+                            <input class="form-check-input is-shipping-check" type="checkbox" id="is_shipping_profile" name="is_shipping" value="1">
+                            <label class="form-check-label" for="is_shipping_profile">Ship to a different address?</label>
+                        <?php   } else { ?>
                             <input class="form-check-input" type="hidden" name="is_shipping" value="1">
                         <?php } ?>
 
@@ -174,6 +187,14 @@
                                     <label class="form-label my-3">Email Address<sup>*</sup></label>
                                     <input type="email" class="form-control" id="s_email_order" name="s_email" value="<?= !empty($address->order_s_email) ? $address->order_s_email : ''  ?>">
                                     <span class="error" id="s_email_error_order"><?= form_error('s_email') ?></span>
+                                </div>
+                            <?php } ?>
+
+                            <?php if (!empty($profile)) { ?>
+                                <div class="form-item main-div">
+                                    <label class="form-label my-3">Email Address<sup>*</sup></label>
+                                    <input type="email" class="form-control" id="s_email_profile" name="s_email">
+                                    <span class="error" id="s_email_error_profile"><?= form_error('s_email') ?></span>
                                 </div>
                             <?php } ?>
                         </div>
@@ -266,7 +287,7 @@
     document.addEventListener('DOMContentLoaded', function() {
         // const checkbox = document.getElementById('is_shipping');
         // const shipDiv = document.getElementById('ship');
-        console.log(<?= $address->is_shipping_same ?>)
+
         const b_fname = document.querySelector("#b_fname");
         const b_lname = document.querySelector("#b_lname");
         const b_address = document.querySelector("#b_address");
@@ -292,8 +313,12 @@
         const b_email_order = document.querySelector("#b_email_order");
         const s_email_order = document.querySelector("#s_email_order");
 
-        const order_id = <?= isset($address->order_id) ? (int)$address->order_id : 'null' ?>
+        const b_email_profile = document.querySelector("#b_email_profile");
+        const s_email_profile = document.querySelector("#s_email_profile");
 
+        const order_id = <?= isset($address->order_id) ? (int)$address->order_id : 'null' ?>;
+        const profile_address = "<?= isset($profile) ? $profile : '' ?>";
+        // console.log(order_id)
         const hasBilling = <?= isset($billing) ? 'true' : 'false' ?>;
         if (hasBilling) {
             numberField('#b_pin', 6, 6, '#b_pin_error');
@@ -312,8 +337,6 @@
             e.preventDefault();
             let myvalidate = true;
             if (hasBilling) {
-
-
                 const fields = [{
                         element: b_fname,
                         rules: [{
@@ -424,21 +447,7 @@
                     },
                 ];
 
-                if (!order_id) {
-                    fields.push({
-                        element: b_email,
-                        rules: [{
-                                rule: "required",
-                                message: "Email field is required"
-                            },
-                            {
-                                rule: "email",
-                                message: "Enter a valid email"
-                            }
-                        ],
-                        errorSelector: "#b_email_error"
-                    });
-                } else {
+                if (order_id !== null) {
                     fields.push({
                         element: b_email_order,
                         rules: [{
@@ -452,6 +461,35 @@
                         ],
                         errorSelector: "#b_email_error_order"
                     });
+                } else if (b_email_profile && profile_address !== '') {
+                    fields.push({
+                        element: b_email_profile,
+                        rules: [{
+                                rule: "required",
+                                message: "Email field is required"
+                            },
+                            {
+                                rule: "email",
+                                message: "Enter a valid email"
+                            }
+                        ],
+                        errorSelector: "#b_email_error_profile"
+                    });
+                } else {
+                    fields.push({
+                        element: b_email,
+                        rules: [{
+                                rule: "required",
+                                message: "Email field is required"
+                            },
+                            {
+                                rule: "email",
+                                message: "Enter a valid email"
+                            }
+                        ],
+                        errorSelector: "#b_email_error"
+                    });
+
                 }
 
                 let is_validate = validate(fields);
@@ -460,8 +498,10 @@
                     myvalidate = false;
                     return;
                 }
-
-                if ($("#is_shipping").is(":checked")) {
+                const isShippingChecked = $(".is-shipping-check:checked").length > 0;
+                const shipDiv = document.getElementById('ship');
+                // console.log(isShippingChecked)
+                if (isShippingChecked && shipDiv && shipDiv.style.display !== 'none') {
 
                     const billing_is_shipping = [{
                             element: s_fname,
@@ -574,21 +614,7 @@
                         },
                     ];
 
-                    if (!order_id) {
-                        billing_is_shipping.push({
-                            element: b_email,
-                            rules: [{
-                                    rule: "required",
-                                    message: "Email field is required"
-                                },
-                                {
-                                    rule: "email",
-                                    message: "Enter a valid email"
-                                }
-                            ],
-                            errorSelector: "#b_email_error"
-                        });
-                    } else {
+                    if (order_id !== null) {
                         billing_is_shipping.push({
                             element: s_email_order,
                             rules: [{
@@ -602,6 +628,35 @@
                             ],
                             errorSelector: "#s_email_error_order"
                         });
+                    } else if (s_email_profile && profile_address !== '') {
+                        billing_is_shipping.push({
+                            element: s_email_profile,
+                            rules: [{
+                                    rule: "required",
+                                    message: "Email field is required"
+                                },
+                                {
+                                    rule: "email",
+                                    message: "Enter a valid email"
+                                }
+                            ],
+                            errorSelector: "#s_email_error_profile"
+                        });
+                    } else {
+                        billing_is_shipping.push({
+                            element: s_email,
+                            rules: [{
+                                    rule: "required",
+                                    message: "Email field is required"
+                                },
+                                {
+                                    rule: "email",
+                                    message: "Enter a valid email"
+                                }
+                            ],
+                            errorSelector: "#s_email_error"
+                        });
+
                     }
                     let is_validate = validate(billing_is_shipping);
 
@@ -615,7 +670,7 @@
 
             // shipping form validation (only if elements exist)
 
-            const is_shipping_same = <?= (int)$address->is_shipping_same ?>; // 0 or 1
+            const is_shipping_same = <?= (int) (isset($address) ? $address->is_shipping_same : 1)  ?>; // 0 or 1
 
             const shipping_val = "<?= isset($shipping) ? $shipping : '' ?>"; // 'shipping' or ''
 
@@ -771,7 +826,6 @@
                     return;
 
                 }
-
             }
             if (myvalidate) {
                 $.ajax({
@@ -794,7 +848,7 @@
                                 $('#spinner').addClass('show');
                             }, 600);
 
-                            if (order_id) {
+                            if (order_id !== null) {
                                 // redirect after spinner
                                 setTimeout(function() {
                                     window.location.href = document.referrer || "<?= base_url('profile/order/details/' . $enc_order_id) ?>";
@@ -810,6 +864,12 @@
                         } else {
                             $("#response").addClass("error-msg").removeClass('success-msg').html(response.message).fadeIn(200).delay(3000).fadeOut(200);
                         }
+
+                        // if (response.status === 'check') {
+                        //     console.log(response.billing);
+                        //     console.log(response.profile);
+                        //     console.log(response.billing_is_shipping);
+                        // }
                     }
                 });
             }
@@ -820,8 +880,9 @@
         function handleShipping() {
             const checkbox =
                 document.getElementById('is_shipping_order') ||
-                document.getElementById('is_shipping');
-
+                document.getElementById('is_shipping') ||
+                document.getElementById('is_shipping_profile');
+            // console.log("inside handleshipping " + checkbox)
             toggleShipping(checkbox, 'ship');
         }
 
@@ -832,8 +893,11 @@
         document.addEventListener('change', (e) => {
             if (
                 e.target.id === 'is_shipping' ||
-                e.target.id === 'is_shipping_order'
+                e.target.id === 'is_shipping_order' ||
+                e.target.id === 'is_shipping_profile'
             ) {
+                // console.log("inside event chnage " + checkbox)
+
                 handleShipping();
             }
         });
@@ -842,6 +906,8 @@
         function toggleShipping(checkbox, targetId) {
             const shipDiv = document.getElementById(targetId);
             if (!checkbox || !shipDiv) return;
+
+            // console.log("inside toggle " + checkbox)
 
             shipDiv.style.display = checkbox.checked ? 'block' : 'none';
 

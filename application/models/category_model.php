@@ -65,4 +65,12 @@ class category_model extends CI_Model
         $this->db->group_by('c.id, c.name');
         return $this->db->get()->result();
     }
+
+    // getBySlug
+    public function getBySlug($category_slug){
+        $this->db->select('*');
+        $this->db->from('category');
+        $this->db->where('category_slug',$category_slug);
+        return $this->db->get()->row();
+    }
 }

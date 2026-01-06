@@ -166,11 +166,12 @@ class Profile extends CI_Controller
     function update_address()
     {
         $this->form_validation->reset_validation();
-
+        $profile=$this->input->post('profile');
         $isBilling  = $this->input->post('is_billing') === 'billing';
         $isShipping = $this->input->post('is_shippingcheck') === 'shipping';
 
         $billing_is_shipping = $this->input->post('is_shipping');
+
 
         if ($isBilling) {
             $this->form_validation->set_rules('b_fname', 'First name', 'required');
@@ -224,6 +225,8 @@ class Profile extends CI_Controller
             ]);
             return;
         }
+
+
         $order_id = $this->input->post('order_id');
 
         $address_id = $this->input->post('address_id');
@@ -290,6 +293,22 @@ class Profile extends CI_Controller
         } else {
             $update = $this->address_model->update($data, $address_id);
         }
+        if (!empty($profile)) {
+            $data['user_id'] = $this->session->userdata('user_id');
+            $create = $this->address_model->create($data);
+
+            $this->output
+                ->set_content_type('application/json')
+                ->set_output(json_encode([
+                    'status'  => $create ? 'success' : 'error',
+                    'message' => $create
+                        ? 'Address created successfully'
+                        : 'Address cannot be created'
+                ]));
+
+            return; // ⛔ VERY IMPORTANT
+        }
+
         if ($update) {
             echo json_encode([
                 'status' => 'success',

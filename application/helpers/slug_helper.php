@@ -9,7 +9,7 @@ function make_slug($string)
     return trim($string, '-');
 }
 
-function generate_unique_slug($title, $table, $slug_column = 'slug')
+function generate_unique_slug($title, $table, $slug_column)
 {
     $CI = &get_instance();
     $slug = make_slug($title);

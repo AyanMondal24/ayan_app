@@ -174,7 +174,13 @@
                                             </div>
                                             <div class="text-white bg-secondary px-3 py-1 rounded position-absolute" style="top: 10px; left: 10px;"><?= $product->category_name ?></div>
                                             <div class="p-4 border border-secondary  rounded-bottom product-content" style="height:245px; max-height:245px;">
-                                                <h4 class="product-title"><?= $product->product_name ?></h4>
+
+                                                <h4 class="product-title">
+                                                    <a href="<?= base_url('category/' . $product->category_slug . '/product/' . $product->slug) ?>">
+                                                        <?= $product->product_name ?>
+                                                    </a>
+                                                </h4>
+
                                                 <p class="text-dark fs-5 fw-bold mb-0 text-start product-price">&#8377; <?= $product->price ?> <span> / <?= $product->short_name ?></span></p>
                                                 <p class="text-start product-desc"><?= $desc ?></p>
 

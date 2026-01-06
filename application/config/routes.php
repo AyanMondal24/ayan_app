@@ -78,6 +78,9 @@ $route['thankyou/verify-payment'] = 'Thank_you/verifyIntent';
 
 $route['pdf/(:any)'] = 'pdf/index/$1';
 
+$route['category/(:any)/product/(:any)'] = 'Product/index/$2/$1';
+
+
 $route['signup'] = 'Auth/signup';
 $route['signup-user'] = 'Auth/addUser';
 $route['login'] = 'Auth/login';

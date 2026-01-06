@@ -298,7 +298,7 @@
                 <?php } else { ?>
                     <div class="container py-4">
                         <div class="d-flex align-items-center justify-content-center">
-                            <a href="<?= base_url('profile/order/billing-address?profile=profile') ?>" class="btn btn-primary btn-change text-light">
+                            <a href="<?= base_url('profile/order/billing-address?profile=address') ?>" class="btn btn-primary btn-change text-light">
                                 Add Address
                             </a>
                         </div>
@@ -435,18 +435,20 @@
         });
 
         // same - as - bill - address
-        $("#same-as-bill-address").on('click',function(e){
+        $("#same-as-bill-address").on('click', function(e) {
             e.preventDefault();
-            id=$(this).data('id');
+            id = $(this).data('id');
             $.ajax({
                 url: "<?= base_url('Profile/is_shipping_same') ?>",
-                type:"POST",
-                data:{id:id},
-                dataType:"JSON",
-                success: function(response){
-                    if(response.status==='success'){
+                type: "POST",
+                data: {
+                    id: id
+                },
+                dataType: "JSON",
+                success: function(response) {
+                    if (response.status === 'success') {
                         window.location.reload();
-                    }else{
+                    } else {
 
                     }
                 }
@@ -677,6 +679,16 @@
             table.column(5).search(this.value).draw();
         });
 
+
+        $('#profile-order-table').on('click', '.btn-primary', function() {
+            let page = table.page();
+            sessionStorage.setItem('orderTablePage', page);
+        });
+
+        let savedPage = sessionStorage.getItem('orderTablePage');
+        if (savedPage !== null) {
+            table.page(parseInt(savedPage)).draw('page');
+        }
 
     });
 </script>

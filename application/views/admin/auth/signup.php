@@ -8,14 +8,20 @@
 
     <!-- 🔥 CRITICAL: prevents sidebar flash BEFORE first paint -->
     <style>
-        html, body {
+        html,
+        body {
             width: 100%;
             max-width: 100%;
             overflow-x: hidden !important;
         }
 
         /* Permanent sidebar removal */
-        .sidebar, #sidebar, aside, .side-nav, .offcanvas, .drawer {
+        .sidebar,
+        #sidebar,
+        aside,
+        .side-nav,
+        .offcanvas,
+        .drawer {
             display: none !important;
             visibility: hidden !important;
             width: 0 !important;
@@ -24,12 +30,15 @@
         }
 
         /* Hide any Bootstrap or common sidebar classes */
-        .col-sidebar, .sidebar-col, .nav-sidebar {
+        .col-sidebar,
+        .sidebar-col,
+        .nav-sidebar {
             display: none !important;
         }
 
         /* Ensure main content takes full width */
-        .main-content, .content-area {
+        .main-content,
+        .content-area {
             width: 100% !important;
             margin-left: 0 !important;
             padding-left: 0 !important;
@@ -54,22 +63,25 @@
             position: relative;
         }
 
-      @keyframes fadeSlide {
-    from {
-        opacity: 0;
-        transform: translate3d(-30px, 0, 0); /* ← start from left */
-    }
-    to {
-        opacity: 1;
-        transform: translate3d(0, 0, 0);    /* center */
-    }
-}
+        @keyframes fadeSlide {
+            from {
+                opacity: 0;
+                transform: translate3d(-30px, 0, 0);
+                /* ← start from left */
+            }
+
+            to {
+                opacity: 1;
+                transform: translate3d(0, 0, 0);
+                /* center */
+            }
+        }
 
         .card {
-    animation: fadeSlide 0.6s ease-out;
-    will-change: transform, opacity;
-    transform: translateZ(0);
-}
+            animation: fadeSlide 0.6s ease-out;
+            will-change: transform, opacity;
+            transform: translateZ(0);
+        }
 
 
         .container,
@@ -128,7 +140,7 @@
 
                             <div class="mb-3 error-div">
                                 <label class="form-label">Profile Image</label>
-                                <input type="file" class="form-control" name="image" id="image">
+                                <input type="file" class="form-control" name="image" id="image" accept="image/*">
                                 <span class="error" id="image_error"></span>
                             </div>
 
@@ -165,14 +177,14 @@
     <script src="<?= base_url('assets/js/custom.js') ?>"></script>
 
     <script>
-        (function () {
+        (function() {
             document.documentElement.style.overflowX = 'hidden';
             document.body.style.overflowX = 'hidden';
         })();
     </script>
 
     <script>
-        document.addEventListener('DOMContentLoaded', function () {
+        document.addEventListener('DOMContentLoaded', function() {
             // Hard-lock overflow
             document.documentElement.style.overflowX = 'hidden';
             document.body.style.overflowX = 'hidden';
@@ -210,4 +222,5 @@
             document.body.style.width = '100%';
         });
     </script>
+
 </html>

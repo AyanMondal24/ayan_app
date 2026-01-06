@@ -106,9 +106,8 @@
                         Change
                       </label>
                     </div>
+
                     <input type="file" class="updateImageInput d-none" data-checkname="featured" id="updateImageInput_<?= $featuredimage->id ?>" name="uploadedfeaturedimage" accept="image/*">
-
-
 
                     <div class="error-show">
                       <input type="text" name="uploaded_alt_featured_text" class="form-control mt-2" placeholder="Enter alt text for SEO" value="<?= $featuredimage->alt_text ?>">
@@ -365,7 +364,7 @@
       });
     });
 
-    // make image featured 
+    // make image featured
     $(document).on('click', '.make-featured-btn', function(e) {
       e.preventDefault();
 
@@ -406,7 +405,7 @@
     });
 
 
-    // update page 
+    // update page
     $(document).on('change', '.updateImageInput', function(e) {
       let files = e.target.files;
       let checked_name = $(this).data('checkname');
@@ -424,8 +423,8 @@
             let imgHtml = `
                 <div class="position-relative d-inline-block mt-2" style="width:100px;">
                     <img src="${imgUrl}" class="img-thumbnail" style="width:100px;height:100px;object-fit:cover;">
-                    <button type="button" 
-                class="btn btn-sm btn-danger position-absolute top-0 end-0 remove-image" 
+                    <button type="button"
+                class="btn btn-sm btn-danger position-absolute top-0 end-0 remove-image"
                 data-type="preview"
                 style="border-radius:50%;">×</button>
                 </div>
@@ -472,8 +471,8 @@
             let imgHtml = `
                 <div class="remove-box  position-relative d-inline-block mt-2" style="width:100px;">
                     <img src="${imgUrl}" class="img-thumbnail" style="width:100px;height:100px;object-fit:cover;">
-                    <button type="button" 
-                class="btn btn-sm btn-danger position-absolute top-0 end-0 remove-image" 
+                    <button type="button"
+                class="btn btn-sm btn-danger position-absolute top-0 end-0 remove-image"
                 data-type="preview"
                 style="border-radius:50%;">×</button>
 
@@ -491,8 +490,8 @@
             let imgHtml = `
                 <div class="position-relative d-inline-block mt-2" style="width:100px;">
                     <img src="${imgUrl}" class="img-thumbnail" style="width:100px;height:100px;object-fit:cover;">
-                   <button type="button" 
-                class="btn btn-sm btn-danger position-absolute top-0 end-0 remove-image" 
+                   <button type="button"
+                class="btn btn-sm btn-danger position-absolute top-0 end-0 remove-image"
                 data-type="featured_preview"
                 style="border-radius:50%;">×</button>
 
