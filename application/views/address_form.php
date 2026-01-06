@@ -71,7 +71,7 @@
                             <input type="tel" class="form-control" id="b_phone" name="b_phone" value="<?= !empty($address->b_phone) ? $address->b_phone : (!empty($userdata->mobile) ? $userdata->mobile : '') ?>">
                             <span class="error" id="b_phone_error"><?= form_error('b_phone') ?></span>
                         </div>
-                        <?php if (!empty($address-i>d)) { ?>
+                        <?php if (!empty($address->id)) { ?>
                             <div class="form-item main-div">
                                 <label class="form-label my-3">Email Address<sup>*</sup></label>
                                 <input type="email" class="form-control" id="b_email" name="b_email" value="<?= !empty($address->b_email) ? $address->b_email : (!empty($userdata->email) ? $userdata->email : '') ?>">
