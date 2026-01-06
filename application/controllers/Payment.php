@@ -31,7 +31,7 @@ class Payment extends CI_Controller
         load_views('payment', $data);
     }
 
-  
+
     function get_intent()
     {
         \Stripe\Stripe::setApiKey(STRIPE_SECRET);
@@ -41,11 +41,13 @@ class Payment extends CI_Controller
 
         // Already paid
         if ($order->payment_status === 'paid') {
-            return $this->output
+            $this->output
                 ->set_status_header(400)
+                ->set_content_type('application/json')
                 ->set_output(json_encode([
                     'error' => 'Order already paid'
                 ]));
+            exit;
         }
 
         //  Calculate amount FIRST
@@ -98,6 +100,7 @@ class Payment extends CI_Controller
             ->set_output(json_encode([
                 'clientSecret' => $intent->client_secret
             ]));
+        exit;
     }
 
 

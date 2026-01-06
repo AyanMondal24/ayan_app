@@ -5,7 +5,10 @@
             <input type="hidden" name="address_id" value="<?= $address->id   ?>">
         <?php  }
         ?>
-        <?php if (!empty($address->order_id)) {  $enc_order_id=urlencode(base64_encode($this->encryption->encrypt($address->order_id)))?>
+        <?php
+        $enc_order_id = null;
+        if (!empty($address->order_id)) {
+            $enc_order_id = urlencode(base64_encode($this->encryption->encrypt($address->order_id))) ?>
             <input type="hidden" name="order_id" value="<?= $address->order_id   ?>">
         <?php  }
         ?>
@@ -68,7 +71,7 @@
                             <input type="tel" class="form-control" id="b_phone" name="b_phone" value="<?= !empty($address->b_phone) ? $address->b_phone : (!empty($userdata->mobile) ? $userdata->mobile : '') ?>">
                             <span class="error" id="b_phone_error"><?= form_error('b_phone') ?></span>
                         </div>
-                        <?php if (!empty($address->id)) { ?>
+                        <?php if (!empty($address-i>d)) { ?>
                             <div class="form-item main-div">
                                 <label class="form-label my-3">Email Address<sup>*</sup></label>
                                 <input type="email" class="form-control" id="b_email" name="b_email" value="<?= !empty($address->b_email) ? $address->b_email : (!empty($userdata->email) ? $userdata->email : '') ?>">
@@ -103,7 +106,6 @@
                             </div>
                         <?php } else { ?>
                             <input class="form-check-input" type="hidden" name="is_shipping" value="1">
-
                         <?php } ?>
 
                         <div class="ship" id="ship" style="display: none;">
@@ -249,7 +251,7 @@
                     <?php } ?>
                 </div>
                 <div class="form-item mt-2">
-                    <input type="submit" name="submit" id="saved" value="Saved" class="form_control btn btn-success">
+                    <input type="button" name="submit" id="saved" value="Saved" class="form_control btn btn-success">
                 </div>
 
             </div>
@@ -264,7 +266,7 @@
     document.addEventListener('DOMContentLoaded', function() {
         // const checkbox = document.getElementById('is_shipping');
         // const shipDiv = document.getElementById('ship');
-
+        console.log(<?= $address->is_shipping_same ?>)
         const b_fname = document.querySelector("#b_fname");
         const b_lname = document.querySelector("#b_lname");
         const b_address = document.querySelector("#b_address");
@@ -302,6 +304,9 @@
             numberField('#shipping_pin', 6, 6, '#shipping_pin_error');
             numberField('#shipping_phone', 10, 10, '#shipping_phone_error');
         }
+        $("#saved").on("click", function() {
+            $("#address-form").trigger("submit");
+        });
 
         $("#address-form").on('submit', function(e) {
             e.preventDefault();
@@ -417,21 +422,6 @@
                         ],
                         errorSelector: "#b_phone_error"
                     },
-
-                    // {
-                    //     element: b_email,
-                    //     rules: [{
-                    //             rule: "required",
-                    //             message: "Email field is required"
-                    //         },
-                    //         {
-                    //             rule: "email",
-                    //             message: "Enter a valid email"
-                    //         }
-
-                    //     ],
-                    //     errorSelector: "#b_email_error"
-                    // },
                 ];
 
                 if (!order_id) {
@@ -804,14 +794,17 @@
                                 $('#spinner').addClass('show');
                             }, 600);
 
-                            if(!order_id){
+                            if (order_id) {
                                 // redirect after spinner
                                 setTimeout(function() {
-                                    window.location.href = document.referrer || "<?= base_url('profile') ?>";
+                                    window.location.href = document.referrer || "<?= base_url('profile/order/details/' . $enc_order_id) ?>";
                                 }, 1800);
-                            }else{
-                                  setTimeout(function() {
-                                    window.location.href = document.referrer || "<?= base_url('profile/order_details/'. $enc_order_id) ?>";
+                            } else {
+                                setTimeout(function() {
+                                    setTimeout(function() {
+                                        window.location.href = "<?= base_url('profile#address') ?>";
+                                    }, 1800);
+
                                 }, 1800);
                             }
                         } else {

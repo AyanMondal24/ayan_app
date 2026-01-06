@@ -76,42 +76,26 @@ $cart_count = is_array($cart) ? count($cart) : 0;
                         <a href="<?= base_url() ?>"
                             class="nav-item nav-link <?= ($this->uri->segment(1) == '') ? 'active' : '' ?>">Home</a>
 
-                        <a href="<?= site_url('Shop/index') ?>"
+                        <a href="<?= site_url('shop') ?>"
                             class="nav-item nav-link <?= ($this->uri->segment(1) == 'Shop') ? 'active' : '' ?>">Shop</a>
 
-                        <!-- <a href="<?= site_url('Cart/index') ?>"
+                        <!-- <a href="<?= site_url('cart') ?>"
                             class="nav-item nav-link <?= ($this->uri->segment(1) == 'Cart') ? 'active' : '' ?>">Shop Cart</a> -->
 
-                        <!-- <a href="<?= site_url('Checkout/index') ?>"
+                        <!-- <a href="<?= site_url('checkout') ?>"
                             class="nav-item nav-link <?= ($this->uri->segment(1) == 'Checkout') ? 'active' : '' ?>">Checkout</a> -->
 
-                        <a href="<?= site_url('Contact/index') ?>"
+                        <a href="<?= site_url('contact') ?>"
                             class="nav-item nav-link <?= ($this->uri->segment(1) == 'Contact') ? 'active' : '' ?>">Contact</a>
                     </div>
 
                     <div class="d-flex m-3 me-0">
                         <button class="btn-search btn border border-secondary btn-md-square rounded-circle bg-white me-4" data-bs-toggle="modal" data-bs-target="#searchModal"><i class="fas fa-search text-primary"></i></button>
-                        <a href="<?= base_url('Cart/index') ?>" class="position-relative me-4 my-auto">
+                        <a href="<?= base_url('cart') ?>" class="position-relative me-4 my-auto">
                             <i class="fa fa-shopping-bag fa-2x"></i>
                             <span class="position-absolute bg-secondary rounded-circle d-flex align-items-center justify-content-center text-dark px-1 cart-count" id="cart-count" style="top: -5px; left: 15px; height: 20px; min-width: 20px;"><?= $cart_count ?></span>
                         </a>
-                        <!-- <a href="#" class="my-auto">
-                                <i class="fas fa-user fa-2x"></i>
-                            </a> -->
-                        <!-- <div class="dropdown my-auth">
-                            <a href="#" class="dropdown user-icon" id="userMenu" data-bs-toggle="dropdown" aria-expanded="false">
-                                <i class="fas fa-user fa-2x"></i>
-                            </a>
 
-                            <ul class="dropdown-menu dropdown-menu-end shadow text-center">
-                                <li><a class="dropdown-item" href="login">Login</a></li>
-                                <li><a class="dropdown-item" href="register">Register</a></li>
-                                <li>
-                                    <hr class="dropdown-divider">
-                                </li>
-                                <li><a class="dropdown-item" href="logout">Logout</a></li>
-                            </ul>
-                        </div> -->
 
                         <li class="dropdown-center navbar-icons">
                             <a class="my-auto border border-0 p-0" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -120,14 +104,14 @@ $cart_count = is_array($cart) ? count($cart) : 0;
                             <ul class="dropdown-menu">
                                 <?php if (!$this->session->userdata('logged_in')) { ?>
 
-                                    <li><a href="<?= base_url('Auth/signup') ?>" class="dropdown-item">Signup</a></li>
-                                    <li><a href="<?= base_url('Auth/login') ?>" class="dropdown-item">Login</a></li>
+                                    <li><a href="<?= base_url('signup') ?>" class="dropdown-item">Signup</a></li>
+                                    <li><a href="<?= base_url('login') ?>" class="dropdown-item">Login</a></li>
 
                                 <?php
                                 }
                                 if ($this->session->userdata('logged_in')) { ?>
-                                    <li><a class="dropdown-item" href="<?= base_url('Profile/index') ?>">Profile</a></li>
-                                    <li><a class="dropdown-item" href="<?= base_url('Auth/logout') ?>">Logout</a></li>
+                                    <li><a class="dropdown-item" href="<?= base_url('profile') ?>">Profile</a></li>
+                                    <li><a class="dropdown-item" href="<?= base_url('logout') ?>">Logout</a></li>
                                 <?php }
                                 ?>
                             </ul>
@@ -150,7 +134,7 @@ $cart_count = is_array($cart) ? count($cart) : 0;
                 </div>
 
                 <div class="modal-body d-flex align-items-center">
-                    <form action="<?= base_url('Shop/index') ?>" method="POST" class="w-100">
+                    <form action="<?= base_url('shop') ?>" method="POST" class="w-100">
                         <div class="input-group w-75 mx-auto">
 
                             <input type="search" name="home_search" class="form-control p-3" placeholder="keywords"

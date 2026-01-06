@@ -16,6 +16,7 @@ class Product extends MY_Controller
         $this->load->library('encryption');
         $this->load->helper('common');
         $this->load->helper('image');
+        $this->load->helper('slug');
     }
 
 
@@ -87,20 +88,15 @@ class Product extends MY_Controller
         $this->form_validation->set_rules('description', 'Description', 'required');
         $this->form_validation->set_rules('description', 'Description', 'required|callback_min_desc');
 
-        // 🔹 File validation logic (now checks temp uploads)
         if (empty($this->input->post('id'))) {
-            // Add mode → temp images required
             if (empty($_FILES['is_featured']['name'])) {
                 $this->form_validation->set_rules('is_featured', 'Featured Image', "callback_file_check[is_featured]");
             }
             $this->form_validation->set_rules('alt_featured_text', 'Featured Alt Text', 'required');
         } else {
-            // Edit mode → only validate if new temp images are uploaded
-
             if (!empty($this->input->post('uploadedfeaturedimage'))) {
                 $this->form_validation->set_rules('uploadedfeaturedimage', 'Product Images', 'callback_file_check[uploadedfeaturedimage]');
             }
-
             $this->form_validation->set_rules('uploaded_alt_featured_text', 'Featured Alt Text', 'required');
         }
 
@@ -126,22 +122,12 @@ class Product extends MY_Controller
         }
         $images = $_FILES['images']['name'] ?? [];
 
-        // foreach ($images as $key => $img) {
-        //     if (!empty($img)) {
-        //         $this->form_validation->set_rules("new_alt_text[$key]", "Alt Text ", "required");
-        //     }
-        // }
-
-        // $images = $_FILES['images']['name'] ?? [];
         $alt = $this->input->post('new_alt_text');
         if (!empty($alt)) {
             foreach ($alt as $key => $img) {
-                // if (!empty($img)) {
                 $this->form_validation->set_rules("new_alt_text[$key]", "Alt Text", "required");
-                // }
             }
         }
-
 
         // 🔹 Run validation
         if ($this->form_validation->run() == FALSE) {
@@ -169,22 +155,12 @@ class Product extends MY_Controller
             if (!empty($alt)) {
 
                 foreach ($alt as $key => $img) {
-                    // if (!empty($img)) {
                     $alt_error = form_error("new_alt_text[$key]");
                     if (!empty($alt_error)) {
                         $errors["new_alt_text[$key]"] = $alt_error;
                     }
-                    // }
                 }
             }
-            // foreach ($images as $key => $img) {
-            //     if (!empty($img)) {
-            //         $alt_error = form_error("new_alt_text[$key]");
-            //         if (!empty($alt_error)) {
-            //             $errors["new_alt_text[$key]"] = $alt_error;
-            //         }
-            //     }
-            // }
 
             // for update page start
             if (!empty($this->input->post('id'))) {
@@ -208,6 +184,11 @@ class Product extends MY_Controller
 
 
         $featured_product = ($this->input->post('is_featured') !== null) ? "0" : "1";
+        $product_name = $this->input->post('name');
+
+        // generate slug
+        $slug = generate_unique_slug($product_name, 'products');
+
         // 🔹 Prepare product data
         $data = [
             'name' => $this->input->post('name'),
@@ -219,6 +200,7 @@ class Product extends MY_Controller
             'is_available' => $this->input->post('is_available'),
             'description' => $this->input->post('description'),
             'is_featured' => $featured_product,
+            'slug'         => $slug
         ];
 
         if (empty($this->input->post('id'))) {
@@ -264,8 +246,6 @@ class Product extends MY_Controller
                         $errors[] = $e;
                     }
                 }
-
-
 
                 // add new featured image
                 $featured_img = isset($_FILES['is_featured']['name']) ?
@@ -347,12 +327,7 @@ class Product extends MY_Controller
                     'message' => 'Insert successfully.'
                 ];
             }
-            // elseif ($insert_others_image_status == false) {
-            //     $response = [
-            //         'status' => 'error',
-            //         'message' => 'Others Image Not inserted.'
-            //     ];
-            // }
+
             elseif (($insert_featured_image_status == false) || ($insert_others_image_status == false)) {
                 $response = [
                     'status' => 'error',
@@ -383,7 +358,17 @@ class Product extends MY_Controller
             $alt_texts = $this->input->post('alt_text');
             $product_id = $this->input->post('id');
             $image_ids = $this->input->post('image_id');
-            // $uploaded_temps = $this->input->post('uploaded_temp');
+
+
+            $old_product = $this->product_model->getSingleProduct($product_id);
+
+            if ($old_product && $old_product->name !== $product_name) {
+                // name changed → regenerate slug
+                $data['slug'] = generate_unique_slug($product_name, 'products');
+            } else {
+                // name not changed → remove slug from update
+                unset($data['slug']);
+            }
 
             $perm_folder = FCPATH . 'assets/uploads/products/original/';
             $perm_folder_medium = FCPATH . 'assets/uploads/products/medium/';
@@ -509,72 +494,6 @@ class Product extends MY_Controller
                 ? str_replace(' ', '_', $_FILES['images']['name'])
                 : [];
 
-            // if (!empty(array_filter($insertedImages))) {
-            //     foreach ($insertedImages as $index => $insert_image) {
-            //         // Corrected condition: Check $insert_image (not undefined $image)
-            //         if (empty($insert_image) || $_FILES['images']['error'][$index] !== UPLOAD_ERR_OK) {
-            //             $errors[] = "Skipped image at index $index: No file or upload error.";
-            //             continue; // Skip invalid uploads
-            //         }
-
-            //         $alt_text = isset($new_alt_text[$index]) ? $new_alt_text[$index] : '';
-
-            //         // Generate new filename
-            //         $prefix = 'product_';
-            //         $unique_file = uniqid();
-            //         $ext = pathinfo($insert_image, PATHINFO_EXTENSION);
-            //         $new_file = $prefix . $unique_file . "." . $ext;
-
-            //         $destination = $perm_folder . $new_file;
-
-            //         $tmp_name = $_FILES['images']['tmp_name'][$index];
-            //         if (move_uploaded_file($tmp_name, $destination)) {
-
-            //             // Create resized versions using SAME filename
-            //             create_image_copy(
-            //                 FCPATH . 'assets/uploads/products/',
-            //                 $new_file,
-            //                 150,
-            //                 150,
-            //                 'thumb'
-            //             );
-
-            //             create_image_copy(
-            //                 FCPATH . 'assets/uploads/products/',
-            //                 $new_file,
-            //                 600,
-            //                 600,
-            //                 'medium'
-            //             );
-
-            //             // Prepare data for DB insert
-            //             $image_data = [
-            //                 'product_id' => $product_id,
-            //                 'image_name' => $new_file,
-            //                 'alt_text' => $alt_text,
-            //                 'is_featured' => 1
-
-            //             ];
-
-            //             // Corrected: Use the right model method
-            //             if ($this->product_model->insertProductImage($image_data)) {
-            //                 $insert_status = true;
-            //             } else {
-
-            //                 $original = FCPATH . 'assets/uploads/products/original/' . $new_file;
-            //                 $medium   = FCPATH . 'assets/uploads/products/medium/'   . $new_file;
-            //                 $thumb    = FCPATH . 'assets/uploads/products/thumb/'    . $new_file;
-
-            //                 if (file_exists($original)) unlink($original);
-            //                 if (file_exists($medium)) unlink($medium);
-            //                 if (file_exists($thumb)) unlink($thumb);
-            //                 $errors[] = "DB insert failed index[$index] for others image: $new_file ";
-            //             }
-            //         } else {
-            //             $errors[] = "Others Image upload local failed : $destination";
-            //         }
-            //     }
-            // }
 
             if (!empty(array_filter($insertedImages))) {
 
@@ -617,8 +536,6 @@ class Product extends MY_Controller
                     }
                 }
             }
-
-
 
             // update page change ohters image and alt text
             $update_images = isset($_FILES['uploadchangeimage']['name']) ?
@@ -705,7 +622,6 @@ class Product extends MY_Controller
                     }
                 }
             }
-
 
             // Update main product info
             if ($this->product_model->updateProduct($product_id, $data)) {

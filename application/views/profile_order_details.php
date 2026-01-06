@@ -59,16 +59,7 @@
             } ?>
 
         </div>
-        <!-- <a href="#" class="updates-link">See All Updates ›</a> -->
 
-        <!-- Order ID -->
-        <!-- <div class="order-id"> -->
-        <!-- Order Code - <?= $order->order_number ?>
-            <span class="copy">📋</span> -->
-        <!-- <span>Order Code - </span>
-            <span id="orderCode">ORD-20251224-752923-116</span>
-            <button id="copyBtn" onclick="copyOrderCode()">📋</button>
-        </div> -->
 
         <div class="order-code-wrapper">
             <span class="order-label">Order Code</span>
@@ -114,7 +105,7 @@
             </div>
             <div class="info-row">
                 <?php $enc_order_id = urlencode(base64_encode($this->encryption->encrypt($order->order_id))) ?>
-                <a href="<?= base_url('Profile/edit_billing_address/' . $enc_order_id) ?>" class="btn btn-primary text-light">Change Address</a>
+                <a href="<?= base_url('profile/order/billing-address/' . $enc_order_id) ?>" class="btn btn-primary text-light">Change Address</a>
             </div>
         </div>
 

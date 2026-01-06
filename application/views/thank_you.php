@@ -13,7 +13,7 @@
                 <p>Your order has been placed successfully.</p>
             <?php } ?>
 
-            <a href="<?= base_url('pdf/index/' . $order_enc_id) ?>" class="btn btn-warning text-light d-block">
+            <a href="<?= base_url('pdf/' . $order_enc_id) ?>" class="btn btn-warning text-light d-block">
                 Download Invoice
             </a>
 

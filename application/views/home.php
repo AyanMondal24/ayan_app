@@ -6,7 +6,7 @@
                 <h4 class="mb-3 text-secondary">100% Organic Foods</h4>
                 <h1 class="mb-5 display-3 text-primary">Organic Veggies & Fruits Foods</h1>
                 <div class="position-relative mx-auto">
-                    <form action="<?= base_url('Shop/index') ?>" method="POST">
+                    <form action="<?= base_url('shop') ?>" method="POST">
                         <input class="form-control border-2 border-secondary w-75 py-3 px-4 rounded-pill" type="text" name="home_search" id="home-search" placeholder="Search">
                         <button type="submit" class="btn btn-primary border-2 border-secondary py-3 px-4 position-absolute rounded-pill text-white h-100" style="top: 0; right: 25%;">Submit Now</button>
                     </form>
@@ -186,7 +186,7 @@
                                 } ?>
 
                             </div>
-                            <a href="<?= base_url('Shop/index') ?>" class="mt-2 btn btn-primary text-light view-more-btn"> View More</a>
+                            <a href="<?= base_url('shop') ?>" class="mt-2 btn btn-primary text-light view-more-btn"> View More</a>
                         </div>
                     </div>
                 </div>
@@ -542,7 +542,7 @@
             // console.log(category_name)
             // return;
 
-            let url = " <?= base_url('Home/index') ?>";
+            let url = " <?= base_url('home') ?>";
             loadProducts(url, category_name);
         });
 

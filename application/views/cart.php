@@ -127,7 +127,7 @@
                   <?php  }
 
                     ?>
-        
+
                 </form>
                 <div id="response-msg" class="mt-0"></div>
             </div>
@@ -172,7 +172,7 @@
                         <?php
                         $user_id = $this->session->userdata('user_id');
                         if (!empty($user_id)) { ?>
-                            <a href="<?= base_url('Checkout/index') ?>" class="btn border-secondary rounded-pill px-4 py-3 text-primary text-uppercase mb-4 ms-4" role="button">Proceed Checkout</a>
+                            <a href="<?= base_url('checkout') ?>" class="btn border-secondary rounded-pill px-4 py-3 text-primary text-uppercase mb-4 ms-4" role="button">Proceed Checkout</a>
                         <?php   } else {
                         ?>
                             <button class="btn border-secondary rounded-pill px-4 py-3 text-primary text-uppercase mb-4 ms-4" type="button" data-bs-toggle="modal" data-bs-target="#proceedCheckout">Proceed Checkout</button>
@@ -196,8 +196,8 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <a href="<?= base_url('Checkout/index') ?>" role="button" class="btn btn-secondary text-light">Guest</a>
-                <a href="<?= base_url('Auth/login?redirect=checkout') ?>" type="button" class="btn btn-primary text-light float-end">Login</a>
+                <a href="<?= base_url('checkout') ?>" role="button" class="btn btn-secondary text-light">Guest</a>
+                <a href="<?= base_url('login?redirect=checkout') ?>" type="button" class="btn btn-primary text-light float-end">Login</a>
             </div>
             <!-- <div class="modal-footer">
 

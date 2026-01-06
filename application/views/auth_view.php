@@ -92,10 +92,9 @@
             const fields = [{
                     element: f_name,
                     rules: [{
-                            rule: "required",
-                            message: "First name required"
-                        }
-                    ],
+                        rule: "required",
+                        message: "First name required"
+                    }],
                     errorSelector: "#f_name_error"
                 },
                 {
@@ -180,7 +179,7 @@
 
 
             $.ajax({
-                url: "<?= base_url('Auth/addUser') ?>",
+                url: "<?= base_url('signup-user') ?>",
                 type: "POST",
                 data: $(this).serialize(),
                 dataType: "JSON",
@@ -229,7 +228,7 @@
             if (!is_validate) return;
 
             $.ajax({
-                url: "<?= base_url('Auth/loginUser') ?>",
+                url: "<?= base_url('login-user') ?>",
                 type: "POST",
                 data: $(this).serialize(),
                 dataType: "JSON",

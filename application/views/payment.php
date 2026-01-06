@@ -68,10 +68,7 @@
                 url: "<?= base_url('payment/get_intent'); ?>",
                 type: 'POST',
                 data: {
-                    // "amount": amountInPaise,
-                    // "currency": 'inr',
                     "order_id": <?= (int) $order->order_id ?>
-
                 },
                 dataType: 'json',
                 success: function(response) {
@@ -117,7 +114,7 @@
                 } = await stripe.confirmPayment({
                     elements: elements,
                     confirmParams: {
-                        return_url: "<?= base_url('Thank_you/verifyIntent'); ?>"
+                        return_url: "<?= base_url('thankyou/verify-payment'); ?>"
                     }
                 });
 

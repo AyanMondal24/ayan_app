@@ -6,7 +6,7 @@
 <script>
 let interval = setInterval(() => {
 
-    fetch(`<?= base_url('Payment/check/'.$order_enc_id) ?>`)
+    fetch(`<?= base_url('payment/checking/'.$order_enc_id) ?>`)
         .then(res => res.json())
         .then(data => {
             if (data.payment_status === 'paid') {
@@ -15,7 +15,7 @@ let interval = setInterval(() => {
 
                 // Redirect after success
                 setTimeout(() => {
-                    window.location.href = `<?= base_url('Thank_you/index/'.$order_enc_id) ?>`;
+                    window.location.href = `<?= base_url('thankyou/'.$order_enc_id) ?>`;
                 }, 1500);
             }
 

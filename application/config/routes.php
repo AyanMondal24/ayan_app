@@ -56,15 +56,36 @@ $route['admin/signup'] = 'admin/auth/signup';
 $route['admin/home']   = 'admin/home';
 
 
-$route['default_controller'] = 'Home';
-$route['contact'] = 'Home/contact';
-$route['shop'] = 'Home/shop';
-$route['cart'] = 'Home/cart';
-$route['checkout'] = 'Home/checkout';
+$route['default_controller'] = 'Home/index';
+$route['home'] = 'Home/index';
+$route['contact'] = 'Contact/index';
+$route['shop'] = 'Shop/index';
+$route['cart'] = 'Cart/index';
+$route['checkout'] = 'Checkout/index';
+
+$route['profile'] = 'Profile/index';
+$route['profile/order/details/(:any)'] = 'Profile/order_details/$1';
+$route['profile/order/billing-address'] = 'Profile/edit_billing_address';
+$route['profile/order/shipping-address'] = 'profile/edit_shipping_address';
+$route['profile/order/billing-address/(:any)'] = 'Profile/edit_billing_address/$1';
+
+$route['payment/get_intent'] = 'Payment/get_intent';
+$route['payment/(:any)'] = 'Payment/index/$1';
+$route['payment/checking/(:any)'] = 'Payment/check/$1';
+
+$route['thankyou/(:any)'] = 'Thank_you/index/$1';
+$route['thankyou/verify-payment'] = 'Thank_you/verifyIntent';
+
+$route['pdf/(:any)'] = 'pdf/index/$1';
+
+$route['signup'] = 'Auth/signup';
+$route['signup-user'] = 'Auth/addUser';
+$route['login'] = 'Auth/login';
+$route['login-user'] = 'Auth/loginUser';
+$route['logout'] = 'Auth/logout';
 
 $route['admin'] = 'admin/Home';
 
 
 $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;
-

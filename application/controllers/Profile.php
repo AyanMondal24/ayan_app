@@ -119,15 +119,17 @@ class Profile extends CI_Controller
     function edit_billing_address($enc_order_id = null)
     {
         //i will show change address  for use same address form
+
         if (!empty($enc_order_id)) {
             $order_id = $this->encryption->decrypt(base64_decode(urldecode($enc_order_id)));
             $data['address'] = $this->order_model->getOrderSummary($order_id);
             $data['billing'] = 'billing';
         } else {
-
             $user_id = $this->session->userdata('user_id');
             $data['address'] = $this->address_model->getAddressByUserId($user_id);
             $data['billing'] = 'billing';
+            // only for profile if there are no  address
+            $data['profile']=$this->input->get('profile');
         }
         load_views('address_form', $data);
     }
@@ -138,7 +140,29 @@ class Profile extends CI_Controller
         $data['shipping'] = 'shipping';
         load_views('address_form', $data);
     }
+    function is_shipping_same(){
+        $id=$this->input->post('id');
 
+        $data['is_shipping_same']=1;
+        $data["s_fname"]  = '';
+        $data["s_lname"]  = '';
+        $data["s_address"] =  '';
+        $data["s_city"]   = '';
+        $data["s_country"] = '';
+        $data["s_state"] = '';
+        $data["s_landmark"] = '';
+        $data["s_pin"]    = '';
+        $data["s_phone"]  = '';
+        $data["s_email"]  = '';
+
+        $is_shipping_same=$this->address_model->update($data,$id);
+        if($is_shipping_same){
+            echo json_encode([
+                "status"=>"success"
+            ]);
+            exit;
+        }
+    }
     function update_address()
     {
         $this->form_validation->reset_validation();

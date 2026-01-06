@@ -89,7 +89,7 @@ $autoload['drivers'] = array();
 |
 |	$autoload['helper'] = array('url', 'file');
 */
-$autoload['helper'] = array('url','common','form');
+$autoload['helper'] = array('url','common','form','slug');
 
 /*
 | -------------------------------------------------------------------
@@ -135,5 +135,5 @@ $autoload['language'] = array();
 $autoload['model'] = array();
 
 
-// my careta 
+// my careta
 $autoload['libraries'] = array('database', 'session');

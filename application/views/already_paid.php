@@ -17,11 +17,11 @@
             <hr>
 
             <div class="d-flex justify-content-center gap-3">
-                <a href="<?= base_url('Profile/order_details/' . $enc_order_id) ?>" class="btn btn-outline-primary">
+                <a href="<?= base_url('profile/order/details/' . $enc_order_id) ?>" class="btn btn-outline-primary">
                     View My Orders
                 </a>
 
-                <a href="<?= base_url() ?>" class="btn btn-primary">
+                <a href="<?= base_url('/') ?>" class="btn btn-primary">
                     Go to Home
                 </a>
             </div>

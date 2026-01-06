@@ -39,4 +39,5 @@ class address_model extends CI_Model
         $this->db->where('a.user_id', $user_id);
         return $this->db->get()->row();
     }
+
 }

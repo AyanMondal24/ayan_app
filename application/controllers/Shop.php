@@ -62,7 +62,7 @@ class Shop extends CI_Controller
         $data['category'] = $this->category_model->getAllCategoryWithProductCount();
         $data['pagination'] = $this->pagination->create_links();
         $data['search'] = $this->input->post('home_search');
-        $data['max_price']=$this->product_model->getMaxPrice();
+        $data['max_price'] = $this->product_model->getMaxPrice();
         load_views('shop', $data);
     }
 }

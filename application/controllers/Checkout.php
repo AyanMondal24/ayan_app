@@ -274,7 +274,7 @@ class Checkout extends CI_Controller
                     "status" => "success",
                     "message" => "Order placed successfully!",
                     "order_id" => $order_id,
-                    "redirect" => base_url('Payment/index/' . $enc_order_id)
+                    "redirect" => base_url('payment/' . $enc_order_id)
                 ]);
                 return;
             }
@@ -293,7 +293,7 @@ class Checkout extends CI_Controller
                     "status" => "success",
                     "message" => "Order placed successfully!",
                     "order_id" => $order_id,
-                    "redirect" => base_url('Thank_you/index/' . $enc_order_id)
+                    "redirect" => base_url('thankyou/' . $enc_order_id)
                 ]);
                 return;
             }

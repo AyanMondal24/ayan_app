@@ -12,7 +12,6 @@
 
             <ul class="menu">
                 <li class="<?= ($this->uri->segment(1) == 'Profile' && $this->uri->segment(2) == 'index') ? 'active' : '' ?>">
-                    <!-- <a href="<?= base_url('Profile/index') ?>" class="menu-link"> -->
                     <a href="#profile" class="menu-link" id="profileMenu">
                         <span class="icon">👤</span>
                         <span class="text">My Profile</span>
@@ -20,7 +19,6 @@
                 </li>
 
                 <li class="<?= ($this->uri->segment(1) == 'Profile' && $this->uri->segment(2) == 'Orders') ? 'active' : '' ?>">
-                    <!-- <a href="<?= base_url('Profile/Orders') ?>" class="menu-link"> -->
                     <a href="#orders" class="menu-link" id="ordersMenu">
                         <span class="icon">📦</span>
                         <span class="text">Orders</span>
@@ -49,7 +47,7 @@
                 </li>
 
                 <li class="logout">
-                    <a href="<?= base_url('Auth/logout') ?>" class="menu-link">
+                    <a href="<?= base_url('logout') ?>" class="menu-link">
                         <span class="icon">🚪</span>
                         <span class="text">Logout</span>
                     </a>
@@ -209,7 +207,7 @@
 
                                 <td class="action-button">
                                     <div class="d-flex justify-content-center align-items-center gap-2">
-                                        <a href="<?= base_url('Profile/order_details/' . $enc_order_id) ?>" class="btn btn-sm btn-primary text-light">
+                                        <a href="<?= base_url('profile/order/details/' . $enc_order_id) ?>" class="btn btn-sm btn-primary text-light">
                                             Visit
                                         </a>
                                         <?php
@@ -233,69 +231,91 @@
 
         </div>
 
+
         <!-- address  -->
         <div class="profile-order d-none w-100" id="addressSection">
             <!-- <div class="container profile-address"> -->
             <div class="address-wrapper">
+                <?php
+                if (!empty($address)) { ?>
 
-                <!-- Billing Address -->
-                <div class="address-card">
-                    <div class="address-header">
-                        <h4>Billing Address</h4>
-                        <a href="<?= base_url('profile/edit_billing_address') ?>" class="btn-change">
-                            Change
-                        </a>
-                    </div>
 
-                    <div class="address-body">
-                        <p class="name"><?= $address->b_fname ?> <?= $address->b_lname ?></p>
-
-                        <p>
-                            <?= $address->b_address ?><br>
-                            <?= $address->b_city ?>, <?= $address->b_state ?><br>
-                            <?= $address->b_country ?> – <?= $address->b_pin ?>
-                        </p>
-
-                        <p class="phone">📞 <?= $address->b_phone ?></p>
-                        <p class="email">✉ <?= $address->b_email ?></p>
-                    </div>
-                </div>
-
-                <!-- Shipping Address -->
-                <div class="address-card">
-                    <div class="address-header">
-                        <h4>Shipping Address</h4>
-
-                        <?php if (!$address->is_shipping_same): ?>
-                            <a href="<?= base_url('profile/edit_shipping_address') ?>" class="btn-change">
+                    <!-- Billing Address -->
+                    <div class="address-card">
+                        <div class="address-header">
+                            <h4>Billing Address</h4>
+                            <a href="<?= base_url('profile/order/billing-address') ?>" class="btn-change">
                                 Change
                             </a>
-                        <?php endif; ?>
-                    </div>
+                        </div>
 
-                    <div class="address-body">
-                        <?php if ($address->is_shipping_same): ?>
-                            <p class="same-text">Same as billing address</p>
-                        <?php else: ?>
-                            <p class="name"><?= $address->s_fname ?> <?= $address->s_lname ?></p>
+                        <div class="address-body">
+                            <p class="name"><?= $address->b_fname ?> <?= $address->b_lname ?></p>
 
                             <p>
-                                <?= $address->s_address ?><br>
-                                <?= $address->s_landmark ?><br>
-                                <?= $address->s_city ?>, <?= $address->s_state ?><br>
-                                <?= $address->s_country ?> – <?= $address->s_pin ?>
+                                <?= $address->b_address ?><br>
+                                <?= $address->b_landmark ?><br>
+                                <?= $address->b_city ?>, <?= $address->b_state ?><br>
+                                <?= $address->b_country ?> – <?= $address->b_pin ?>
                             </p>
 
-                            <p class="phone">📞 <?= $address->s_phone ?></p>
-                            <p class="email">✉ <?= $address->s_email ?></p>
-                        <?php endif; ?>
+                            <p class="phone">📞 <?= $address->b_phone ?></p>
+                            <p class="email">✉ <?= $address->b_email ?></p>
+                        </div>
                     </div>
-                </div>
 
+                    <!-- Shipping Address -->
+                    <div class="address-card">
+                        <div class="address-header">
+                            <h4>Shipping Address</h4>
+
+                            <?php if (!$address->is_shipping_same): ?>
+                                <a href="<?= base_url('profile/order/shipping-address') ?>" class="btn-change">
+                                    Change
+                                </a>
+                            <?php endif; ?>
+                        </div>
+
+                        <div class="address-body">
+                            <?php if ($address->is_shipping_same): ?>
+                                <p class="same-text">Same as billing address</p>
+                            <?php else: ?>
+                                <p class="name"><?= $address->s_fname ?> <?= $address->s_lname ?></p>
+
+                                <p>
+                                    <?= $address->s_address ?><br>
+                                    <?= $address->s_landmark ?><br>
+                                    <?= $address->s_city ?>, <?= $address->s_state ?><br>
+                                    <?= $address->s_country ?> – <?= $address->s_pin ?>
+                                </p>
+
+                                <p class="phone">📞 <?= $address->s_phone ?></p>
+                                <p class="email">✉ <?= $address->s_email ?></p>
+                            <?php endif; ?>
+                        </div>
+
+                    </div>
+                <?php } else { ?>
+                    <div class="container py-4">
+                        <div class="d-flex align-items-center justify-content-center">
+                            <a href="<?= base_url('profile/order/billing-address?profile=profile') ?>" class="btn btn-primary btn-change text-light">
+                                Add Address
+                            </a>
+                        </div>
+                    </div>
+
+                <?php }
+                ?>
 
             </div>
-
-
+            <?php if (!empty($address)) {
+                if ($address->is_shipping_same == 0) {
+            ?>
+                    <div class="mt-2">
+                        <button class="btn btn-danger" id="same-as-bill-address" data-id="<?= ($address) ? $address->id : '' ?>">Same as Billing Address</button>
+                    </div>
+            <?php }
+            } ?>
             <!-- </div> -->
         </div>
 
@@ -414,6 +434,24 @@
 
         });
 
+        // same - as - bill - address
+        $("#same-as-bill-address").on('click',function(e){
+            e.preventDefault();
+            id=$(this).data('id');
+            $.ajax({
+                url: "<?= base_url('Profile/is_shipping_same') ?>",
+                type:"POST",
+                data:{id:id},
+                dataType:"JSON",
+                success: function(response){
+                    if(response.status==='success'){
+                        window.location.reload();
+                    }else{
+
+                    }
+                }
+            })
+        });
 
         //edit btn change to save canges
         const editBtn = document.getElementById('editBtn');
