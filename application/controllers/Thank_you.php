@@ -9,7 +9,7 @@ class Thank_you extends CI_Controller
         parent::__construct();
         $this->load->model('order_model');
         $this->load->library('encryption');
-        $this->load->helper(['invoice', 'email', 'calc_discount']);
+        $this->load->helper(['invoice', 'pdf', 'calc_discount']);
     }
 
     function index($enc_order_id = null)
@@ -18,19 +18,19 @@ class Thank_you extends CI_Controller
             redirect('/');
             exit;
         }
-
+        $download_btn='';
         $this->session->unset_userdata('order_success');
 
         $order_id = $this->encryption->decrypt(base64_decode(urldecode($enc_order_id)));
-       $order = $this->order_model->getOrderSummary($order_id);
+        $order = $this->order_model->getOrderSummary($order_id);
 
-       if($order->payment_method=== 'Cash On Delivery'){
+        if ($order->payment_method === 'Cash On Delivery') {
             $order_details = $this->order_model->getOrderItems($order_id);
-            $subtotal=0;
+            $subtotal = 0;
             foreach ($order_details as $order_detail) {
-                $subtotal+=$order_detail->price * $order_detail->quantity;
+                $subtotal += $order_detail->price * $order_detail->quantity;
             }
-            $coupon=(object)[
+            $coupon = (object)[
                 'discount_type'  => $order->discount_type,
                 'discount_value' => $order->discount_value
             ];
@@ -38,10 +38,20 @@ class Thank_you extends CI_Controller
 
             $pdfPath = generateInvoicePdf($order, $order_details, $discount);
 
+            $data['discount']=$discount;
+            $data['order'] = $order;
+            $data['order_details'] = $order_details;
+            $invoice_html=$this->load->view('invoice_view',$data,true);
+
+            $downloadUrl = base_url('pdf/' . $enc_order_id . '?action=download');
+            $download_btn = '<a href="' . $downloadUrl . '" target="_blank" style=" display:inline-block;padding:14px 24px;background-color:#000000;color:#ffffff;font-size:14px;font-weight:bold;text-decoration:none;border-radius:6px;border:1px solid #000000;font-family:Arial, Helvetica, sans-serif;">Download Invoice</a>';
+
             $emailHtml = "
                     <h2>Thank you for your order!</h2>
                     <p><b>Order No:</b> {$order->order_number}</p>
                     <p>Please find your invoice attached.</p>
+                    {$download_btn}
+                    {$invoice_html}
                     ";
             $mailSent = sendInvoiceMail(
                 $order->order_b_email,
@@ -55,7 +65,7 @@ class Thank_you extends CI_Controller
         }
 
 
-        $data['order']=$order;
+        $data['order'] = $order;
         load_views('thank_you', $data);
     }
 
@@ -64,8 +74,9 @@ class Thank_you extends CI_Controller
         // Get PaymentIntent ID and client secret from URL
         $payment_intent_id = $this->input->get('payment_intent');
         $client_secret = $this->input->get('payment_intent_client_secret');
+        $redirect_status   = $this->input->get('redirect_status');
 
-        if (!$payment_intent_id || !$client_secret) {
+        if (!$payment_intent_id) {
             show_error("Invalid PaymentIntent");
         }
 
@@ -77,8 +88,8 @@ class Thank_you extends CI_Controller
             $intent = \Stripe\PaymentIntent::retrieve($payment_intent_id);
 
             // Verify client secret matches (security check)
-            if ($intent->client_secret !== $client_secret) {
-                show_error("Invalid client secret");
+            if ($redirect_status !== 'succeeded') {
+                show_error("Payment not completed. Status: " . $redirect_status);
             }
 
             $status = $intent->status;
@@ -90,7 +101,7 @@ class Thank_you extends CI_Controller
                 $order_enc_id = urlencode(base64_encode($this->encryption->encrypt($check_already_paid_or_not->id)));
 
                 // Redirect to already paid page (avoid re-processing)
-                redirect('Thank_you/already_paid/' . $order_enc_id);
+                redirect('thankyou/already-paid/' . $order_enc_id);
                 exit;
             }
 
@@ -119,12 +130,23 @@ class Thank_you extends CI_Controller
                 // Generate PDF
                 $pdfPath = generateInvoicePdf($order, $order_details, $discount);
 
+                $data['discount'] = $discount;
+                $data['order'] = $order;
+                $data['order_details'] = $order_details;
+                $invoice_html = $this->load->view('invoice_view', $data, true);
+
+                $order_enc_id = urlencode(base64_encode($this->encryption->encrypt($order_id)));
+                $downloadUrl = base_url('pdf/' . $order_enc_id . '?action=download');
+                $download_btn = '<a href="' . $downloadUrl . '" target="_blank" style=" display:inline-block;padding:14px 24px;background-color:#000000;color:#ffffff;font-size:14px;font-weight:bold;text-decoration:none;border-radius:6px;border:1px solid #000000;font-family:Arial, Helvetica, sans-serif;">Download Invoice</a>';
+
                 // Email body
                 $emailHtml = "
                     <h2>Thank you for your order!</h2>
                     <p>Your payment was successful.</p>
                     <p><b>Order No:</b> {$order->order_number}</p>
                     <p>Please find your invoice attached.</p>
+                    {$download_btn}
+                    {$invoice_html}
                     ";
 
                 // Send email
@@ -147,7 +169,7 @@ class Thank_you extends CI_Controller
                 $this->session->set_userdata('order_success', true);
 
                 // Redirect to thank you (secure encoding)
-                redirect('Thank_you/index/' . urlencode(base64_encode(
+                redirect('thankyou/' . urlencode(base64_encode(
                     $this->encryption->encrypt($order_id)
                 )));
                 exit;

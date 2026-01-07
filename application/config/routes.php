@@ -73,8 +73,9 @@ $route['payment/get_intent'] = 'Payment/get_intent';
 $route['payment/(:any)'] = 'Payment/index/$1';
 $route['payment/checking/(:any)'] = 'Payment/check/$1';
 
-$route['thankyou/(:any)'] = 'Thank_you/index/$1';
 $route['thankyou/verify-payment'] = 'Thank_you/verifyIntent';
+$route['thankyou/already-paid/(:any)'] = 'Thank_you/already_paid/$1';
+$route['thankyou/(:any)'] = 'Thank_you/index/$1';
 
 $route['pdf/(:any)'] = 'pdf/index/$1';
 

@@ -77,16 +77,16 @@ $cart_count = is_array($cart) ? count($cart) : 0;
                             class="nav-item nav-link <?= ($this->uri->segment(1) == '') ? 'active' : '' ?>">Home</a>
 
                         <a href="<?= site_url('shop') ?>"
-                            class="nav-item nav-link <?= ($this->uri->segment(1) == 'Shop') ? 'active' : '' ?>">Shop</a>
+                            class="nav-item nav-link <?= ($this->uri->segment(1) == 'shop') ? 'active' : '' ?>">Shop</a>
 
                         <!-- <a href="<?= site_url('cart') ?>"
-                            class="nav-item nav-link <?= ($this->uri->segment(1) == 'Cart') ? 'active' : '' ?>">Shop Cart</a> -->
+                            class="nav-item nav-link <?= ($this->uri->segment(1) == 'cart') ? 'active' : '' ?>">Shop Cart</a> -->
 
                         <!-- <a href="<?= site_url('checkout') ?>"
                             class="nav-item nav-link <?= ($this->uri->segment(1) == 'Checkout') ? 'active' : '' ?>">Checkout</a> -->
 
                         <a href="<?= site_url('contact') ?>"
-                            class="nav-item nav-link <?= ($this->uri->segment(1) == 'Contact') ? 'active' : '' ?>">Contact</a>
+                            class="nav-item nav-link <?= ($this->uri->segment(1) == 'contact') ? 'active' : '' ?>">Contact</a>
                     </div>
 
                     <div class="d-flex m-3 me-0">

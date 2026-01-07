@@ -58,7 +58,7 @@ class order_model extends CI_Model
         $this->db->where('or.order_status !=', 'canceled');
         $this->db->group_by('or.id');
 
-        $this->db->order_by('or.created_at','DESC');
+        $this->db->order_by('or.created_at', 'DESC');
 
         return $this->db->get()->result();
     }
@@ -180,12 +180,20 @@ class order_model extends CI_Model
         p.id AS product_id,
         p.name AS product_name,
         p.price,
-        pi.image_name
+        p.slug,
+        pi.image_name,
+        pi.alt_text,
+        c.category_slug,
+        c.name as category_name,
+        u.short_name as unit_name
     ');
 
         $this->db->from('order_details od');
         $this->db->join('products p', 'p.id = od.product_id');
         $this->db->join('product_image pi', 'pi.product_id = p.id', 'left');
+        $this->db->join('category c', 'c.id = p.category', 'left');
+        $this->db->join('product_unit u', 'u.id = p.unit_id', 'left');
+
         $this->db->where('pi.is_featured', 0);
         $this->db->where('od.order_id', $order_id);
         $this->db->group_by('od.id');
@@ -224,6 +232,7 @@ class order_model extends CI_Model
         o.payment_intent_id,
         o.transaction_id,
         o.payment_status,
+        o.paid_at,
         o.order_status,
         o.created_at as order_created,
         o.updated_at as order_updated,

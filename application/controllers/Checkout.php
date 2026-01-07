@@ -227,9 +227,8 @@ class Checkout extends CI_Controller
         if ($order_id) {
             $enc_order_id = urlencode(base64_encode($this->encryption->encrypt($order_id)));
             $order = true;
-            $unique_6_digit = substr(time() . rand(10, 99), -6);
-
-            $order_number = 'ORD-' . date('Ymd') . '-' . $unique_6_digit . '-' . $order_id;
+          
+            $order_number = 'ORD-' . str_pad($order_id, 10, '0', STR_PAD_LEFT);
 
             // update order number
             if ($this->order_model->updateOrderNumber($order_number, $order_id)) {
