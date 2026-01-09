@@ -1,79 +1,126 @@
-<!-- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <title>Reset Password</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
-        body {
-            background: #f7f7f7;
-            font-family: Arial, sans-serif;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            height: 100vh;
-        }
-
-        .box {
-            width: 400px;
-            background: #fff;
-            padding: 30px;
-            border-radius: 15px;
-            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+        #response {
             text-align: center;
+
         }
 
-        .box h2 {
-            margin-bottom: 10px;
-            font-size: 22px;
-            font-weight: 600;
-            color: #333;
-        }
-
-        input {
-            width: 100%;
-            padding: 12px;
-            margin: 8px 0;
-            border-radius: 8px;
-            border: 1px solid #ddd;
-            outline: none;
-            font-size: 15px;
-        }
-
-        input:focus {
-            border-color: #c200ff;
-        }
-
-        button {
-            width: 100%;
-            padding: 12px;
-            background: linear-gradient(90deg, #ff3cac, #784ba0, #2b86c5);
-            border: none;
-            color: white;
+        .error-msg {
+            color: red;
             font-size: 16px;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: 0.3s ease;
+            font-weight: bold;
         }
 
-        button:hover {
-            opacity: 0.9;
+        .success-msg {
+            color: green;
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        .error {
+            display: block;
+            color: red;
+            font-size: 14px;
+            text-align: left !important;
+            margin-top: 4px;
         }
     </style>
 </head>
 
-<body> -->
-    <div class="reset-pass-container">
-        <div class="box">
-            <h2>Reset Password</h2>
+<body class="bg-light">
 
-            <form method="POST" action="update_password">
-                <input type="password" placeholder="New Password" name="password" required>
-                <input type="password" placeholder="Confirm Password" name="cpassword" required>
-                <button type="submit">Update Password</button>
-            </form>
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-5">
+                <div class="card shadow">
+                    <div class="card-header text-center">
+                        <h4>Reset Password</h4>
+                    </div>
+
+                    <div class="card-body">
+                        <?php if ($this->session->flashdata('error')): ?>
+                            <div class="alert alert-danger">
+                                <?= $this->session->flashdata('error') ?>
+                            </div>
+                        <?php endif; ?>
+
+                        <?php if ($this->session->flashdata('success')): ?>
+                            <div class="alert alert-success">
+                                <?= $this->session->flashdata('success') ?>
+                            </div>
+                        <?php endif; ?>
+
+                        <form method="post" id="reset-pass-submit">
+
+                            <!-- Token from URL -->
+                            <input type="hidden" name="token" value="<?= htmlspecialchars($token) ?>">
+
+                            <div class="mb-3 validation">
+                                <label class="form-label">New Password</label>
+                                <input type="password" name="password" class="form-control" id="password" autocomplete="new-password" required>
+                                <span class="error"><?= form_error('password') ?></span>
+                            </div>
+
+                            <div class="mb-3 validation">
+                                <label class="form-label">Confirm Password</label>
+                                <input type="password" name="confirm_password" class="form-control" id="confirm_password" required>
+                                <span class="error"> <?= form_error('confirm_password') ?></span>
+                            </div>
+
+                            <button type="submit" class="btn btn-primary w-100">
+                                Reset Password
+                            </button>
+
+                        </form>
+                        <div id="response"></div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
-<!-- </body>
 
-</html> -->
+</body>
+
+</html>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        $("#reset-pass-submit").on('submit', function(e) {
+            e.preventDefault();
+
+            $.ajax({
+                url: "<?= base_url('reset-password-submit') ?>",
+                type: "POST",
+                data: $(this).serialize(),
+                dataType: "JSON",
+                success: function(response) {
+                    if (response.status === 'success') {
+                        $("#response").addClass('success-msg').removeClass('error-msg').html(response.message).fadeIn().delay(4000).fadeOut(200);
+                        setTimeout(function() {
+                            window.location.href = response.redirect; // change URL
+                        }, 4000);
+                    } else if (response.validation === 'error') {
+                        $.each(response.errors, function(field, message) {
+                            $(`[name="${field}"]`)
+                                .closest('.validation')
+                                .find('span.error')
+                                .html(message);
+                        });
+                    } else {
+                        $("#response").addClass('error-msg').removeClass('success-msg').html(response.message).fadeIn(200).delay(4000).fadeOut(200);
+                    }
+                },
+                error: function() {
+                    $("#response").addClass('error-msg').removeClass('success-msg').html('Something wrong!').fadeIn(200).delay(10000).fadeOut(200);
+                }
+            });
+        });
+    });
+</script>

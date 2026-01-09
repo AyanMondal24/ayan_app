@@ -81,6 +81,12 @@ $route['pdf/(:any)'] = 'pdf/index/$1';
 
 $route['category/(:any)/product/(:any)'] = 'Product/index/$2/$1';
 
+$route['contact/send']= 'Contact/send_message';
+
+$route['reset-password']= 'Auth/reset_pass';
+$route['reset-password-submit']= 'Auth/reset_pass_submit';
+$route['forgot-password']= 'Auth/forgot_pass';
+$route['verify-email']= 'Auth/verify_email';
 
 $route['signup'] = 'Auth/signup';
 $route['signup-user'] = 'Auth/addUser';

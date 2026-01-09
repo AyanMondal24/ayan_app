@@ -29,6 +29,40 @@
     font-weight: bold;
 }
 
+/* forgot password css  */
+#forgot_password .btn-forgot {
+    background: linear-gradient(135deg, #4f46e5, #3b82f6);
+    border: none;
+    color: #fff;
+    padding: 12px;
+    font-weight: 600;
+    border-radius: 10px;
+    transition: all 0.3s ease;
+}
+
+#forgot_password .btn-forgot:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(79, 70, 229, 0.3);
+}
+
+#forgot_password .btn-forgot:disabled {
+    background: #94a3b8;
+    cursor: not-allowed;
+    box-shadow: none;
+}
+/* end  */
+
+
+.auth-box .switch-text {
+    display: none;
+}
+.auth-box .form {
+    display: none;
+}
+.auth-box .form.active {
+    display: block;
+}
+
 .pagination .page-item {
     display: inline-block;
     margin: 0 4px;
@@ -252,8 +286,10 @@ header auth start
 
 .login-container .form-box {
     margin-top: 30px !important;
+
     width: 600px;
-    min-height: 600px;
+    height: auto;
+    /* min-height: 600px; */
     /* width: 360px; */
     padding: 25px;
     border-radius: 20px;

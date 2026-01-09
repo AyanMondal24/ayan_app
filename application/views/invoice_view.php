@@ -258,7 +258,7 @@
 
             <div class="right">
                 <div class="logo-box">
-                    <img src="<?= FCPATH ?>assets/img/logo.png" alt="Logo">
+                    <img src="<?= FCPATH ?>assets/img/logo.png" alt="Ayan Ecommerce Pvt. Ltd">
                 </div>
             </div>
         </div>

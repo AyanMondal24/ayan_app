@@ -18,7 +18,7 @@ class Thank_you extends CI_Controller
             redirect('/');
             exit;
         }
-        $download_btn='';
+        $download_btn = '';
         $this->session->unset_userdata('order_success');
 
         $order_id = $this->encryption->decrypt(base64_decode(urldecode($enc_order_id)));
@@ -38,10 +38,10 @@ class Thank_you extends CI_Controller
 
             $pdfPath = generateInvoicePdf($order, $order_details, $discount);
 
-            $data['discount']=$discount;
+            $data['discount'] = $discount;
             $data['order'] = $order;
             $data['order_details'] = $order_details;
-            $invoice_html=$this->load->view('invoice_view',$data,true);
+            $invoice_html = $this->load->view('invoice_view', $data, true);
 
             $downloadUrl = base_url('pdf/' . $enc_order_id . '?action=download');
             $download_btn = '<a href="' . $downloadUrl . '" target="_blank" style=" display:inline-block;padding:14px 24px;background-color:#000000;color:#ffffff;font-size:14px;font-weight:bold;text-decoration:none;border-radius:6px;border:1px solid #000000;font-family:Arial, Helvetica, sans-serif;">Download Invoice</a>';
@@ -134,6 +134,7 @@ class Thank_you extends CI_Controller
                 $data['order'] = $order;
                 $data['order_details'] = $order_details;
                 $invoice_html = $this->load->view('invoice_view', $data, true);
+                // $invoice_html = $this->load->view('invoice_view', $data, true);
 
                 $order_enc_id = urlencode(base64_encode($this->encryption->encrypt($order_id)));
                 $downloadUrl = base_url('pdf/' . $order_enc_id . '?action=download');

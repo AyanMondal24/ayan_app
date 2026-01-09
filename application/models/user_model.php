@@ -36,6 +36,10 @@ class user_model extends CI_Model
         return $this->db->update('users', $data);
     }
 
+    public function updateToken($data,$id){
+        $this->db->where('id', $id);
+        return $this->db->update('users', $data);
+    }
     function getUserByEmailForGuest($email)
     {
         $this->db->select('*');
@@ -115,5 +119,34 @@ class user_model extends CI_Model
         }
 
         return $this->db->count_all_results();
+    }
+
+//    for  reset pass
+    public function getDataByToken($token){
+        $this->db->select('*');
+        $this->db->from('users');
+        $this->db->where('reset_token',$token);
+        return $this->db->get()->row();
+    }
+
+    public function update_pass($data,$token,$user_id){
+        $this->db->where('id', $user_id);
+        $this->db->where('reset_token', $token);
+        return $this->db->update('users', $data);
+    }
+    public function getByVerifyToken($token)
+    {
+        return $this->db->where('email_verify_token', $token)
+            ->get('users')
+            ->row();
+    }
+
+    public function verifyUser($id)
+    {
+        return $this->db->where('id', $id)->update('users', [
+            'is_verified' => 1,
+            'email_verify_token' => NULL,
+            'email_token_expiry' => NULL
+        ]);
     }
 }

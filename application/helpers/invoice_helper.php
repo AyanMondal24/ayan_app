@@ -29,7 +29,7 @@ function sendInvoiceMail($to, $subject, $html, $pdfPath = null)
         $mail->SMTPDebug = 0;
         $mail->CharSet = 'UTF-8';
 
-        $mail->setFrom('spidyofficial001@gmail.com', 'My Store');
+        $mail->setFrom('spidyofficial001@gmail.com', 'Ayan Ecommerce Pvt. Ltd.');
         $mail->addAddress($to);
 
         if ($pdfPath && file_exists($pdfPath)) {

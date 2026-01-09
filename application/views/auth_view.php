@@ -1,4 +1,4 @@
-<div class="login-container ">
+<div class="login-container auth-box">
     <div class="form-box">
         <h2 class="title ">Connect With Us</h2>
 
@@ -22,16 +22,28 @@
                     <input type="password" id="password_login" placeholder="Password" name="password">
                     <span class="error" id="password_login_error"><?= form_error('password') ?></span>
                 </div>
-                <a href="<?= base_url('Auth/forgot_pass') ?>" class="forgot">Forgot password?</a>
+                <a href="<?= base_url('forgot-password') ?>" class="forgot">Forgot password?</a>
 
                 <!-- <button class="btn gradient">Login</button> -->
                 <input type="submit" class="btn gradient" id="login-btn" value="Login">
             </form>
 
-            <p class="switch-text">
+            <p class="switch-text" id="login-switch-text">
                 Not a member? <a href="#" onclick="switchTab('signup')">Signup now</a>
             </p>
+
         </div>
+
+        <?php if (!empty($check_verification) && $check_verification == 1) { ?>
+            <div class="alert alert-success">
+                ✅ Email verified successfully. Please login.
+            </div>
+        <?php } else if (!empty($check_verification) && $check_verification == 'expired_link') { ?>
+            <div class="alert alert-warning"> ⏰ Verification link expired. Please request a new one. </div>
+        <?php  } else if (!empty($check_verification) && $check_verification == 'expired_link') { ?>
+            <div class="alert alert-danger"> ❌ Invalid verification link. </div>
+        <?php  } ?>
+
 
 
         <!-- Signup Form -->
@@ -69,19 +81,29 @@
                     </div>
                 </div>
 
-                <button type="submit" class="btn gradient mt-2" id="signup-form">Sign up</button>
+                <!-- <button type="submit" class="btn gradient mt-2" id="signup-form">Sign up</button> -->
+                <button id="signup-form" class="btn gradient mt-2 btn-forgot w-100">
+                    <span class="btn-text">Signup</span>
+                    <span class="spinner-border spinner-border-sm d-none" role="status"></span>
+                </button>
             </form>
 
-            <p class="switch-text">
+            <p class="switch-text" id="signup-switch-text">
                 Already a member? <a href="#" onclick="switchTab('login')">Login now</a>
             </p>
         </div>
+        <div id="response"></div>
     </div>
 </div>
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-        $("#signup").on("submit", function(e) {
+        setTimeout(() => {
+            document.querySelectorAll('.alert').forEach(el => el.remove());
+        }, 5000);
+        // $("#signup").on("submit", function(e) {
+        $("#signup-form").on("click", function(e) {
             e.preventDefault();
+
             const f_name = document.querySelector("#f_name");
             const l_name = document.querySelector("#l_name");
             const email = document.querySelector("#email");
@@ -177,24 +199,46 @@
             if (!is_validate)
                 return;
 
+            let btn = $(this);
+
+            // UI: loading state
+            btn.prop("disabled", true);
+            btn.find(".btn-text").text("Sending Verification Link Check Email...");
+            btn.find(".spinner-border").removeClass("d-none");
 
             $.ajax({
                 url: "<?= base_url('signup-user') ?>",
                 type: "POST",
-                data: $(this).serialize(),
+                data: $("#signup").serialize(),
                 dataType: "JSON",
                 success: function(response) {
                     $(".error").html('')
 
-                    if (response.status === 'error') {
-                        $.each(response.data, function(field, msg) {
+                    if (response.validation === 'error') {
+                        $.each(response.errors, function(field, msg) {
                             $(`input[name="${field}"]`).closest('.error-div').find('span.error').html(msg)
                         });
+                        btn.find(".spinner-border").addClass("d-none");
+                        btn.find(".btn-text").text("Signup");
+                        btn.prop("disabled", false);
                         return;
+                    } else if (response.status === 'success') {
+                        // window.location.href = response.redirect;
+                        $("#response").addClass('success-msg').removeClass('error-msg').html(response.message).fadeIn(200).delay(4000).fadeOut(200);
+                        btn.prop("disabled", true);
+                        btn.find(".spinner-border").addClass("d-none");
+                        btn.find(".btn-text").text("Send Verification Link Check Email...");
+
+                    } else {
+                        $("#response").addClass('error-msg').removeClass('success-msg').html(response.message).fadeIn(200).delay(4000).fadeOut(200);
+                        btn.prop("disabled", false);
+                        btn.find(".spinner-border").addClass("d-none");
+                        btn.find(".btn-text").text("Signup");
+
                     }
-                    set_page(response)
+                    // set_page(response)
                 }
-            })
+            });
         });
 
         $("#login").on("submit", function(e) {
@@ -240,8 +284,13 @@
                             $(`input[name="${field}"]`).closest('.error-div').find('span.error').html(msg)
                         });
                         return;
+                    } else if (response.status === 'success') {
+                        window.location.href = response.redirect;
+                        $("#response").addClass('success-msg').removeClass('error-msg').html(response.message).fadeIn(200).delay(4000).fadeOut(200);
+                    } else {
+                        $("#response").addClass('error-msg').removeClass('success-msg').html(response.message).fadeIn(200).delay(4000).fadeOut(200);
                     }
-                    set_page(response);
+                    // set_page(response);
                     // console.log(response);
 
                     // if (response.status === 'success') {
@@ -255,27 +304,31 @@
         });
 
     }); //main div
-    function set_page(response) {
-        if (response.status === 'success') {
-            window.location.href = response.redirect;
-        } else {
-            console.log(response.message)
-        }
-    }
+
 
     function switchTab(tab) {
+        // Forms
         document.getElementById("login").classList.remove("active");
         document.getElementById("signup").classList.remove("active");
+
+        // Tabs
         document.querySelectorAll(".tab").forEach(btn => btn.classList.remove("active"));
 
-        document.getElementById(tab).classList.add("active");
+        // Switch texts
+        document.getElementById("login-switch-text").style.display = "none";
+        document.getElementById("signup-switch-text").style.display = "none";
 
         if (tab === "login") {
+            document.getElementById("login").classList.add("active");
             document.querySelectorAll(".tab")[0].classList.add("active");
+            document.getElementById("login-switch-text").style.display = "block";
         } else {
+            document.getElementById("signup").classList.add("active");
             document.querySelectorAll(".tab")[1].classList.add("active");
+            document.getElementById("signup-switch-text").style.display = "block";
         }
     }
+
 
     // 👇 Run correct tab based on PHP variable
     let activeTab = "<?= $active ?>";
