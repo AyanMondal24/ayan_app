@@ -244,7 +244,7 @@
                 <div class="col-md-8">
                     <!--begin::Row-->
                     <div class="row g-4 mb-4">
-                        <div class="col-md-6">
+                        <div class="col-md-7">
                             <!-- DIRECT CHAT -->
                             <div class="card direct-chat direct-chat-warning">
                                 <div class="card-header">
@@ -480,13 +480,13 @@
                             <!-- /.direct-chat -->
                         </div>
                         <!-- /.col -->
-                        <div class="col-md-6">
+                        <div class="col-md-5">
                             <!-- USERS LIST -->
                             <div class="card">
                                 <div class="card-header">
                                     <h3 class="card-title">Latest Members</h3>
                                     <div class="card-tools">
-                                        <span class="badge text-bg-danger"> 8 New Members </span>
+                                        <!-- <span class="badge text-bg-danger"> 8 New Members </span> -->
                                         <button
                                             type="button"
                                             class="btn btn-tool"
@@ -503,108 +503,56 @@
                                 <div class="card-body p-0">
                                     <div class="row text-center m-1">
                                         <div class="col-3 p-2">
-                                            <img
-                                                class="img-fluid rounded-circle"
-                                                src="<?= base_url('assets/admin/') ?>img/user1-128x128.jpg"
-                                                alt="User Image" />
-                                            <a
-                                                class="btn fw-bold fs-7 text-secondary text-truncate w-100 p-0"
-                                                href="#">
-                                                Alexander Pierce
-                                            </a>
-                                            <div class="fs-8">Today</div>
+                                            <table class="table table-hover align-middle mb-0" style="width: 100% !important;">
+                                                <thead class="table-light w-100">
+                                                    <tr>
+                                                        <th style="width: 5px !important;">User</th>
+                                                        <th>Name</th>
+                                                        <th style="width: 20px !important;">Date</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <?php if (!empty($latest_users)) {
+                                                        foreach ($latest_users as $user) {
+                                                            $created = strtotime($user->created_at);
+                                                            $today = strtotime(date('Y-m-d'));
+                                                            $yesterday = strtotime(date('Y-m-d', strtotime('-1 day')));
+
+                                                            if (date('Y-m-d', $created) == date('Y-m-d', $today)) {
+                                                                $date = 'Today';
+                                                            } elseif (date('Y-m-d', $created) == date('Y-m-d', $yesterday)) {
+                                                                $date = 'Yesterday';
+                                                            } else {
+                                                                $date = date('d M', $created); // 12 Jan
+                                                            }
+                                                    ?>
+                                                            <tr>
+                                                                <td>
+                                                                    <i class="fa-solid fa-user"></i>
+                                                                </td>
+                                                                <td><?= ucfirst($user->fname) . " " . ucfirst($user->lname) ?></td>
+
+                                                                <td><?= $date ?></td>
+                                                            </tr>
+                                                    <?php }
+                                                    } ?>
+                                                    <!-- User without image -->
+
+
+                                                    <!-- User with image -->
+
+                                                </tbody>
+                                            </table>
+
                                         </div>
-                                        <div class="col-3 p-2">
-                                            <img
-                                                class="img-fluid rounded-circle"
-                                                src="<?= base_url('assets/admin/') ?>img/user1-128x128.jpg"
-                                                alt="User Image" />
-                                            <a
-                                                class="btn fw-bold fs-7 text-secondary text-truncate w-100 p-0"
-                                                href="#">
-                                                Norman
-                                            </a>
-                                            <div class="fs-8">Yesterday</div>
-                                        </div>
-                                        <div class="col-3 p-2">
-                                            <img
-                                                class="img-fluid rounded-circle"
-                                                src="<?= base_url('assets/admin/') ?>img/user7-128x128.jpg"
-                                                alt="User Image" />
-                                            <a
-                                                class="btn fw-bold fs-7 text-secondary text-truncate w-100 p-0"
-                                                href="#">
-                                                Jane
-                                            </a>
-                                            <div class="fs-8">12 Jan</div>
-                                        </div>
-                                        <div class="col-3 p-2">
-                                            <img
-                                                class="img-fluid rounded-circle"
-                                                src="<?= base_url('assets/admin/') ?>img/user6-128x128.jpg"
-                                                alt="User Image" />
-                                            <a
-                                                class="btn fw-bold fs-7 text-secondary text-truncate w-100 p-0"
-                                                href="#">
-                                                John
-                                            </a>
-                                            <div class="fs-8">12 Jan</div>
-                                        </div>
-                                        <div class="col-3 p-2">
-                                            <img
-                                                class="img-fluid rounded-circle"
-                                                src="<?= base_url('assets/admin/') ?>img/user2-160x160.jpg"
-                                                alt="User Image" />
-                                            <a
-                                                class="btn fw-bold fs-7 text-secondary text-truncate w-100 p-0"
-                                                href="#">
-                                                Alexander
-                                            </a>
-                                            <div class="fs-8">13 Jan</div>
-                                        </div>
-                                        <div class="col-3 p-2">
-                                            <img
-                                                class="img-fluid rounded-circle"
-                                                src="<?= base_url('assets/admin/') ?>img/user5-128x128.jpg"
-                                                alt="User Image" />
-                                            <a
-                                                class="btn fw-bold fs-7 text-secondary text-truncate w-100 p-0"
-                                                href="#">
-                                                Sarah
-                                            </a>
-                                            <div class="fs-8">14 Jan</div>
-                                        </div>
-                                        <div class="col-3 p-2">
-                                            <img
-                                                class="img-fluid rounded-circle"
-                                                src="<?= base_url('assets/admin/') ?>img/user4-128x128.jpg"
-                                                alt="User Image" />
-                                            <a
-                                                class="btn fw-bold fs-7 text-secondary text-truncate w-100 p-0"
-                                                href="#">
-                                                Nora
-                                            </a>
-                                            <div class="fs-8">15 Jan</div>
-                                        </div>
-                                        <div class="col-3 p-2">
-                                            <img
-                                                class="img-fluid rounded-circle"
-                                                src="<?= base_url('assets/admin/') ?>img/user3-128x128.jpg"
-                                                alt="User Image" />
-                                            <a
-                                                class="btn fw-bold fs-7 text-secondary text-truncate w-100 p-0"
-                                                href="#">
-                                                Nadia
-                                            </a>
-                                            <div class="fs-8">15 Jan</div>
-                                        </div>
+
                                     </div>
                                     <!-- /.users-list -->
                                 </div>
                                 <!-- /.card-body -->
                                 <div class="card-footer text-center">
                                     <a
-                                        href="javascript:"
+                                        href="<?= base_url('admin/Users/index')  ?>"
                                         class="link-primary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover">View All Users</a>
                                 </div>
                                 <!-- /.card-footer -->
@@ -637,7 +585,6 @@
                                             <th>Order ID</th>
                                             <th>Item</th>
                                             <th>Status</th>
-                                            <th>Popularity</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -661,9 +608,6 @@
                                                     </td>
                                                     <td><?= $order->products ?></td>
                                                     <td><span class="badge <?= $change_badge ?>"> <?= $order->order_status ?> </span></td>
-                                                    <td>
-                                                        <div id="table-sparkline-1"></div>
-                                                    </td>
                                                 </tr>
                                         <?php  }
                                         }
@@ -691,46 +635,43 @@
                 <!-- /.col -->
                 <div class="col-md-4">
                     <!-- Info Boxes Style 2 -->
-                    <div class="info-box mb-3 text-bg-warning">
+                    <!-- <div class="info-box mb-3 text-bg-warning">
                         <span class="info-box-icon"> <i class="bi bi-tag-fill"></i> </span>
                         <div class="info-box-content">
                             <span class="info-box-text">Inventory</span>
                             <span class="info-box-number">5,200</span>
                         </div>
-                        <!-- /.info-box-content -->
-                    </div>
+                    </div> -->
                     <!-- /.info-box -->
-                    <div class="info-box mb-3 text-bg-success">
+                    <!-- <div class="info-box mb-3 text-bg-success">
                         <span class="info-box-icon"> <i class="bi bi-heart-fill"></i> </span>
                         <div class="info-box-content">
                             <span class="info-box-text">Mentions</span>
                             <span class="info-box-number">92,050</span>
                         </div>
-                        <!-- /.info-box-content -->
-                    </div>
+                    </div> -->
                     <!-- /.info-box -->
-                    <div class="info-box mb-3 text-bg-danger">
+                    <!-- <div class="info-box mb-3 text-bg-danger">
                         <span class="info-box-icon"> <i class="bi bi-cloud-download"></i> </span>
                         <div class="info-box-content">
                             <span class="info-box-text">Downloads</span>
                             <span class="info-box-number">114,381</span>
                         </div>
-                        <!-- /.info-box-content -->
-                    </div>
+                    </div> -->
                     <!-- /.info-box -->
-                    <div class="info-box mb-3 text-bg-info">
+                    <!-- <div class="info-box mb-3 text-bg-info">
                         <span class="info-box-icon"> <i class="bi bi-chat-fill"></i> </span>
                         <div class="info-box-content">
                             <span class="info-box-text">Direct Messages</span>
                             <span class="info-box-number">163,921</span>
                         </div>
-                        <!-- /.info-box-content -->
-                    </div>
+                    </div> -->
+
                     <!-- /.info-box -->
 
                     <!-- /.card -->
                     <!-- PRODUCT LIST -->
-                    <div class="card" style="margin-top: 40px !important;">
+                    <div class="card" >
                         <div class="card-header">
                             <h3 class="card-title">Recently Added Products</h3>
                             <div class="card-tools">

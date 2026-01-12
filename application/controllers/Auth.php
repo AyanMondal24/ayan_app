@@ -12,15 +12,12 @@ class Auth extends CI_Controller
         parent::__construct();
         $this->load->model('user_model');
         $this->load->library('form_validation');
-        // if($this->session->userdata('logged_in')){
-        //     redirect('home');
-        // }
     }
     function login()
     {
         $data['active'] = 'login';
         $data['redirect_to'] = $this->input->get('redirect') ?? 'home';
-        $data['check_verification']=$this->input->get('verify');
+        $data['check_verification'] = $this->input->get('verify');
         load_views('auth_view', $data);
     }
     function signup()
@@ -42,9 +39,7 @@ class Auth extends CI_Controller
         $this->form_validation->set_rules('firstname', 'First Name ', 'required');
         $this->form_validation->set_rules('lastname', 'Last Name ', 'required');
         // $this->form_validation->set_rules('email', 'Email', 'required|valid_email');
-        $this->form_validation->set_rules('email', 'Email', 'required|valid_email|is_unique[users.email]', [
-            'is_unique' => 'This email already exists. Please use another one.'
-        ]);
+        $this->form_validation->set_rules('email', 'Email', 'required|valid_email');
 
         $this->form_validation->set_rules('phone', 'Phone', 'required');
         $this->form_validation->set_rules(
@@ -81,10 +76,19 @@ class Auth extends CI_Controller
             return;
         }
 
-
+        $fname = $this->input->post('firstname');
+        $lname = $this->input->post('lastname');
+        $email = $this->input->post('email');
         $password = $this->input->post('password');
         $confirm_password = $this->input->post('cpassword');
-
+        $check_email=$this->user_model->getUserByEmail($email);
+        if($check_email){
+            echo json_encode([
+                "status" => 'error',
+                "message" => "This email already exists. Please use another one."
+            ]);
+            return;
+        }
         if ($password !== $confirm_password) {
             echo json_encode([
                 "status" => 'error',
@@ -93,9 +97,7 @@ class Auth extends CI_Controller
             return;
             // return $this->set_page("error", "Password do not match.");
         }
-        $fname = $this->input->post('firstname');
-        $lname = $this->input->post('lastname');
-        $email = $this->input->post('email');
+
         $token  = bin2hex(random_bytes(32));
         $expiry = date('Y-m-d H:i:s', strtotime('+24 hours'));
 
@@ -158,7 +160,6 @@ class Auth extends CI_Controller
                 log_message('error', $mail->ErrorInfo);
                 return false;
             }
-
         } else {
             echo json_encode([
                 "status" => 'error',

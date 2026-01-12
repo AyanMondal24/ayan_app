@@ -348,7 +348,7 @@ class product_model extends CI_Model
         $this->db->where('pi.is_featured', 0);
         $this->db->where('status', 0);
         $this->db->where('is_available', 0);
-        $this->db->limit(4);
+        $this->db->limit(11);
         return $this->db->get()->result();
     }
     // getting max price

@@ -24,6 +24,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 |
 */
 $config['base_url'] = 'http://localhost/ayan_app/';
+// $config['base_url'] = 'https://mybike.kesug.com/';
+
 
 /*
 |--------------------------------------------------------------------------

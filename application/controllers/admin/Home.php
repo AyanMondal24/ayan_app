@@ -15,11 +15,12 @@ class Home extends MY_Controller
 
     public function index()
     {
-        $data['orders']=$this->order_model->getAdminHomeOrders();
-        $data['products']=$this->product_model->getAdminHomeProducts();
-        $data['total_products']=$this->product_model->countTotalProduct();
-        $data['total_orders']=$this->order_model->countTotalOrder();
-        $data['members']=$this->user_model->total_data();
+        $data['orders'] = $this->order_model->getAdminHomeOrders();
+        $data['products'] = $this->product_model->getAdminHomeProducts();
+        $data['total_products'] = $this->product_model->countTotalProduct();
+        $data['total_orders'] = $this->order_model->countTotalOrder();
+        $data['members'] = $this->user_model->total_data();
+        $data['latest_users']=$this->user_model->get_latest_users();
         if ($this->session->userdata('admin_logged_in')) {
             $id = $this->session->userdata('admin_id');
             $data['admin'] = $this->admin_model->getAdminById($id);
@@ -27,6 +28,6 @@ class Home extends MY_Controller
             // return;
         }
 
-        load_admin_views('home',$data);
+        load_admin_views('home', $data);
     }
 }

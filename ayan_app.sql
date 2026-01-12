@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Generation Time: Jan 03, 2026 at 03:45 PM
+-- Generation Time: Jan 12, 2026 at 04:51 AM
 -- Server version: 9.1.0
--- PHP Version: 7.4.33
+-- PHP Version: 8.4.0
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -56,7 +56,7 @@ CREATE TABLE IF NOT EXISTS `address` (
   `updated_at` datetime DEFAULT NULL,
   `deleted_at` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=35 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=61 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Dumping data for table `address`
@@ -64,11 +64,15 @@ CREATE TABLE IF NOT EXISTS `address` (
 
 INSERT INTO `address` (`id`, `user_id`, `b_fname`, `b_lname`, `b_address`, `b_state`, `b_city`, `b_country`, `b_pin`, `b_landmark`, `b_phone`, `b_email`, `is_shipping_same`, `s_fname`, `s_lname`, `s_address`, `s_state`, `s_city`, `s_country`, `s_pin`, `s_landmark`, `s_phone`, `s_email`, `created_at`, `updated_at`, `deleted_at`) VALUES
 (31, 11, 'Leonard Carney', 'Lacota Moses', 'Elit quia commodi m', 'Soluta nihil nisi ex', 'Quis enim aut dolor ', 'Eius id commodo quas', '654656', 'Modi natus dolore pa', '1546295655', 'kadipulip@mailinator.com', 0, 'Xandra Osborne', 'Diana Baxter', 'Repudiandae veniam ', 'Eu non ullam et sunt', 'Officiis omnis vero ', 'Consequatur modi to', '654654', 'Id qui officia in qu', '1208828680', 'fonup@mailinator.com', '2025-12-19 09:41:22', '2025-12-19 22:36:34', NULL),
-(29, 13, 'we', 'Mondal ', 'Officiis porro beata 90000000000000000', 'Officia animi fugia', 'Nihil et a ea veniam', 'Dolor aliquip id qui ', '554888', 'Ex rerum est in mol', '1365353450', 'clutchdropkings@gmail.com', 0, 'koyel', 'Naskar', 'ggg hgighiiugfg gu ', 'fyfg', 'huihj', 'eewx', '589474', 'polkmnghfgyghj', '7842156853', 'koyelnaskar@gmail.com', '2025-12-17 00:42:39', '2026-01-03 20:40:27', NULL),
+(29, 13, 'Ayan 098', 'Mondal ', 'Officiis porro beata 90000000000000000', 'Nihil et a ea veniam', 'Officia animi fugia', 'Dolor aliquip id qui ', '554888', 'Ex rerum est in mol', '1365353450', 'clutchdropkings@gmail.com', 1, '', '', '', '', '', '', '', '', '', '', '2025-12-17 00:42:39', '2026-01-06 13:21:07', NULL),
 (30, 11, 'Nissim Ingram', 'Fitzgerald Rowe', 'Aut ut eligendi aliq', 'Nobis aute incididun', 'Aut quia consequatur', 'Quia blanditiis labo', '654466', 'Temporibus culpa ame', '1153104683', 'bipyruzur@mailinator.com', 0, 'Neil Lucas', 'Katelyn Huber', 'Qui et non culpa ip', 'Aut reprehenderit en', 'Est consequat Ex en', 'Voluptate quod eaque', '984998', 'Aliquid fugit ad qu', '1901178140', 'jubuhekis@mailinator.com', '2025-12-19 09:39:33', '2025-12-19 09:39:33', NULL),
 (32, 24, 'smriti', 'gaunia', 'kolkata golpalpur', 'wb', 'kolkata', 'ind', '700014', 'it dhsqesoqejqe', '7485965412', 'smriti@gmail.com', 1, '', '', '', '', '', '', '', '', '', '', '2025-12-20 16:22:25', '2025-12-20 16:22:25', NULL),
 (33, 25, 'Fiona Humphrey', 'Courtney Coffey', 'Fugiat velit mollit', 'Sed ab velit quis ex', 'Aute ut veritatis et', 'Qui duis quod cupidi', '477777', 'Sit illum inventor', '1486577123', 'baqipyc@mailinator.com', 1, '', '', '', '', '', '', '', '', '', '', '2025-12-20 16:25:11', '2025-12-20 16:25:11', NULL),
-(34, 26, 'demo', 'demo22', 'demo  demo demo 22', 'west bengal', 'trbfdbe ', 'india', '874569', 'uyt.wri ndfnsdjfn', '1234567891', 'demo@gmail.com', 1, '', '', '', '', '', '', '', '', '', '', '2026-01-03 11:40:36', '2026-01-03 11:40:36', NULL);
+(35, 0, 'Xavier Little', 'Kane Torres', 'Id eius do temporib', 'Non consequatur assu', 'Dicta eum incididunt', 'Irure repellendus R', '859999', 'Consequat Laudantiu', '1331268995', 'tumi@mailinator.com', 1, '', '', '', '', '', '', '', '', '', '', NULL, NULL, NULL),
+(34, 26, 'demo', 'demo1 2', 'demo  demo demo 22', 'trbfdbe ', 'west bengal', 'india', '874569', 'uyt.wri ndfnsdjfn', '1234567891', 'clutchdropkings@gmail.com', 0, 'demo 009', 'demo', 'demo shhipping kfnnf wiifd w', 'ijfw', 'ede', 'fows', '895552', 'fe,;mfmm efkoefj', '9877774522', 'demoiiu@gmail.com', '2026-01-03 11:40:36', '2026-01-07 20:03:23', NULL),
+(60, 33, 'Aline Savage', 'Nehru Floyd', 'Hic aliqua Magna co', 'Voluptas nisi pariat', 'Est in similique do', 'Minim sunt nostrum b', '774545', 'Quidem non minima mi', '1517776514', 'clutchdropkings@gmail.com', 0, 'Melanie Slater', 'Mollie Franklin', 'Non expedita nihil c', 'Molestias eius molli', 'Nisi sunt duis fuga', 'Aut consequat Conse', '265659', 'Totam neque cupidata', '1976338405', 'peverowoji@mailinator.com', '2026-01-12 10:20:08', '2026-01-12 10:20:08', NULL),
+(59, 28, 'Ira May', 'Kermit Zamora', 'Ullamco dolor est a', 'Sequi in distinctio', 'Tenetur exercitation', 'Ipsum aliquip veniam', '546574', 'Cupiditate aliquid s', '1621157641', 'clutchdropkings@gmail.com', 1, '', '', '', '', '', '', '', '', '', '', '2026-01-08 17:16:10', '2026-01-08 17:35:20', NULL),
+(58, 27, 'Brendan Rowland', 'Ori Mills', 'In autem doloribus a', 'Ea recusandae Culpa', 'Eius eu vitae quia e', 'Distinctio Ullamco ', '645469', 'Quia aut ut tempore', '1194894496', 'qifoxe@mailinator.com', 1, '', '', '', '', '', '', '', '', '', '', NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -111,20 +115,21 @@ CREATE TABLE IF NOT EXISTS `category` (
   `name` varchar(50) NOT NULL,
   `image` text NOT NULL,
   `image_alt` varchar(255) NOT NULL,
+  `category_slug` varchar(255) NOT NULL,
   `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `deleted_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Dumping data for table `category`
 --
 
-INSERT INTO `category` (`id`, `name`, `image`, `image_alt`, `created_at`, `updated_at`, `deleted_at`) VALUES
-(1, 'Meat', 'cat_6921e99d94aae.jpg', 'Meat', '2025-11-22 22:19:33', '2025-11-22 22:19:33', '2025-11-22 22:19:33'),
-(2, 'Fruits', 'cat_6921e9b1985fd.jpg', 'fruits', '2025-11-22 22:19:53', '2025-11-22 22:19:53', '2025-11-22 22:19:53'),
-(3, 'Vegetables', 'cat_6921e9c59e551.jpg', 'vegetables', '2025-11-22 22:20:13', '2025-11-22 22:20:13', '2025-11-22 22:20:13');
+INSERT INTO `category` (`id`, `name`, `image`, `image_alt`, `category_slug`, `created_at`, `updated_at`, `deleted_at`) VALUES
+(1, 'Meat', 'cat_6921e99d94aae.jpg', 'Meat', 'meat', '2025-11-22 22:19:33', '2025-11-22 22:19:33', '2025-11-22 22:19:33'),
+(2, 'Fruits', 'cat_6921e9b1985fd.jpg', 'fruits', 'fruits', '2025-11-22 22:19:53', '2025-11-22 22:19:53', '2025-11-22 22:19:53'),
+(3, 'Vegetables', 'cat_6921e9c59e551.jpg', 'vegetables', 'vegetables', '2025-11-22 22:20:13', '2025-11-22 22:20:13', '2025-11-22 22:20:13');
 
 -- --------------------------------------------------------
 
@@ -156,6 +161,36 @@ INSERT INTO `coupons` (`id`, `code`, `discount_type`, `discount_value`, `min_pur
 (5, 'ayan001', 'percentage', 20.00, 0.00, '2026-10-16', '2027-03-19', 1, 'coupon_692a511741c51.png', '2025-11-29 07:19:11'),
 (4, 'new1', 'fixed', 1000.00, 67.00, '2026-09-22', '2027-08-15', 1, 'coupon_6929db5f27a80.png', '2025-11-28 22:56:55'),
 (6, 'me205', 'fixed', 2000.00, 0.00, '2025-11-30', '2025-12-03', 1, 'coupon_692c65cbddc63.jpg', '2025-11-29 20:36:13');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `migrations`
+--
+
+DROP TABLE IF EXISTS `migrations`;
+CREATE TABLE IF NOT EXISTS `migrations` (
+  `id` int UNSIGNED NOT NULL AUTO_INCREMENT,
+  `migration` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `batch` int NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `migrations`
+--
+
+INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
+(1, '2026_01_10_072329_create_address_table', 0),
+(2, '2026_01_10_072329_create_admins_table', 0),
+(3, '2026_01_10_072329_create_category_table', 0),
+(4, '2026_01_10_072329_create_coupons_table', 0),
+(5, '2026_01_10_072329_create_order_details_table', 0),
+(6, '2026_01_10_072329_create_orders_table', 0),
+(7, '2026_01_10_072329_create_product_image_table', 0),
+(8, '2026_01_10_072329_create_product_unit_table', 0),
+(9, '2026_01_10_072329_create_products_table', 0),
+(10, '2026_01_10_072329_create_users_table', 0);
 
 -- --------------------------------------------------------
 
@@ -202,7 +237,7 @@ CREATE TABLE IF NOT EXISTS `orders` (
   `created_at` datetime NOT NULL,
   `updated_at` datetime NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=151 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=185 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Dumping data for table `orders`
@@ -266,13 +301,13 @@ INSERT INTO `orders` (`id`, `user_id`, `order_number`, `coupon_id`, `coupon_disc
 (129, 13, 'ORD-20251228-412348-129', NULL, 0.00, 1474.00, 1474.00, 'Cash On Delivery', '', 'pending', '0000-00-00 00:00:00', '', 'pending', 'Ayan ', 'Mondal ', 'Officiis porro beata 90000000000000000', 'Officia animi fugia', 'Nihil et a ea veniam', 'Dolor aliquip id qui ', '554888', 'Ex rerum est in mol', '1365353450', 'jofi@mailinator.com', 0, 'koyel', 'Naskar', 'ggg hgighiiugfg gu ', 'fyfg', 'huihj', 'eewx', '589474', 'polkmnghfgyghj', '7842156853', 'koyelnaskar@gmail.com', '2025-12-28 12:12:03', '2025-12-28 12:12:03'),
 (130, 13, 'ORD-20251228-414091-130', NULL, 0.00, 89.00, 89.00, 'Cash On Delivery', '', 'pending', '0000-00-00 00:00:00', '', 'pending', 'Ayan ', 'Mondal ', 'Officiis porro beata 90000000000000000', 'Officia animi fugia', 'Nihil et a ea veniam', 'Dolor aliquip id qui ', '554888', 'Ex rerum est in mol', '1365353450', 'jofi@mailinator.com', 0, 'koyel', 'Naskar', 'ggg hgighiiugfg gu ', 'fyfg', 'huihj', 'eewx', '589474', 'polkmnghfgyghj', '7842156853', 'koyelnaskar@gmail.com', '2025-12-28 12:12:20', '2025-12-28 12:12:20'),
 (131, 13, 'ORD-20251228-002380-131', NULL, 0.00, 678.00, 678.00, 'Card', 'pi_3SjHoUF338nGzwqe1LtwStjE', 'paid', '2025-12-28 16:41:42', 'ch_3SjHoUF338nGzwqe1By7vP2W', 'confirmed', 'Ayan ', 'Mondal ', 'Officiis porro beata 90000000000000000', 'Officia animi fugia', 'Nihil et a ea veniam', 'Dolor aliquip id qui ', '554888', 'Ex rerum est in mol', '1365353450', 'jofi@mailinator.com', 0, 'koyel', 'Naskar', 'ggg hgighiiugfg gu ', 'fyfg', 'huihj', 'eewx', '589474', 'polkmnghfgyghj', '7842156853', 'koyelnaskar@gmail.com', '2025-12-28 16:37:03', '2025-12-28 16:37:03'),
-(132, 26, 'ORD-20260103-063682-132', NULL, 0.00, 11000.00, 11000.00, 'Card', 'pi_3SlO2sF338nGzwqe0oqip4hm', 'paid', '2026-01-03 11:42:28', 'ch_3SlO2sF338nGzwqe0UM5KjIt', 'confirmed', 'demo', 'demo22', 'demo  demo demo 22', 'west bengal', 'trbfdbe ', 'india', '874569', 'uyt.wri ndfnsdjfn', '1234567891', 'demo@gmail.com', 1, '', '', '', '', '', '', '', '', '', '', '2026-01-03 11:40:36', '2026-01-03 11:40:36'),
+(132, 26, 'ORD-20260103-063682-132', NULL, 0.00, 11000.00, 11000.00, 'Card', 'pi_3SlO2sF338nGzwqe0oqip4hm', 'paid', '2026-01-03 11:42:28', 'ch_3SlO2sF338nGzwqe0UM5KjIt', 'confirmed', 'demo', 'demo', 'demo  demo demo 22', 'trbfdbe ', 'west bengal', 'india', '874569', 'uyt.wri ndfnsdjfn', '1234567891', 'demo@gmail.com', 1, '', '', '', '', '', '', '', '', '', '', '2026-01-03 11:40:36', '2026-01-03 11:40:36'),
 (133, 13, 'ORD-20260103-467593-133', NULL, 0.00, 6570.00, 6570.00, 'Card', 'pi_3SlP5zF338nGzwqe08HkCTMz', 'paid', '2026-01-03 12:48:27', 'ch_3SlP5zF338nGzwqe0VKiRhZu', 'confirmed', 'Ayan ', 'Mondal ', 'Officiis porro beata 90000000000000000', 'Officia animi fugia', 'Nihil et a ea veniam', 'Dolor aliquip id qui ', '554888', 'Ex rerum est in mol', '1365353450', 'jofi@mailinator.com', 0, 'koyel', 'Naskar', 'ggg hgighiiugfg gu ', 'fyfg', 'huihj', 'eewx', '589474', 'polkmnghfgyghj', '7842156853', 'koyelnaskar@gmail.com', '2026-01-03 12:47:55', '2026-01-03 12:47:55'),
 (134, 13, 'ORD-20260103-607639-134', NULL, 0.00, 6659.00, 6659.00, 'Card', 'pi_3SlPSbF338nGzwqe1arpGR9F', 'paid', '2026-01-03 13:11:37', 'ch_3SlPSbF338nGzwqe18pilxpX', 'confirmed', 'Ayan ', 'Mondal ', 'Officiis porro beata 90000000000000000', 'Officia animi fugia', 'Nihil et a ea veniam', 'Dolor aliquip id qui ', '554888', 'Ex rerum est in mol', '1365353450', 'jofi@mailinator.com', 0, 'koyel', 'Naskar', 'ggg hgighiiugfg gu ', 'fyfg', 'huihj', 'eewx', '589474', 'polkmnghfgyghj', '7842156853', 'koyelnaskar@gmail.com', '2026-01-03 13:11:16', '2026-01-03 13:11:16'),
 (135, 13, 'ORD-20260103-704097-135', NULL, 0.00, 678.00, 678.00, 'Card', 'pi_3SlPi9F338nGzwqe1q8dwidR', 'paid', '2026-01-03 13:27:39', 'ch_3SlPi9F338nGzwqe1zGvvULV', 'confirmed', 'Ayan ', 'Mondal ', 'Officiis porro beata 90000000000000000', 'Officia animi fugia', 'Nihil et a ea veniam', 'Dolor aliquip id qui ', '554888', 'Ex rerum est in mol', '1365353450', 'jofi@mailinator.com', 0, 'koyel', 'Naskar', 'ggg hgighiiugfg gu ', 'fyfg', 'huihj', 'eewx', '589474', 'polkmnghfgyghj', '7842156853', 'koyelnaskar@gmail.com', '2026-01-03 13:27:20', '2026-01-03 13:27:20'),
 (136, 13, 'ORD-20260103-714282-136', NULL, 0.00, 643.00, 643.00, 'Card', 'pi_3SlPjnF338nGzwqe0jqrDyfN', 'paid', '2026-01-03 13:29:18', 'ch_3SlPjnF338nGzwqe0N1CSB0z', 'confirmed', 'Ayan ', 'Mondal ', 'Officiis porro beata 90000000000000000', 'Officia animi fugia', 'Nihil et a ea veniam', 'Dolor aliquip id qui ', '554888', 'Ex rerum est in mol', '1365353450', 'jofi@mailinator.com', 0, 'koyel', 'Naskar', 'ggg hgighiiugfg gu ', 'fyfg', 'huihj', 'eewx', '589474', 'polkmnghfgyghj', '7842156853', 'koyelnaskar@gmail.com', '2026-01-03 13:29:02', '2026-01-03 13:29:02'),
 (137, 13, 'ORD-20260103-749645-137', NULL, 0.00, 890.00, 890.00, 'Card', 'pi_3SlPpVF338nGzwqe15azuNA2', 'paid', '2026-01-03 13:35:12', 'ch_3SlPpVF338nGzwqe1FipOPSs', 'confirmed', 'Ayan ', 'Mondal ', 'Officiis porro beata 90000000000000000', 'Officia animi fugia', 'Nihil et a ea veniam', 'Dolor aliquip id qui ', '554888', 'Ex rerum est in mol', '1365353450', 'jofi@mailinator.com', 0, 'koyel', 'Naskar', 'ggg hgighiiugfg gu ', 'fyfg', 'huihj', 'eewx', '589474', 'polkmnghfgyghj', '7842156853', 'koyelnaskar@gmail.com', '2026-01-03 13:34:56', '2026-01-03 13:34:56'),
-(138, 13, 'ORD-20260103-844430-138', NULL, 0.00, 785.00, 785.00, 'Card', 'pi_3SlQ4oF338nGzwqe1r5KzKxB', 'paid', '2026-01-03 13:51:04', 'ch_3SlQ4oF338nGzwqe1tSpByqV', 'confirmed', 'Ayan ', 'Mondal ', 'Officiis porro beata 90000000000000000', 'Officia animi fugia', 'Nihil et a ea veniam', 'Dolor aliquip id qui ', '554888', 'Ex rerum est in mol', '1365353450', 'jofi@mailinator.com', 0, 'koyel', 'Naskar', 'ggg hgighiiugfg gu ', 'fyfg', 'huihj', 'eewx', '589474', 'polkmnghfgyghj', '7842156853', 'koyelnaskar@gmail.com', '2026-01-03 13:50:44', '2026-01-03 13:50:44'),
+(138, 13, 'ORD-20260103-844430-138', NULL, 0.00, 785.00, 785.00, 'Card', 'pi_3SlQ4oF338nGzwqe1r5KzKxB', 'paid', '2026-01-03 13:51:04', 'ch_3SlQ4oF338nGzwqe1tSpByqV', 'confirmed', 'Ayan  kiu', 'Mondal ', 'Officiis porro beata 90000000000000000', 'Nihil et a ea veniam', 'Officia animi fugia', 'Dolor aliquip id qui ', '554888', 'Ex rerum est in mol', '1365353450', 'jofi@mailinator.com', 0, 'koyel', 'Naskar', 'ggg hgighiiugfg gu ', 'fyfg', 'huihj', 'eewx', '589474', 'polkmnghfgyghj', '7842156853', 'koyelnaskar@gmail.com', '2026-01-03 13:50:44', '2026-01-03 13:50:44'),
 (139, 13, 'ORD-20260103-911148-139', NULL, 0.00, 643.00, 643.00, 'Card', 'pi_3SlQFYF338nGzwqe1zPC1Q5B', 'paid', '2026-01-03 14:02:10', 'ch_3SlQFYF338nGzwqe1wL782mY', 'confirmed', 'Ayan ', 'Mondal ', 'Officiis porro beata 90000000000000000', 'Officia animi fugia', 'Nihil et a ea veniam', 'Dolor aliquip id qui ', '554888', 'Ex rerum est in mol', '1365353450', 'jofi@mailinator.com', 0, 'koyel', 'Naskar', 'ggg hgighiiugfg gu ', 'fyfg', 'huihj', 'eewx', '589474', 'polkmnghfgyghj', '7842156853', 'koyelnaskar@gmail.com', '2026-01-03 14:01:51', '2026-01-03 14:01:51'),
 (140, 13, 'ORD-20260103-952244-140', NULL, 0.00, 643.00, 643.00, 'Card', 'pi_3SlQMBF338nGzwqe0eWCNMoR', 'paid', '2026-01-03 14:09:01', 'ch_3SlQMBF338nGzwqe0IRsTcB2', 'confirmed', 'Ayan ', 'Mondal ', 'Officiis porro beata 90000000000000000', 'Officia animi fugia', 'Nihil et a ea veniam', 'Dolor aliquip id qui ', '554888', 'Ex rerum est in mol', '1365353450', 'jofi@mailinator.com', 0, 'koyel', 'Naskar', 'ggg hgighiiugfg gu ', 'fyfg', 'huihj', 'eewx', '589474', 'polkmnghfgyghj', '7842156853', 'koyelnaskar@gmail.com', '2026-01-03 14:08:42', '2026-01-03 14:08:42'),
 (141, 13, 'ORD-20260103-653547-141', NULL, 0.00, 89.00, 89.00, 'Card', 'pi_3SlSBHF338nGzwqe11F8vtXn', 'paid', '2026-01-03 16:05:57', 'ch_3SlSBHF338nGzwqe1c4VWmRK', 'confirmed', 'Ayan ', 'Mondal ', 'Officiis porro beata 90000000000000000', 'Officia animi fugia', 'Nihil et a ea veniam', 'Dolor aliquip id qui ', '554888', 'Ex rerum est in mol', '1365353450', 'jofi@mailinator.com', 0, 'koyel', 'Naskar', 'ggg hgighiiugfg gu ', 'fyfg', 'huihj', 'eewx', '589474', 'polkmnghfgyghj', '7842156853', 'koyelnaskar@gmail.com', '2026-01-03 16:05:35', '2026-01-03 16:05:35'),
@@ -284,7 +319,42 @@ INSERT INTO `orders` (`id`, `user_id`, `order_number`, `coupon_id`, `coupon_disc
 (147, 13, 'ORD-20260103-739474-147', NULL, 0.00, 869.00, 869.00, 'Card', 'pi_3SlV0QF338nGzwqe1IWXXZGt', 'paid', '2026-01-03 19:06:45', 'ch_3SlV0QF338nGzwqe1E3BSCaR', 'confirmed', 'we', 'Mondal ', 'Officiis porro beata 90000000000000000', 'Officia animi fugia', 'Nihil et a ea veniam', 'Dolor aliquip id qui ', '554888', 'Ex rerum est in mol', '1365353450', 'clutchdropkings@gmail.com', 0, 'koyel', 'Naskar', 'ggg hgighiiugfg gu ', 'fyfg', 'huihj', 'eewx', '589474', 'polkmnghfgyghj', '7842156853', 'koyelnaskar@gmail.com', '2026-01-03 19:06:34', '2026-01-03 19:06:34'),
 (148, 13, 'ORD-20260103-118267-148', NULL, 0.00, 3370.00, 3370.00, 'Cash On Delivery', '', 'pending', '0000-00-00 00:00:00', '', 'pending', 'we', 'Mondal ', 'Officiis porro beata 90000000000000000', 'Officia animi fugia', 'Nihil et a ea veniam', 'Dolor aliquip id qui ', '554888', 'Ex rerum est in mol', '1365353450', 'clutchdropkings@gmail.com', 0, 'koyel', 'Naskar', 'ggg hgighiiugfg gu ', 'fyfg', 'huihj', 'eewx', '589474', 'polkmnghfgyghj', '7842156853', 'koyelnaskar@gmail.com', '2026-01-03 20:09:42', '2026-01-03 20:09:42'),
 (149, 13, 'ORD-20260103-149071-149', NULL, 0.00, 1801.00, 1801.00, 'Cash On Delivery', '', 'pending', '0000-00-00 00:00:00', '', 'pending', 'we', 'Mondal ', 'Officiis porro beata 90000000000000000', 'Officia animi fugia', 'Nihil et a ea veniam', 'Dolor aliquip id qui ', '554888', 'Ex rerum est in mol', '1365353450', 'clutchdropkings@gmail.com', 0, 'koyel', 'Naskar', 'ggg hgighiiugfg gu ', 'fyfg', 'huihj', 'eewx', '589474', 'polkmnghfgyghj', '7842156853', 'koyelnaskar@gmail.com', '2026-01-03 20:14:50', '2026-01-03 20:14:50'),
-(150, 13, 'ORD-20260103-302710-150', NULL, 0.00, 7480.00, 7480.00, 'Card', 'pi_3SlWTHF338nGzwqe0WloIxNo', 'paid', '2026-01-03 20:40:42', 'ch_3SlWTHF338nGzwqe0QkuEGYT', 'confirmed', 'we', 'Mondal ', 'Officiis porro beata 90000000000000000', 'Officia animi fugia', 'Nihil et a ea veniam', 'Dolor aliquip id qui ', '554888', 'Ex rerum est in mol', '1365353450', 'clutchdropkings@gmail.com', 0, 'koyel', 'Naskar', 'ggg hgighiiugfg gu ', 'fyfg', 'huihj', 'eewx', '589474', 'polkmnghfgyghj', '7842156853', 'koyelnaskar@gmail.com', '2026-01-03 20:40:27', '2026-01-03 20:40:27');
+(150, 13, 'ORD-20260103-302710-150', NULL, 0.00, 7480.00, 7480.00, 'Card', 'pi_3SlWTHF338nGzwqe0WloIxNo', 'paid', '2026-01-03 20:40:42', 'ch_3SlWTHF338nGzwqe0QkuEGYT', 'confirmed', 'we', 'Mondal ', 'Officiis porro beata 90000000000000000', 'Officia animi fugia', 'Nihil et a ea veniam', 'Dolor aliquip id qui ', '554888', 'Ex rerum est in mol', '1365353450', 'clutchdropkings@gmail.com', 0, 'koyel', 'Naskar', 'ggg hgighiiugfg gu ', 'fyfg', 'huihj', 'eewx', '589474', 'polkmnghfgyghj', '7842156853', 'koyelnaskar@gmail.com', '2026-01-03 20:40:27', '2026-01-03 20:40:27'),
+(151, 13, 'ORD-20260104-166483-151', 5, 990.60, 4953.00, 3962.40, 'Card', 'pi_3Sllj3F338nGzwqe0mpbLrYB', 'paid', '2026-01-04 12:57:58', 'ch_3Sllj3F338nGzwqe0rwPYOkp', 'confirmed', 'Ayan', 'Mondal ', 'Officiis porro beata 90000000000000000', 'Officia animi fugia', 'Nihil et a ea veniam', 'Dolor aliquip id qui ', '554888', 'Ex rerum est in mol', '1365353450', 'clutchdropkings@gmail.com', 0, 'koyel', 'Naskar', 'ggg hgighiiugfg gu ', 'fyfg', 'huihj', 'eewx', '589474', 'polkmnghfgyghj', '7842156853', 'koyelnaskar@gmail.com', '2026-01-04 12:57:44', '2026-01-04 12:57:44'),
+(152, 13, 'ORD-20260104-014490-152', 5, 4701.80, 23509.00, 18807.20, 'Card', 'pi_3SlqX7F338nGzwqe0ew5LZCj', 'paid', '2026-01-04 18:06:03', 'ch_3SlqX7F338nGzwqe0LPJK4S2', 'confirmed', 'Ayan', 'Mondal ', 'Officiis porro beata 90000000000000000', 'Officia animi fugia', 'Nihil et a ea veniam', 'Dolor aliquip id qui ', '554888', 'Ex rerum est in mol', '1365353450', 'clutchdropkings@gmail.com', 0, 'koyel', 'Naskar', 'ggg hgighiiugfg gu ', 'fyfg', 'huihj', 'eewx', '589474', 'polkmnghfgyghj', '7842156853', 'koyelnaskar@gmail.com', '2026-01-04 18:05:44', '2026-01-04 18:05:44'),
+(153, 26, 'ORD-20260105-014793-153', 5, 313.60, 1568.00, 1254.40, 'Card', 'pi_3SmDwmF338nGzwqe1JvLQYBg', 'pending', '0000-00-00 00:00:00', '', 'pending', 'demo', 'demo1 2', 'demo  demo demo 22', 'trbfdbe ', 'west bengal', 'india', '874569', 'uyt.wri ndfnsdjfn', '1234567891', 'demo@gmail.com', 0, 'demo 009', 'demo', 'demo shhipping kfnnf wiifd w', 'ijfw', 'ede', 'fows', '895552', 'fe,;mfmm efkoefj', '9877774522', 'demoiiu@gmail.com', '2026-01-05 19:05:47', '2026-01-05 19:05:47'),
+(154, 26, 'ORD-20260105-045160-154', 5, 313.60, 1568.00, 1254.40, 'Card', '', 'pending', '0000-00-00 00:00:00', '', 'pending', 'demo', 'demo1 2', 'demo  demo demo 22', 'trbfdbe ', 'west bengal', 'india', '874569', 'uyt.wri ndfnsdjfn', '1234567891', 'demo@gmail.com', 0, 'demo 009', 'demo', 'demo shhipping kfnnf wiifd w', 'ijfw', 'ede', 'fows', '895552', 'fe,;mfmm efkoefj', '9877774522', 'demoiiu@gmail.com', '2026-01-05 19:10:51', '2026-01-05 19:10:51'),
+(155, 26, 'ORD-20260105-054194-155', 5, 313.60, 1568.00, 1254.40, 'Card', '', 'pending', '0000-00-00 00:00:00', '', 'pending', 'demo', 'demo1 2', 'demo  demo demo 22', 'trbfdbe ', 'west bengal', 'india', '874569', 'uyt.wri ndfnsdjfn', '1234567891', 'demo@gmail.com', 0, 'demo 009', 'demo', 'demo shhipping kfnnf wiifd w', 'ijfw', 'ede', 'fows', '895552', 'fe,;mfmm efkoefj', '9877774522', 'demoiiu@gmail.com', '2026-01-05 19:12:21', '2026-01-05 19:12:21'),
+(156, 26, 'ORD-20260105-123365-156', 5, 313.60, 1568.00, 1254.40, 'Card', 'pi_3SmEKrF338nGzwqe1gSDpF9J', 'paid', '2026-01-05 19:31:19', 'ch_3SmEKrF338nGzwqe1Rur2dFS', 'confirmed', 'demo', 'demo1 2', 'demo  demo demo 22', 'trbfdbe ', 'west bengal', 'india', '874569', 'uyt.wri ndfnsdjfn', '1234567891', 'demo@gmail.com', 0, 'demo 009', 'demo', 'demo shhipping kfnnf wiifd w', 'ijfw', 'ede', 'fows', '895552', 'fe,;mfmm efkoefj', '9877774522', 'demoiiu@gmail.com', '2026-01-05 19:23:53', '2026-01-05 19:23:53'),
+(157, 26, 'ORD-20260105-179424-157', 5, 2135.60, 10678.00, 8542.40, 'Cash On Delivery', '', 'pending', '0000-00-00 00:00:00', '', 'pending', 'demo', 'demo1 2', 'demo  demo demo 22', 'trbfdbe ', 'west bengal', 'india', '874569', 'uyt.wri ndfnsdjfn', '1234567891', 'demo@gmail.com', 0, 'demo 009', 'demo', 'demo shhipping kfnnf wiifd w', 'ijfw', 'ede', 'fows', '895552', 'fe,;mfmm efkoefj', '9877774522', 'demoiiu@gmail.com', '2026-01-05 19:33:14', '2026-01-05 19:33:14'),
+(158, 26, 'ORD-20260107-472947-158', NULL, 0.00, 678.00, 678.00, 'Card', 'pi_3SmpYmF338nGzwqe1p3Byiub', 'pending', '0000-00-00 00:00:00', '', 'pending', 'demo', 'demo1 2', 'demo  demo demo 22', 'trbfdbe ', 'west bengal', 'india', '874569', 'uyt.wri ndfnsdjfn', '1234567891', 'demo@gmail.com', 0, 'demo 009', 'demo', 'demo shhipping kfnnf wiifd w', 'ijfw', 'ede', 'fows', '895552', 'fe,;mfmm efkoefj', '9877774522', 'demoiiu@gmail.com', '2026-01-07 11:15:29', '2026-01-07 11:15:29'),
+(159, 26, 'ORD-20260107-480568-159', NULL, 0.00, 678.00, 678.00, 'Card', 'pi_3SmpZyF338nGzwqe16eCY5De', 'pending', '0000-00-00 00:00:00', '', 'pending', 'demo', 'demo1 2', 'demo  demo demo 22', 'trbfdbe ', 'west bengal', 'india', '874569', 'uyt.wri ndfnsdjfn', '1234567891', 'demo@gmail.com', 0, 'demo 009', 'demo', 'demo shhipping kfnnf wiifd w', 'ijfw', 'ede', 'fows', '895552', 'fe,;mfmm efkoefj', '9877774522', 'demoiiu@gmail.com', '2026-01-07 11:16:45', '2026-01-07 11:16:45'),
+(160, 26, 'ORD-20260107-510078-160', NULL, 0.00, 678.00, 678.00, 'Card', 'pi_3SmpejF338nGzwqe1AErO3lL', 'paid', '2026-01-07 11:21:53', 'ch_3SmpejF338nGzwqe1moUej8p', 'confirmed', 'demo', 'demo1 2', 'demo  demo demo 22', 'trbfdbe ', 'west bengal', 'india', '874569', 'uyt.wri ndfnsdjfn', '1234567891', 'demo@gmail.com', 0, 'demo 009', 'demo', 'demo shhipping kfnnf wiifd w', 'ijfw', 'ede', 'fows', '895552', 'fe,;mfmm efkoefj', '9877774522', 'demoiiu@gmail.com', '2026-01-07 11:21:40', '2026-01-07 11:21:40'),
+(161, 26, 'ORD-20260107-672095-161', NULL, 0.00, 600.00, 600.00, 'Card', 'pi_3Smq4rF338nGzwqe1bAZmBMr', 'pending', '0000-00-00 00:00:00', '', 'pending', 'demo', 'demo1 2', 'demo  demo demo 22', 'trbfdbe ', 'west bengal', 'india', '874569', 'uyt.wri ndfnsdjfn', '1234567891', 'demo@gmail.com', 0, 'demo 009', 'demo', 'demo shhipping kfnnf wiifd w', 'ijfw', 'ede', 'fows', '895552', 'fe,;mfmm efkoefj', '9877774522', 'demoiiu@gmail.com', '2026-01-07 11:48:40', '2026-01-07 11:48:40'),
+(162, 26, 'ORD-20260107-717960-162', NULL, 0.00, 600.00, 600.00, 'Card', 'pi_3SmqCGF338nGzwqe1gJtQTIm', 'pending', '0000-00-00 00:00:00', '', 'pending', 'demo', 'demo1 2', 'demo  demo demo 22', 'trbfdbe ', 'west bengal', 'india', '874569', 'uyt.wri ndfnsdjfn', '1234567891', 'demo@gmail.com', 0, 'demo 009', 'demo', 'demo shhipping kfnnf wiifd w', 'ijfw', 'ede', 'fows', '895552', 'fe,;mfmm efkoefj', '9877774522', 'demoiiu@gmail.com', '2026-01-07 11:56:19', '2026-01-07 11:56:19'),
+(163, 26, 'ORD-20260107-739892-163', NULL, 0.00, 600.00, 600.00, 'Card', 'pi_3SmqFnF338nGzwqe0wYIJfF3', 'pending', '0000-00-00 00:00:00', '', 'pending', 'demo', 'demo1 2', 'demo  demo demo 22', 'trbfdbe ', 'west bengal', 'india', '874569', 'uyt.wri ndfnsdjfn', '1234567891', 'demo@gmail.com', 0, 'demo 009', 'demo', 'demo shhipping kfnnf wiifd w', 'ijfw', 'ede', 'fows', '895552', 'fe,;mfmm efkoefj', '9877774522', 'demoiiu@gmail.com', '2026-01-07 11:59:58', '2026-01-07 11:59:58');
+INSERT INTO `orders` (`id`, `user_id`, `order_number`, `coupon_id`, `coupon_discount`, `total_amount`, `final_amount`, `payment_method`, `payment_intent_id`, `payment_status`, `paid_at`, `transaction_id`, `order_status`, `b_fname`, `b_lname`, `b_address`, `b_state`, `b_city`, `b_country`, `b_pin`, `b_landmark`, `b_phone`, `b_email`, `is_shipping_same`, `s_fname`, `s_lname`, `s_address`, `s_state`, `s_city`, `s_country`, `s_pin`, `s_landmark`, `s_phone`, `s_email`, `created_at`, `updated_at`) VALUES
+(164, 26, 'ORD-20260107-767293-164', NULL, 0.00, 600.00, 600.00, 'Card', 'pi_3SmqKDF338nGzwqe0xN5lHkF', 'paid', '2026-01-07 12:04:43', 'ch_3SmqKDF338nGzwqe0xNF91eO', 'confirmed', 'demo', 'demo1 2', 'demo  demo demo 22', 'trbfdbe ', 'west bengal', 'india', '874569', 'uyt.wri ndfnsdjfn', '1234567891', 'demo@gmail.com', 0, 'demo 009', 'demo', 'demo shhipping kfnnf wiifd w', 'ijfw', 'ede', 'fows', '895552', 'fe,;mfmm efkoefj', '9877774522', 'demoiiu@gmail.com', '2026-01-07 12:04:32', '2026-01-07 12:04:32'),
+(165, 26, 'ORD-20260107-258643-165', 5, 22155.00, 110775.00, 88620.00, 'Cash On Delivery', '', 'pending', '0000-00-00 00:00:00', '', 'pending', 'demo', 'demo1 2', 'demo  demo demo 22', 'trbfdbe ', 'west bengal', 'india', '874569', 'uyt.wri ndfnsdjfn', '1234567891', 'clutchdropkings@gmail.com', 0, 'demo 009', 'demo', 'demo shhipping kfnnf wiifd w', 'ijfw', 'ede', 'fows', '895552', 'fe,;mfmm efkoefj', '9877774522', 'demoiiu@gmail.com', '2026-01-07 16:13:06', '2026-01-07 16:13:06'),
+(166, 26, 'ORD-20260107-300018-166', NULL, 0.00, 1989.00, 1989.00, 'Card', 'pi_3SmuJRF338nGzwqe1WlS9vfT', 'paid', '2026-01-07 16:20:14', 'ch_3SmuJRF338nGzwqe11Sw5I3b', 'confirmed', 'demo', 'demo1 2', 'demo  demo demo 22', 'trbfdbe ', 'west bengal', 'india', '874569', 'uyt.wri ndfnsdjfn', '1234567891', 'clutchdropkings@gmail.com', 0, 'demo 009', 'demo', 'demo shhipping kfnnf wiifd w', 'ijfw', 'ede', 'fows', '895552', 'fe,;mfmm efkoefj', '9877774522', 'demoiiu@gmail.com', '2026-01-07 16:20:00', '2026-01-07 16:20:00'),
+(167, 26, 'ORD-20260107-494119-167', NULL, 0.00, 2500.00, 2500.00, 'Cash On Delivery', '', 'pending', '0000-00-00 00:00:00', '', 'pending', 'demo', 'demo1 2', 'demo  demo demo 22', 'trbfdbe ', 'west bengal', 'india', '874569', 'uyt.wri ndfnsdjfn', '1234567891', 'clutchdropkings@gmail.com', 0, 'demo 009', 'demo', 'demo shhipping kfnnf wiifd w', 'ijfw', 'ede', 'fows', '895552', 'fe,;mfmm efkoefj', '9877774522', 'demoiiu@gmail.com', '2026-01-07 16:52:21', '2026-01-07 16:52:21'),
+(168, 26, 'ORD-20260107-617095-168', NULL, 0.00, 842.00, 842.00, 'Cash On Delivery', '', 'pending', '0000-00-00 00:00:00', '', 'pending', 'demo', 'demo1 2', 'demo  demo demo 22', 'trbfdbe ', 'west bengal', 'india', '874569', 'uyt.wri ndfnsdjfn', '1234567891', 'clutchdropkings@gmail.com', 0, 'demo 009', 'demo', 'demo shhipping kfnnf wiifd w', 'ijfw', 'ede', 'fows', '895552', 'fe,;mfmm efkoefj', '9877774522', 'demoiiu@gmail.com', '2026-01-07 17:12:50', '2026-01-07 17:12:50'),
+(169, 26, 'ORD-20260107-699312-169', NULL, 0.00, 678.00, 678.00, 'Cash On Delivery', '', 'pending', '0000-00-00 00:00:00', '', 'pending', 'demo', 'demo1 2', 'demo  demo demo 22', 'trbfdbe ', 'west bengal', 'india', '874569', 'uyt.wri ndfnsdjfn', '1234567891', 'clutchdropkings@gmail.com', 0, 'demo 009', 'demo', 'demo shhipping kfnnf wiifd w', 'ijfw', 'ede', 'fows', '895552', 'fe,;mfmm efkoefj', '9877774522', 'demoiiu@gmail.com', '2026-01-07 17:26:33', '2026-01-07 17:26:33'),
+(170, 26, 'ORD-20260107-205962-170', NULL, 0.00, 408.00, 408.00, 'Cash On Delivery', '', 'pending', '0000-00-00 00:00:00', '', 'pending', 'demo', 'demo1 2', 'demo  demo demo 22', 'trbfdbe ', 'west bengal', 'india', '874569', 'uyt.wri ndfnsdjfn', '1234567891', 'clutchdropkings@gmail.com', 0, 'demo 009', 'demo', 'demo shhipping kfnnf wiifd w', 'ijfw', 'ede', 'fows', '895552', 'fe,;mfmm efkoefj', '9877774522', 'demoiiu@gmail.com', '2026-01-07 18:50:59', '2026-01-07 18:50:59'),
+(171, 26, 'ORD-20260107-297559-171', NULL, 0.00, 600.00, 600.00, 'Card', 'pi_3SmwuKF338nGzwqe1NRqRoEl', 'paid', '2026-01-07 19:06:31', 'ch_3SmwuKF338nGzwqe1AER9kkC', 'confirmed', 'demo', 'demo1 2', 'demo  demo demo 22', 'trbfdbe ', 'west bengal', 'india', '874569', 'uyt.wri ndfnsdjfn', '1234567891', 'clutchdropkings@gmail.com', 0, 'demo 009', 'demo', 'demo shhipping kfnnf wiifd w', 'ijfw', 'ede', 'fows', '895552', 'fe,;mfmm efkoefj', '9877774522', 'demoiiu@gmail.com', '2026-01-07 19:06:15', '2026-01-07 19:06:15'),
+(172, 26, 'ORD-20260107-447162-172', NULL, 0.00, 1224.00, 1224.00, 'Cash On Delivery', '', 'pending', '0000-00-00 00:00:00', '', 'pending', 'demo', 'demo1 2', 'demo  demo demo 22', 'trbfdbe ', 'west bengal', 'india', '874569', 'uyt.wri ndfnsdjfn', '1234567891', 'clutchdropkings@gmail.com', 0, 'demo 009', 'demo', 'demo shhipping kfnnf wiifd w', 'ijfw', 'ede', 'fows', '895552', 'fe,;mfmm efkoefj', '9877774522', 'demoiiu@gmail.com', '2026-01-07 19:31:11', '2026-01-07 19:31:11'),
+(173, 26, 'ORD-20260107-474072-173', NULL, 0.00, 3778.00, 3778.00, 'Cash On Delivery', '', 'pending', '0000-00-00 00:00:00', '', 'pending', 'demo', 'demo1 2', 'demo  demo demo 22', 'trbfdbe ', 'west bengal', 'india', '874569', 'uyt.wri ndfnsdjfn', '1234567891', 'clutchdropkings@gmail.com', 0, 'demo 009', 'demo', 'demo shhipping kfnnf wiifd w', 'ijfw', 'ede', 'fows', '895552', 'fe,;mfmm efkoefj', '9877774522', 'demoiiu@gmail.com', '2026-01-07 19:35:40', '2026-01-07 19:35:40'),
+(174, 26, 'ORD-20260107-479425-174', NULL, 0.00, 3586.00, 3586.00, 'Cash On Delivery', '', 'pending', '0000-00-00 00:00:00', '', 'pending', 'demo', 'demo1 2', 'demo  demo demo 22', 'trbfdbe ', 'west bengal', 'india', '874569', 'uyt.wri ndfnsdjfn', '1234567891', 'clutchdropkings@gmail.com', 0, 'demo 009', 'demo', 'demo shhipping kfnnf wiifd w', 'ijfw', 'ede', 'fows', '895552', 'fe,;mfmm efkoefj', '9877774522', 'demoiiu@gmail.com', '2026-01-07 19:36:34', '2026-01-07 19:36:34'),
+(175, 26, 'ORD-20260107-494887-175', NULL, 0.00, 1385.00, 1385.00, 'Cash On Delivery', '', 'pending', '0000-00-00 00:00:00', '', 'pending', 'demo', 'demo1 2', 'demo  demo demo 22', 'trbfdbe ', 'west bengal', 'india', '874569', 'uyt.wri ndfnsdjfn', '1234567891', 'clutchdropkings@gmail.com', 0, 'demo 009', 'demo', 'demo shhipping kfnnf wiifd w', 'ijfw', 'ede', 'fows', '895552', 'fe,;mfmm efkoefj', '9877774522', 'demoiiu@gmail.com', '2026-01-07 19:39:08', '2026-01-07 19:39:08'),
+(176, 26, 'ORD-20260107-507490-176', NULL, 0.00, 785.00, 785.00, 'Cash On Delivery', '', 'pending', '0000-00-00 00:00:00', '', 'pending', 'demo', 'demo1 2', 'demo  demo demo 22', 'trbfdbe ', 'west bengal', 'india', '874569', 'uyt.wri ndfnsdjfn', '1234567891', 'clutchdropkings@gmail.com', 0, 'demo 009', 'demo', 'demo shhipping kfnnf wiifd w', 'ijfw', 'ede', 'fows', '895552', 'fe,;mfmm efkoefj', '9877774522', 'demoiiu@gmail.com', '2026-01-07 19:41:14', '2026-01-07 19:41:14'),
+(177, 26, 'ORD-20260107-518160-177', NULL, 0.00, 678.00, 678.00, 'Cash On Delivery', '', 'pending', '0000-00-00 00:00:00', '', 'pending', 'demo', 'demo1 2', 'demo  demo demo 22', 'trbfdbe ', 'west bengal', 'india', '874569', 'uyt.wri ndfnsdjfn', '1234567891', 'clutchdropkings@gmail.com', 0, 'demo 009', 'demo', 'demo shhipping kfnnf wiifd w', 'ijfw', 'ede', 'fows', '895552', 'fe,;mfmm efkoefj', '9877774522', 'demoiiu@gmail.com', '2026-01-07 19:43:01', '2026-01-07 19:43:01'),
+(178, 26, 'ORD-20260107-550668-178', 4, 1000.00, 4175.00, 3175.00, 'Card', 'pi_3SmxZ9F338nGzwqe0VpBTPX9', 'paid', '2026-01-07 19:48:38', 'ch_3SmxZ9F338nGzwqe0VDXScN4', 'confirmed', 'demo', 'demo1 2', 'demo  demo demo 22', 'trbfdbe ', 'west bengal', 'india', '874569', 'uyt.wri ndfnsdjfn', '1234567891', 'clutchdropkings@gmail.com', 0, 'demo 009', 'demo', 'demo shhipping kfnnf wiifd w', 'ijfw', 'ede', 'fows', '895552', 'fe,;mfmm efkoefj', '9877774522', 'demoiiu@gmail.com', '2026-01-07 19:48:26', '2026-01-07 19:48:26'),
+(179, 26, 'ORD-20260107-569746-179', NULL, 0.00, 1389.00, 1389.00, 'Card', 'pi_3SmxcDF338nGzwqe1z3ivpR6', 'paid', '2026-01-07 19:51:51', 'ch_3SmxcDF338nGzwqe1DI2EMBc', 'confirmed', 'demo', 'demo1 2', 'demo  demo demo 22', 'trbfdbe ', 'west bengal', 'india', '874569', 'uyt.wri ndfnsdjfn', '1234567891', 'clutchdropkings@gmail.com', 0, 'demo 009', 'demo', 'demo shhipping kfnnf wiifd w', 'ijfw', 'ede', 'fows', '895552', 'fe,;mfmm efkoefj', '9877774522', 'demoiiu@gmail.com', '2026-01-07 19:51:37', '2026-01-07 19:51:37'),
+(180, 26, 'ORD-0000000180', NULL, 0.00, 3178.00, 3178.00, 'Card', 'pi_3SmxnbF338nGzwqe1yicSnNP', 'paid', '2026-01-07 20:03:35', 'ch_3SmxnbF338nGzwqe1VxAk6lK', 'confirmed', 'demo', 'demo1 2', 'demo  demo demo 22', 'trbfdbe ', 'west bengal', 'india', '874569', 'uyt.wri ndfnsdjfn', '1234567891', 'clutchdropkings@gmail.com', 0, 'demo 009', 'demo', 'demo shhipping kfnnf wiifd w', 'ijfw', 'ede', 'fows', '895552', 'fe,;mfmm efkoefj', '9877774522', 'demoiiu@gmail.com', '2026-01-07 20:03:23', '2026-01-07 20:03:23'),
+(181, 28, 'ORD-0000000181', 5, 2000.00, 10000.00, 8000.00, 'Card', 'pi_3SnHfLF338nGzwqe1Rdq0zy2', 'paid', '2026-01-08 17:16:27', 'ch_3SnHfLF338nGzwqe1E3nZa7j', 'confirmed', 'Ira May', 'Kermit Zamora', 'Ullamco dolor est a', 'Sequi in distinctio', 'Tenetur exercitation', 'Ipsum aliquip veniam', '546574', 'Cupiditate aliquid s', '1621157641', 'clutchdropkings@gmail.com', 1, '', '', '', '', '', '', '', '', '', '', '2026-01-08 17:16:10', '2026-01-08 17:16:10'),
+(182, 28, 'ORD-0000000182', 5, 1711.20, 8556.00, 6844.80, 'Card', 'pi_3SnHxMF338nGzwqe0qcUNUgC', 'paid', '2026-01-08 17:35:00', 'ch_3SnHxMF338nGzwqe0JfkD6dd', 'confirmed', 'Ira May', 'Kermit Zamora', 'Ullamco dolor est a', 'Sequi in distinctio', 'Tenetur exercitation', 'Ipsum aliquip veniam', '546574', 'Cupiditate aliquid s', '1621157641', 'clutchdropkings@gmail.com', 1, '', '', '', '', '', '', '', '', '', '', '2026-01-08 17:34:47', '2026-01-08 17:34:47'),
+(183, 28, 'ORD-0000000183', 5, 1711.20, 8556.00, 6844.80, 'Card', 'pi_3SnHxtF338nGzwqe1sTYr4yZ', 'paid', '2026-01-08 17:35:38', 'ch_3SnHxtF338nGzwqe1A2MamQk', 'confirmed', 'Ira May', 'Kermit Zamora', 'Ullamco dolor est a', 'Sequi in distinctio', 'Tenetur exercitation', 'Ipsum aliquip veniam', '546574', 'Cupiditate aliquid s', '1621157641', 'clutchdropkings@gmail.com', 1, '', '', '', '', '', '', '', '', '', '', '2026-01-08 17:35:21', '2026-01-08 17:35:21'),
+(184, 33, 'ORD-0000000184', NULL, 0.00, 4582.00, 4582.00, 'Card', 'pi_3Sod4uF338nGzwqe096tlITW', 'paid', '2026-01-12 10:20:25', 'ch_3Sod4uF338nGzwqe0iCh8nLp', 'confirmed', 'Aline Savage', 'Nehru Floyd', 'Hic aliqua Magna co', 'Voluptas nisi pariat', 'Est in similique do', 'Minim sunt nostrum b', '774545', 'Quidem non minima mi', '1517776514', 'clutchdropkings@gmail.com', 0, 'Melanie Slater', 'Mollie Franklin', 'Non expedita nihil c', 'Molestias eius molli', 'Nisi sunt duis fuga', 'Aut consequat Conse', '265659', 'Totam neque cupidata', '1976338405', 'peverowoji@mailinator.com', '2026-01-12 10:20:08', '2026-01-12 10:20:08');
 
 -- --------------------------------------------------------
 
@@ -303,7 +373,7 @@ CREATE TABLE IF NOT EXISTS `order_details` (
   `created_at` datetime NOT NULL,
   `updated_at` datetime NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=403 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=469 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Dumping data for table `order_details`
@@ -641,7 +711,73 @@ INSERT INTO `order_details` (`id`, `order_id`, `product_id`, `quantity`, `price`
 (399, 149, 10, 1, 890.00, 890.00, '2026-01-03 20:14:50', '2026-01-03 20:14:50'),
 (400, 149, 9, 1, 911.00, 911.00, '2026-01-03 20:14:50', '2026-01-03 20:14:50'),
 (401, 150, 13, 2, 600.00, 1200.00, '2026-01-03 20:40:27', '2026-01-03 20:40:27'),
-(402, 150, 12, 8, 785.00, 6280.00, '2026-01-03 20:40:27', '2026-01-03 20:40:27');
+(402, 150, 12, 8, 785.00, 6280.00, '2026-01-03 20:40:27', '2026-01-03 20:40:27'),
+(403, 151, 16, 2, 869.00, 1738.00, '2026-01-04 12:57:44', '2026-01-04 12:57:44'),
+(404, 151, 15, 5, 643.00, 3215.00, '2026-01-04 12:57:44', '2026-01-04 12:57:44'),
+(405, 152, 17, 7, 678.00, 4746.00, '2026-01-04 18:05:44', '2026-01-04 18:05:44'),
+(406, 152, 16, 7, 869.00, 6083.00, '2026-01-04 18:05:44', '2026-01-04 18:05:44'),
+(407, 152, 15, 5, 643.00, 3215.00, '2026-01-04 18:05:44', '2026-01-04 18:05:44'),
+(408, 152, 13, 4, 600.00, 2400.00, '2026-01-04 18:05:44', '2026-01-04 18:05:44'),
+(409, 152, 12, 9, 785.00, 7065.00, '2026-01-04 18:05:44', '2026-01-04 18:05:44'),
+(410, 153, 17, 1, 678.00, 678.00, '2026-01-05 19:05:47', '2026-01-05 19:05:47'),
+(411, 153, 10, 1, 890.00, 890.00, '2026-01-05 19:05:47', '2026-01-05 19:05:47'),
+(412, 154, 17, 1, 678.00, 678.00, '2026-01-05 19:10:51', '2026-01-05 19:10:51'),
+(413, 154, 10, 1, 890.00, 890.00, '2026-01-05 19:10:51', '2026-01-05 19:10:51'),
+(414, 155, 17, 1, 678.00, 678.00, '2026-01-05 19:12:21', '2026-01-05 19:12:21'),
+(415, 155, 10, 1, 890.00, 890.00, '2026-01-05 19:12:21', '2026-01-05 19:12:21'),
+(416, 156, 17, 1, 678.00, 678.00, '2026-01-05 19:23:53', '2026-01-05 19:23:53'),
+(417, 156, 10, 1, 890.00, 890.00, '2026-01-05 19:23:53', '2026-01-05 19:23:53'),
+(418, 157, 17, 1, 678.00, 678.00, '2026-01-05 19:33:14', '2026-01-05 19:33:14'),
+(419, 157, 18, 4, 2500.00, 10000.00, '2026-01-05 19:33:14', '2026-01-05 19:33:14'),
+(420, 158, 17, 1, 678.00, 678.00, '2026-01-07 11:15:29', '2026-01-07 11:15:29'),
+(421, 159, 17, 1, 678.00, 678.00, '2026-01-07 11:16:45', '2026-01-07 11:16:45'),
+(422, 160, 17, 1, 678.00, 678.00, '2026-01-07 11:21:40', '2026-01-07 11:21:40'),
+(423, 161, 13, 1, 600.00, 600.00, '2026-01-07 11:48:40', '2026-01-07 11:48:40'),
+(424, 162, 13, 1, 600.00, 600.00, '2026-01-07 11:56:19', '2026-01-07 11:56:19'),
+(425, 163, 13, 1, 600.00, 600.00, '2026-01-07 11:59:58', '2026-01-07 11:59:58'),
+(426, 164, 13, 1, 600.00, 600.00, '2026-01-07 12:04:32', '2026-01-07 12:04:32'),
+(427, 165, 13, 15, 600.00, 9000.00, '2026-01-07 16:13:06', '2026-01-07 16:13:06'),
+(428, 165, 12, 15, 785.00, 11775.00, '2026-01-07 16:13:06', '2026-01-07 16:13:06'),
+(429, 165, 18, 36, 2500.00, 90000.00, '2026-01-07 16:13:06', '2026-01-07 16:13:06'),
+(430, 166, 12, 1, 785.00, 785.00, '2026-01-07 16:20:00', '2026-01-07 16:20:00'),
+(431, 166, 11, 1, 604.00, 604.00, '2026-01-07 16:20:00', '2026-01-07 16:20:00'),
+(432, 166, 13, 1, 600.00, 600.00, '2026-01-07 16:20:00', '2026-01-07 16:20:00'),
+(433, 167, 18, 1, 2500.00, 2500.00, '2026-01-07 16:52:21', '2026-01-07 16:52:21'),
+(434, 168, 6, 1, 842.00, 842.00, '2026-01-07 17:12:50', '2026-01-07 17:12:50'),
+(435, 169, 17, 1, 678.00, 678.00, '2026-01-07 17:26:33', '2026-01-07 17:26:33'),
+(436, 170, 19, 1, 408.00, 408.00, '2026-01-07 18:50:59', '2026-01-07 18:50:59'),
+(437, 171, 13, 1, 600.00, 600.00, '2026-01-07 19:06:15', '2026-01-07 19:06:15'),
+(438, 172, 19, 3, 408.00, 1224.00, '2026-01-07 19:31:11', '2026-01-07 19:31:11'),
+(439, 173, 18, 1, 2500.00, 2500.00, '2026-01-07 19:35:40', '2026-01-07 19:35:40'),
+(440, 173, 17, 1, 678.00, 678.00, '2026-01-07 19:35:40', '2026-01-07 19:35:40'),
+(441, 173, 13, 1, 600.00, 600.00, '2026-01-07 19:35:40', '2026-01-07 19:35:40'),
+(442, 174, 18, 1, 2500.00, 2500.00, '2026-01-07 19:36:34', '2026-01-07 19:36:34'),
+(443, 174, 19, 1, 408.00, 408.00, '2026-01-07 19:36:34', '2026-01-07 19:36:34'),
+(444, 174, 17, 1, 678.00, 678.00, '2026-01-07 19:36:34', '2026-01-07 19:36:34'),
+(445, 175, 13, 1, 600.00, 600.00, '2026-01-07 19:39:08', '2026-01-07 19:39:08'),
+(446, 175, 12, 1, 785.00, 785.00, '2026-01-07 19:39:08', '2026-01-07 19:39:08'),
+(447, 176, 12, 1, 785.00, 785.00, '2026-01-07 19:41:14', '2026-01-07 19:41:14'),
+(448, 177, 17, 1, 678.00, 678.00, '2026-01-07 19:43:01', '2026-01-07 19:43:01'),
+(449, 178, 13, 1, 600.00, 600.00, '2026-01-07 19:48:26', '2026-01-07 19:48:26'),
+(450, 178, 12, 1, 785.00, 785.00, '2026-01-07 19:48:26', '2026-01-07 19:48:26'),
+(451, 178, 11, 1, 604.00, 604.00, '2026-01-07 19:48:26', '2026-01-07 19:48:26'),
+(452, 178, 10, 1, 890.00, 890.00, '2026-01-07 19:48:26', '2026-01-07 19:48:26'),
+(453, 178, 9, 1, 911.00, 911.00, '2026-01-07 19:48:26', '2026-01-07 19:48:26'),
+(454, 178, 8, 1, 385.00, 385.00, '2026-01-07 19:48:26', '2026-01-07 19:48:26'),
+(455, 179, 12, 1, 785.00, 785.00, '2026-01-07 19:51:37', '2026-01-07 19:51:37'),
+(456, 179, 11, 1, 604.00, 604.00, '2026-01-07 19:51:37', '2026-01-07 19:51:37'),
+(457, 180, 18, 1, 2500.00, 2500.00, '2026-01-07 20:03:23', '2026-01-07 20:03:23'),
+(458, 180, 17, 1, 678.00, 678.00, '2026-01-07 20:03:23', '2026-01-07 20:03:23'),
+(459, 181, 18, 4, 2500.00, 10000.00, '2026-01-08 17:16:10', '2026-01-08 17:16:10'),
+(460, 182, 12, 4, 785.00, 3140.00, '2026-01-08 17:34:47', '2026-01-08 17:34:47'),
+(461, 182, 13, 5, 600.00, 3000.00, '2026-01-08 17:34:47', '2026-01-08 17:34:47'),
+(462, 182, 11, 4, 604.00, 2416.00, '2026-01-08 17:34:47', '2026-01-08 17:34:47'),
+(463, 183, 12, 4, 785.00, 3140.00, '2026-01-08 17:35:21', '2026-01-08 17:35:21'),
+(464, 183, 13, 5, 600.00, 3000.00, '2026-01-08 17:35:21', '2026-01-08 17:35:21'),
+(465, 183, 11, 4, 604.00, 2416.00, '2026-01-08 17:35:21', '2026-01-08 17:35:21'),
+(466, 184, 13, 2, 600.00, 1200.00, '2026-01-12 10:20:08', '2026-01-12 10:20:08'),
+(467, 184, 12, 2, 785.00, 1570.00, '2026-01-12 10:20:08', '2026-01-12 10:20:08'),
+(468, 184, 11, 3, 604.00, 1812.00, '2026-01-12 10:20:08', '2026-01-12 10:20:08');
 
 -- --------------------------------------------------------
 
@@ -661,33 +797,37 @@ CREATE TABLE IF NOT EXISTS `products` (
   `status` tinyint NOT NULL COMMENT '0=active,1=inactive',
   `is_available` tinyint NOT NULL COMMENT '0=available\r\n1=unavailable',
   `is_featured` tinyint DEFAULT NULL COMMENT '0=yes,1=no',
+  `slug` varchar(200) DEFAULT NULL,
   `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `deleted_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=18 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `sulg` (`slug`(191))
+) ENGINE=MyISAM AUTO_INCREMENT=20 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Dumping data for table `products`
 --
 
-INSERT INTO `products` (`id`, `name`, `description`, `price`, `category`, `quantity`, `unit_id`, `status`, `is_available`, `is_featured`, `created_at`, `updated_at`, `deleted_at`) VALUES
-(1, 'Forrest Wise', '<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium qu', 375.00, '2', 275, 4, 0, 0, 0, '2025-11-24 17:58:07', '2025-11-24 17:58:07', '2025-11-24 17:58:07'),
-(2, 'Suki Griffin', '<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium qu', 799.00, '1', 444, 2, 0, 0, 0, '2025-11-24 20:28:27', '2025-11-24 20:28:27', '2025-11-24 20:28:27'),
-(3, 'Uriah Galloway', '<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium qu', 852.00, '1', 353, 4, 0, 0, 0, '2025-11-24 20:37:08', '2025-11-24 20:37:08', '2025-11-24 20:37:08'),
-(4, 'Daphne Dickerson', '<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium qu', 93.00, '3', 125, 4, 0, 0, 0, '2025-11-24 20:37:45', '2025-11-24 20:37:45', '2025-11-24 20:37:45'),
-(6, 'Maggy Carney', '<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium qu', 842.00, '3', 277, 3, 0, 0, 1, '2025-11-24 20:42:05', '2025-11-24 20:42:05', '2025-11-24 20:42:05'),
-(7, 'Candice Evans', '<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium qu', 452.00, '2', 716, 4, 0, 0, 1, '2025-11-24 20:42:38', '2025-11-24 20:42:38', '2025-11-24 20:42:38'),
-(8, 'Aquila Ayers', '<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium qu', 385.00, '3', 207, 3, 0, 0, 1, '2025-11-24 20:43:27', '2025-11-24 20:43:27', '2025-11-24 20:43:27'),
-(9, 'Zane Hill', '<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium qu', 911.00, '2', 528, 3, 0, 0, 0, '2025-11-24 20:52:23', '2025-11-24 20:52:23', '2025-11-24 20:52:23'),
-(10, 'Sophia Wyatt', '<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium qu', 890.00, '1', 472, 2, 0, 0, 1, '2025-11-24 20:52:49', '2025-11-24 20:52:49', '2025-11-24 20:52:49'),
-(11, 'Kasimir Mcclain', '<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium qu', 604.00, '3', 435, 4, 0, 0, 0, '2025-11-24 20:53:21', '2025-11-24 20:53:21', '2025-11-24 20:53:21'),
-(12, 'Allegra Lawrence', '<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium qu', 785.00, '3', 655, 3, 0, 0, 0, '2025-11-24 20:54:02', '2025-11-24 20:54:02', '2025-11-24 20:54:02'),
-(13, 'Mariko Peters', '<p>dasdasdasfdffweedfhfhwehf&nbsp; ewjefewfewfjf&nbsp; nc wffwjfqjfqjfffjef&nbsp; fjefjef fjffo0qifeeikfiiiiiiiiiiiiiiiiiiiiiiiiiiiqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq', 600.00, '2', 511, 2, 0, 0, 1, '2025-11-25 17:28:44', '2025-11-25 17:28:44', '2025-11-25 17:28:44'),
-(14, 'Gail Abbott', '<p>sSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS</p>\r\n', 89.00, '2', 372, 1, 0, 0, 1, '2025-11-25 17:34:05', '2025-11-25 17:34:05', '2025-11-25 17:34:05'),
-(15, 'Octavia Warner', '<p>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</p>\r\n', 643.00, '1', 646, 2, 0, 0, 1, '2025-11-25 17:35:22', '2025-11-25 17:35:22', '2025-11-25 17:35:22'),
-(16, 'Jorden Hale', '<p>assssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss s ssssssssssssssssssssssafdddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd</p>\r\n', 869.00, '2', 506, 3, 0, 0, 0, '2025-11-25 17:39:31', '2025-11-25 17:39:31', '2025-11-25 17:39:31'),
-(17, 'Emmanuel Pollard', '<p>ddddddddddddddddddddddddddddddddddddddddddddddwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww</p>\n', 678.00, '1', 623, 3, 0, 0, 1, '2025-11-25 17:40:34', '2025-11-25 17:40:34', '2025-11-25 17:40:34');
+INSERT INTO `products` (`id`, `name`, `description`, `price`, `category`, `quantity`, `unit_id`, `status`, `is_available`, `is_featured`, `slug`, `created_at`, `updated_at`, `deleted_at`) VALUES
+(1, 'Forrest Wise', '<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium qu', 375.00, '2', 275, 4, 0, 0, 0, 'forrest-wise', '2025-11-24 17:58:07', '2025-11-24 17:58:07', '2025-11-24 17:58:07'),
+(2, 'Suki Griffin', '<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium qu', 799.00, '1', 444, 2, 0, 0, 0, 'suki-griffin', '2025-11-24 20:28:27', '2025-11-24 20:28:27', '2025-11-24 20:28:27'),
+(3, 'Uriah Galloway', '<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium qu', 852.00, '1', 353, 4, 0, 0, 0, 'uriah-galloway', '2025-11-24 20:37:08', '2025-11-24 20:37:08', '2025-11-24 20:37:08'),
+(4, 'Daphne Dickerson', '<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium qu', 93.00, '3', 125, 4, 0, 0, 0, 'daphne-dickerson', '2025-11-24 20:37:45', '2025-11-24 20:37:45', '2025-11-24 20:37:45'),
+(6, 'Maggy Carney', '<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium qu', 842.00, '3', 277, 3, 0, 0, 1, 'maggy-carney', '2025-11-24 20:42:05', '2025-11-24 20:42:05', '2025-11-24 20:42:05'),
+(7, 'Candice Evans', '<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium qu', 452.00, '2', 716, 4, 0, 0, 1, 'candice-evans', '2025-11-24 20:42:38', '2025-11-24 20:42:38', '2025-11-24 20:42:38'),
+(8, 'Aquila Ayers', '<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium qu', 385.00, '3', 207, 3, 0, 0, 1, 'aquila-ayers', '2025-11-24 20:43:27', '2025-11-24 20:43:27', '2025-11-24 20:43:27'),
+(9, 'Zane Hill', '<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium qu', 911.00, '2', 528, 3, 0, 0, 0, 'zane-hill', '2025-11-24 20:52:23', '2025-11-24 20:52:23', '2025-11-24 20:52:23'),
+(10, 'Sophia Wyatt', '<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium qu', 890.00, '1', 472, 2, 0, 0, 1, 'sophia-wyatt', '2025-11-24 20:52:49', '2025-11-24 20:52:49', '2025-11-24 20:52:49'),
+(11, 'Kasimir Mcclain', '<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium qu', 604.00, '3', 435, 4, 0, 0, 0, 'kasimir-mcclain', '2025-11-24 20:53:21', '2025-11-24 20:53:21', '2025-11-24 20:53:21'),
+(12, 'Allegra Lawrence', '<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium qu', 785.00, '3', 655, 3, 0, 0, 0, 'allegra-lawrence', '2025-11-24 20:54:02', '2025-11-24 20:54:02', '2025-11-24 20:54:02'),
+(13, 'Mariko Peters', '<p>dasdasdasfdffweedfhfhwehf&nbsp; ewjefewfewfjf&nbsp; nc wffwjfqjfqjfffjef&nbsp; fjefjef fjffo0qifeeikfiiiiiiiiiiiiiiiiiiiiiiiiiiiqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq', 600.00, '2', 511, 2, 0, 0, 1, 'mariko-peters', '2025-11-25 17:28:44', '2025-11-25 17:28:44', '2025-11-25 17:28:44'),
+(14, 'Gail Abbott', '<p>sSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS</p>\r\n', 89.00, '2', 372, 1, 1, 0, 1, 'gail-abbott', '2025-11-25 17:34:05', '2025-11-25 17:34:05', '2025-11-25 17:34:05'),
+(15, 'Octavia Warner', '<p>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</p>\r\n', 643.00, '1', 646, 2, 1, 1, 1, 'octavia-warner', '2025-11-25 17:35:22', '2025-11-25 17:35:22', '2025-11-25 17:35:22'),
+(16, 'Jorden Hale', '<p>assssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss s ssssssssssssssssssssssafdddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd</p>\r\n', 869.00, '2', 506, 3, 0, 1, 0, 'jorden-hale', '2025-11-25 17:39:31', '2025-11-25 17:39:31', '2025-11-25 17:39:31'),
+(17, 'Emmanuel Pollard', '<p>ddddddddddddddddddddddddddddddddddddddddddddddwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww</p>\n', 678.00, '1', 623, 3, 0, 0, 1, 'emmanuel-pollard', '2025-11-25 17:40:34', '2025-11-25 17:40:34', '2025-11-25 17:40:34'),
+(18, 'newqw uiyt', '<h1>sSS NFSDJF <strong>34 </strong>fgsf kfgsdkfg&nbsp; gsdgerg fsdfnn fhhfiuehfuefhhoiefh9oewufwoieasf iwse f9wsew esdfwsedruoifjuosewrjf9sefws e 9soivgjseoijsoifujoiwswhiusej foiawsejfu sevfv sed hsehf v s hsdr</h1>\r\n', 2500.00, '3', 500, 1, 0, 0, 1, 'newqw-uiyt', '2026-01-05 14:06:42', '2026-01-05 14:06:42', '2026-01-05 14:06:42'),
+(19, 'newqw uiyt', '<p>hdhgedrt&nbsp; uuwed hf iegiuqegfqrf qhgfdqehg qefdhuqe qdhqedy3wyHAUFHDUQYFWEW sdfhe ffnkmfjifuewfuyew 8yfheufhejfhjkhvishgfvlishliksjvb sivkbs ueh&nbsp; &nbsp;f i i werfijeefe jkfjdj d ssowsoifjkn s&nbsp; ijfgirgrd jgrjijgirgngngjiirjgrkggrvkjrgjirk&', 408.00, '1', 82, 4, 0, 0, 1, 'newqw-uiyt-3', '2026-01-06 16:21:12', '2026-01-06 16:21:12', '2026-01-06 16:21:12');
 
 -- --------------------------------------------------------
 
@@ -706,7 +846,7 @@ CREATE TABLE IF NOT EXISTS `product_image` (
   `updated_at` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   KEY `product_id` (`product_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=86 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=96 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Dumping data for table `product_image`
@@ -797,7 +937,17 @@ INSERT INTO `product_image` (`id`, `product_id`, `image_name`, `alt_text`, `is_f
 (82, 17, 'product_69259cbaa342e.png', 'Do fugiat odio sit t', 1, '2025-11-25 17:40:34', '2025-11-25 17:40:34'),
 (83, 17, 'product_69259cbae6098.png', 'At lorem nesciunt v', 1, '2025-11-25 17:40:35', '2025-11-25 17:40:35'),
 (84, 17, 'product_69259cbb0a7ba.jpeg', 'Ut rerum nisi doloru', 1, '2025-11-25 17:40:35', '2025-11-25 17:40:35'),
-(85, 17, 'product_69259cbb1325a.jpg', 'Ut consequat Tempor', 0, '2025-11-25 17:40:35', '2025-11-25 17:40:35');
+(85, 17, 'product_69259cbb1325a.jpg', 'Ut consequat Tempor', 0, '2025-11-25 17:40:35', '2025-11-25 17:40:35'),
+(86, 18, 'product_695b781add216.png', 'gedrfg', 1, '2026-01-05 14:06:43', '2026-01-05 14:06:43'),
+(87, 18, 'product_695b781b41ec1.png', 'rrgr', 1, '2026-01-05 14:06:43', '2026-01-05 14:06:43'),
+(88, 18, 'product_695b781b8fbe4.png', 'wtre', 1, '2026-01-05 14:06:43', '2026-01-05 14:06:43'),
+(89, 18, 'product_695b781be3a56.png', 'kuk', 1, '2026-01-05 14:06:44', '2026-01-05 14:06:44'),
+(90, 18, 'product_695b781c40b65.png', 'dfe', 0, '2026-01-05 14:06:44', '2026-01-05 14:06:44'),
+(91, 19, 'product_695ce9201e985.png', 'jkuh', 1, '2026-01-06 16:21:12', '2026-01-06 16:21:12'),
+(92, 19, 'product_695ce920664c5.png', 'kuk', 1, '2026-01-06 16:21:12', '2026-01-06 16:21:12'),
+(93, 19, 'product_695ce920b41da.png', 'tyjytu', 1, '2026-01-06 16:21:13', '2026-01-06 16:21:13'),
+(94, 19, 'product_695ce92101588.png', 'ktujk', 1, '2026-01-06 16:21:13', '2026-01-06 16:21:13'),
+(95, 19, 'product_695ce9214c3d3.png', 'bbfdgb', 0, '2026-01-06 16:21:13', '2026-01-06 16:21:13');
 
 -- --------------------------------------------------------
 
@@ -824,7 +974,7 @@ INSERT INTO `product_unit` (`id`, `name`, `short_name`, `status`, `created_at`, 
 (1, 'Kilogram', 'KG', 'active', '2025-11-15 12:34:05', '2025-11-15 12:34:05'),
 (2, 'Piece', 'PCS', 'active', '2025-11-15 15:26:45', '2025-11-15 15:26:45'),
 (3, 'Litter', 'L', 'active', '2025-11-15 15:27:23', '2025-11-15 15:27:23'),
-(4, 'Packet', 'PKG', 'active', '2025-11-15 15:28:22', '2025-11-15 15:28:22');
+(4, 'Packet', 'PKT', 'active', '2025-11-15 15:28:22', '2025-11-15 15:28:22');
 
 -- --------------------------------------------------------
 
@@ -842,29 +992,36 @@ CREATE TABLE IF NOT EXISTS `users` (
   `mobile` varchar(15) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
   `password` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
   `status` tinyint NOT NULL DEFAULT '1' COMMENT '0=deactivate,1=activate \r\n',
+  `is_verified` tinyint NOT NULL DEFAULT '0' COMMENT '0=no,1=yes',
+  `email_verify_token` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `email_token_expiry` datetime NOT NULL,
+  `reset_token` varchar(255) NOT NULL,
+  `token_expiry` datetime NOT NULL,
   `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `deleted_at` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=27 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=36 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`id`, `is_guest`, `fname`, `lname`, `email`, `mobile`, `password`, `status`, `created_at`, `updated_at`, `deleted_at`) VALUES
-(16, 1, 'Kelsey Hensley', 'Kaseem Cline', 'mondalme@gmail.com', '1523697736', '', 0, '2025-12-09 22:47:52', '2025-12-29 20:49:11', NULL),
-(17, 1, 'Tattu', 'King', 'ak@gmail.com', '8790876545', '', 0, '2025-12-09 22:56:48', '2025-12-30 21:50:32', NULL),
-(13, 0, 'Ayan me', 'Mondal', 'mondalayan.exe@gmail.com', '9775460713', '$2y$10$CNEFBFoYhxdDZHKtQSHGR.53yc5Yo5i4mFJ2BsvTTHVhUyETamrPK', 1, '2025-12-09 21:47:16', '2025-12-30 22:13:38', NULL),
-(11, 0, 'Brandon', 'Norris', 'xonocilys@mailinator.com', '1236958475', '$2y$10$KAkzuod49qvet1KQB53alefFP3Bpb3zqF/gvuYX4NYbDUWEvDQdE6', 1, '2025-12-07 07:22:33', '2025-12-30 16:45:05', NULL),
-(12, 0, 'new', 'test', 'test@gmail.com', '8697660981', '$2y$10$zVYCFjInBJ7CaM1w2vzbD.F2OZXg85uoBX1ot3NYVM8PoY0QJTcIi', 1, '2025-12-07 17:16:46', '2025-12-30 16:45:05', NULL),
-(18, 0, 'SBW', 'OY', 'mondalayans.exe@gmail.com', '9685745896', '$2y$10$dyHgc9XWMNdaQLyH8OBRgesKPryYut/2CsgurV5gKZLcl5aIBFeae', 1, '2025-12-10 11:06:07', '2025-12-30 22:13:37', NULL),
-(19, 1, 'Katell Harrison', 'Athena Dyer', 'xonocilys@mailinator.com', '4596998577', '', 0, '2025-12-10 12:28:45', '2025-12-27 16:07:18', NULL),
-(20, 1, 'arpit', 'Sarkar', 'nick@gmail.com', '2536541256', '', 0, '2025-12-10 21:40:27', '2025-12-30 21:42:52', NULL),
-(24, 1, 'smriti', 'gaunia', 'smriti@gmail.com', '7485965412', '', 1, '2025-12-20 16:22:25', '2025-12-30 21:43:14', NULL),
-(25, 1, 'Fiona Humphrey', 'Courtney Coffey', 'baqipyc@mailinator.com', '1486577123', '', 1, '2025-12-20 16:25:11', '2025-12-30 16:50:10', NULL),
-(23, 1, 'Cooper Moss', 'Cain Beasley', 'putope@mailinator.com', '1807975639', '', 1, '2025-12-16 19:02:39', '2025-12-29 21:35:16', NULL),
-(26, 0, 'demo', 'demo22', 'demo@gmail.com', '1234567891', '$2y$10$JFWd5JlU8aQQrzj3BirDKeB2CnN1ioxmJG0LT/4h.WKTsLs5ovlaG', 1, '2026-01-03 11:39:02', '2026-01-03 11:39:02', NULL);
+INSERT INTO `users` (`id`, `is_guest`, `fname`, `lname`, `email`, `mobile`, `password`, `status`, `is_verified`, `email_verify_token`, `email_token_expiry`, `reset_token`, `token_expiry`, `created_at`, `updated_at`, `deleted_at`) VALUES
+(16, 1, 'Kelsey Hensley', 'Kaseem Cline', 'mondalme@gmail.com', '1523697736', '', 0, 0, '', '0000-00-00 00:00:00', '', '0000-00-00 00:00:00', '2025-12-09 22:47:52', '2025-12-29 20:49:11', NULL),
+(17, 1, 'Tattu', 'King', 'ak@gmail.com', '8790876545', '', 0, 0, '', '0000-00-00 00:00:00', '', '0000-00-00 00:00:00', '2025-12-09 22:56:48', '2025-12-30 21:50:32', NULL),
+(13, 0, 'Ayan me', 'Mondal', 'mondalayan.exe@gmail.com', '9775460713', '$2y$10$CNEFBFoYhxdDZHKtQSHGR.53yc5Yo5i4mFJ2BsvTTHVhUyETamrPK', 1, 0, '', '0000-00-00 00:00:00', '', '0000-00-00 00:00:00', '2025-12-09 21:47:16', '2025-12-30 22:13:38', NULL),
+(11, 0, 'Brandon', 'Norris', 'xonocilys@mailinator.com', '1236958475', '$2y$10$KAkzuod49qvet1KQB53alefFP3Bpb3zqF/gvuYX4NYbDUWEvDQdE6', 1, 0, '', '0000-00-00 00:00:00', '', '0000-00-00 00:00:00', '2025-12-07 07:22:33', '2025-12-30 16:45:05', NULL),
+(12, 0, 'new', 'test', 'test@gmail.com', '8697660981', '$2y$10$zVYCFjInBJ7CaM1w2vzbD.F2OZXg85uoBX1ot3NYVM8PoY0QJTcIi', 1, 0, '', '0000-00-00 00:00:00', '', '0000-00-00 00:00:00', '2025-12-07 17:16:46', '2025-12-30 16:45:05', NULL),
+(18, 0, 'SBW', 'OY', 'mondalayans.exe@gmail.com', '9685745896', '$2y$10$dyHgc9XWMNdaQLyH8OBRgesKPryYut/2CsgurV5gKZLcl5aIBFeae', 1, 0, '', '0000-00-00 00:00:00', '', '0000-00-00 00:00:00', '2025-12-10 11:06:07', '2025-12-30 22:13:37', NULL),
+(20, 1, 'arpit', 'Sarkar', 'nick@gmail.com', '2536541256', '', 0, 0, '', '0000-00-00 00:00:00', '', '0000-00-00 00:00:00', '2025-12-10 21:40:27', '2025-12-30 21:42:52', NULL),
+(24, 1, 'smriti', 'gaunia', 'smriti@gmail.com', '7485965412', '', 1, 0, '', '0000-00-00 00:00:00', '', '0000-00-00 00:00:00', '2025-12-20 16:22:25', '2025-12-30 21:43:14', NULL),
+(25, 1, 'Fiona Humphrey', 'Courtney Coffey', 'baqipyc@mailinator.com', '1486577123', '', 1, 0, '', '0000-00-00 00:00:00', '', '0000-00-00 00:00:00', '2025-12-20 16:25:11', '2025-12-30 16:50:10', NULL),
+(23, 1, 'Cooper Moss', 'Cain Beasley', 'putope@mailinator.com', '1807975639', '', 1, 0, '', '0000-00-00 00:00:00', '', '0000-00-00 00:00:00', '2025-12-16 19:02:39', '2025-12-29 21:35:16', NULL),
+(26, 0, 'demo58', 'demo22', 'demo@gmail.com', '1234567891', '$2y$10$JFWd5JlU8aQQrzj3BirDKeB2CnN1ioxmJG0LT/4h.WKTsLs5ovlaG', 1, 0, '', '0000-00-00 00:00:00', '', '0000-00-00 00:00:00', '2026-01-03 11:39:02', '2026-01-05 16:45:50', NULL),
+(27, 0, 'koyel', 'naskar', 'koyel@gmail.com', '9856478512', '$2y$10$Mp6eWT7SXPdOC9577A1KhuK9WfYLVenwAhECSI.U3OmK4YkeYCjAi', 1, 0, '', '0000-00-00 00:00:00', '', '0000-00-00 00:00:00', '2026-01-05 19:54:30', '2026-01-05 19:54:30', NULL),
+(33, 0, 'Ayan ', 'mondal', 'clutchdropkings@gmail.com', '7859625428', '$2y$12$VhVkx5BNGlXTSZikVgFwsu4Buvp1Hti5bEAo5QEycIBy4vKIuvK9W', 1, 1, '', '0000-00-00 00:00:00', '', '0000-00-00 00:00:00', '2026-01-09 11:18:15', '2026-01-12 10:17:45', NULL),
+(34, 0, 'vsvfscfsfsef', 'ssrrgdfrgedrgerdg', 'clutchdropkingss@gmail.com', '6144684945', '$2y$10$PQw9XPRH1MiN4PV6nluHneFzyWgJCU0xq2XmIdwRT96Av6RoKoynq', 1, 0, '9289f368ec6f44408e59788bca212c382be67b9474ca185aa815cc7401f6d575', '2026-01-10 11:24:37', '', '0000-00-00 00:00:00', '2026-01-09 11:24:37', '2026-01-09 11:24:37', NULL);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

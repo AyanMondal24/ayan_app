@@ -36,7 +36,8 @@ class user_model extends CI_Model
         return $this->db->update('users', $data);
     }
 
-    public function updateToken($data,$id){
+    public function updateToken($data, $id)
+    {
         $this->db->where('id', $id);
         return $this->db->update('users', $data);
     }
@@ -50,7 +51,7 @@ class user_model extends CI_Model
         return $this->db->get()->row();
     }
 
-    public function getAllUsers($limit, $offset, $sort_column = null, $sort_order = null, $searchval = null, $userType=null)
+    public function getAllUsers($limit, $offset, $sort_column = null, $sort_order = null, $searchval = null, $userType = null)
     {
         $allowedSorts = [
             'name'     => "CONCAT(fname, ' ', lname)",
@@ -100,7 +101,7 @@ class user_model extends CI_Model
                 'updated_at' => date('Y-m-d H:i:s')
             ]);
     }
-    public function total_data($searchval = null,$userType=null)
+    public function total_data($searchval = null, $userType = null)
     {
         $this->db->from('users');
 
@@ -121,15 +122,17 @@ class user_model extends CI_Model
         return $this->db->count_all_results();
     }
 
-//    for  reset pass
-    public function getDataByToken($token){
+    //    for  reset pass
+    public function getDataByToken($token)
+    {
         $this->db->select('*');
         $this->db->from('users');
-        $this->db->where('reset_token',$token);
+        $this->db->where('reset_token', $token);
         return $this->db->get()->row();
     }
 
-    public function update_pass($data,$token,$user_id){
+    public function update_pass($data, $token, $user_id)
+    {
         $this->db->where('id', $user_id);
         $this->db->where('reset_token', $token);
         return $this->db->update('users', $data);
@@ -148,5 +151,15 @@ class user_model extends CI_Model
             'email_verify_token' => NULL,
             'email_token_expiry' => NULL
         ]);
+    }
+
+    public function get_latest_users($limit = 4)
+    {
+        return $this->db
+            ->order_by('id', 'DESC')   // or created_at
+            ->limit($limit)
+            ->where('is_guest',0)
+            ->get('users')
+            ->result();
     }
 }
