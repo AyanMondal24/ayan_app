@@ -36,13 +36,13 @@
 
                                 <td>
                                     <div class="d-flex justify-content-center align-items-center h-100">
-                                        <p class="mb-0"><?= $item->product_name ?></p>
+                                        <p class="mb-0 mt-4"><?= $item->product_name ?></p>
                                     </div>
                                 </td>
 
                                 <td>
                                     <div class="d-flex justify-content-center align-items-center h-100">
-                                        <p class="mb-0"
+                                        <p class="mb-0 mt-4"
                                             id="price-<?= $item->product_id ?>"
                                             data-price="<?= $item->price ?>">
                                             &#8377;<?= $item->price ?> / <?= $item->short_name ?>
@@ -52,7 +52,7 @@
 
                                 <td>
                                     <div class="d-flex justify-content-center align-items-center h-100">
-                                        <div class="input-group quantity"
+                                        <div class="input-group quantity mt-4"
                                             style="width: 100px;"
                                             data-id="<?= $item->product_id ?>">
 
@@ -75,7 +75,7 @@
 
                                 <td>
                                     <div class="d-flex justify-content-center align-items-center h-100">
-                                        <p class="mb-0 total">
+                                        <p class="mb-0 mt-4 total">
                                             &#8377;<?= number_format($item->qty * $item->price, 2) ?>
                                         </p>
                                     </div>
@@ -83,7 +83,7 @@
 
                                 <td>
                                     <div class="d-flex justify-content-center align-items-center h-100">
-                                        <button class="btn btn-md rounded-circle bg-light border remove-btn"
+                                        <button class="btn btn-md mt-4 rounded-circle bg-light border remove-btn"
                                             data-id="<?= $item->product_id ?>">
                                             <i class="fa fa-times text-danger"></i>
                                         </button>
@@ -139,7 +139,7 @@
         <?php
         if (!empty($product)) { ?>
 
-            <div class="mt-5" style="height: 100px;">
+            <div class="mt-5" style="height: 100px;" id="coupon-form">
                 <form action="<?= base_url('Cart/apply_coupon') ?>" method="post" id="coupon-form">
                     <input type="text" name="code" id="coupon_code" class="border-0 border-bottom rounded me-5 py-3 mb-4" value="<?= $code  ?>" placeholder="Coupon Code">
                     <?php
@@ -158,7 +158,7 @@
                 <div id="response-msg" class="mt-0"></div>
             </div>
 
-            <div class="row g-4 justify-content-end">
+            <div class="row g-4 justify-content-end" id="cart-total-div">
                 <div class="col-8"></div>
                 <div class="col-sm-8 col-md-7 col-lg-6 col-xl-4">
                     <div class="bg-light rounded">
@@ -343,6 +343,8 @@
             $("#cart-body").html(`<tr class="text-center fw-bold w-100">
                             <td class="py-4" colspan="6">Your Cart Is Empty </td>
                          </tr>`);
+            $("#coupon-form").hide();
+            $("#cart-total-div").hide();
             return;
         }
         if (response.status == 'success') {
@@ -392,22 +394,22 @@
                 table_html += `<tr id="product-${product.product_id}" class="product" data-id="${product.product_id}">
                                 <th scope="row">
                                     <div class="d-flex justify-content-center align-items-center">
-                                        <img src="<?= base_url('assets/uploads/products/thumb/') ?>${product.image}" class="img-fluid me-5 rounded-circle" style="width: 80px; height: 80px;" alt="${product.alt_text}">
+                                        <img src="<?= base_url('assets/uploads/products/thumb/') ?>${product.image}" class="img-fluid rounded-circle" style="width: 80px; height: 80px;" alt="${product.alt_text}">
                                     </div>
                                 </th>
                                 <td>
                                   <div class="d-flex justify-content-center align-items-center h-100">
-                                    <p class="mb-0 ">${product.name}</p>
+                                    <p class="mb-0 mt-4">${product.name}</p>
                                     </div>
                                 </td>
                                 <td>
                                 <div class="d-flex justify-content-center align-items-center h-100">
-                                    <p class="mb-0" id="price-17" data-price="678.00">₹${product.price}/${product.unit}</p>
+                                    <p class="mb-0 mt-4" id="price-${product.price}" data-price="${product.price}">₹${product.price}/${product.unit}</p>
                                     </div>
                                 </td>
                                 <td>
                                 <div class="d-flex justify-content-center align-items-center h-100">
-                                    <div class="input-group quantity" style="width: 100px;" data-id="${product.product_id}">
+                                    <div class="input-group quantity mt-4" style="width: 100px;" data-id="${product.product_id}">
                                         <div class="input-group-btn">
                                             <button class="btn btn-sm btn-minus rounded-circle bg-light border qty-btn" id="decrease">
                                                 <i class="fa fa-minus"></i>
@@ -424,13 +426,13 @@
                                 </td>
                                 <td>
                                   <div class="d-flex justify-content-center align-items-center h-100">
-                                        <p class="mb-0 total">₹${parseFloat(product.subtotal).toLocaleString('en-IN', { minimumFractionDigits: 2 })}
+                                        <p class="mb-0 mt-4 total">₹${parseFloat(product.subtotal).toLocaleString('en-IN', { minimumFractionDigits: 2 })}
                                         </p>
                                     </div>
                                 </td>
                                 <td>
                                  <div class="d-flex justify-content-center align-items-center h-100">
-                                    <button class="btn btn-md rounded-circle bg-light border remove-btn" data-id="${product.product_id}">
+                                    <button class="btn btn-md mt-4 rounded-circle bg-light border remove-btn" data-id="${product.product_id}">
                                         <i class="fa fa-times text-danger"></i>
                                     </button>
                                 </div>
